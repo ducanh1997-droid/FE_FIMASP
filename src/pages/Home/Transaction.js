@@ -39,7 +39,7 @@ export default function Transaction(props) {
                     <td>Vé tháng xe bus</td>
                     <td>150.000 đ</td>
                     <td>
-                        <a href="#" onClick="openEditForm()" className="btn btn-info">
+                        <a href="#" /*onClick="openEditForm()"*/ className="btn btn-info">
                             Sửa
                         </a>
                     </td>
@@ -60,7 +60,7 @@ export default function Transaction(props) {
                     <td>Mua quần áo đá bóng</td>
                     <td>150.000 đ</td>
                     <td>
-                        <a href="#" onClick="openEditForm()" className="btn btn-info">
+                        <a href="#" /*onClick="openEditForm()"*/ className="btn btn-info">
                             Sửa
                         </a>
                     </td>

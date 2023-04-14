@@ -40,16 +40,16 @@ export default function Header(props){
      <div id="Header">
       <div id="popup" ref={wrapperRef} style={{display:props.dialog==true?"block":"none"}}>
        <div className="tab-header">
-        <div className={active==true&&"active"} id="expense" onClick={openIncome}>
+        <div className={active?"active":""} id="expense" onClick={openIncome}>
          Chi phí
         </div>
-        <div className={active==false&&"active"} id="income" onClick={openExpences}>
+        <div className={!active?"active":""} id="income" onClick={openExpences}>
          Thu nhập
         </div>
        </div>
-       <div className="tab-indicator" style={{left:active==true?`calc(calc(100%/2)*${0})`:`calc(calc(100%/2)*${1})`}}/>
+       <div className="tab-indicator" style={{left:active?`calc(calc(100%/2)*${0})`:`calc(calc(100%/2)*${1})`}}/>
        <div className="tab-body">
-        <div className={active==true&&"active"}>
+        <div className={active?"active":""}>
          <div className="form">
           <table>
            <tbody>
@@ -57,8 +57,8 @@ export default function Header(props){
             <td>
              <label>
               <input
-                  onFocus="this.placeholder = ''"
-                  placeholder={0}
+                  // onFocus="this.placeholder = ''"
+                  placeholder={"0"}
                   defaultValue={0}
                   type="text"
                   id="money"
@@ -130,7 +130,7 @@ export default function Header(props){
           </table>
          </div>
         </div>
-        <div className={active==false&&"active"} id="tab-expences">
+        <div className={!active?"active":""} id="tab-expences">
          <div className="form">
           <table>
            <tbody>
@@ -138,8 +138,8 @@ export default function Header(props){
             <td>
              <label>
               <input
-                  onFocus="this.placeholder = ''"
-                  placeholder={0}
+                  // onFocus="this.placeholder = ''"
+                  placeholder={"0"}
                   defaultValue={0}
                   type="text"
                   id="money1"
@@ -215,7 +215,7 @@ export default function Header(props){
       </div>
       <div id="popup1">
        <div className="tab-header">
-        <div className="active" id="add-account-title" onClick="openIncome()">
+        <div className="active" id="add-account-title" /*onClick="openIncome()"*/>
          Thêm tài khoản
         </div>
        </div>
@@ -228,8 +228,8 @@ export default function Header(props){
             <td>
              <label>
               <input
-                  onFocus="this.placeholder = ''"
-                  placeholder={0}
+                  // onFocus="this.placeholder = ''"
+                  placeholder={"0"}
                   defaultValue={0}
                   type="text"
                   id="money2"
@@ -262,7 +262,7 @@ export default function Header(props){
            <tr>
             <td>
              <button className="edit">OK</button>
-             <button className="cancel" onClick="closeFormAccount()">
+             <button className="cancel" /*onClick="closeFormAccount()"*/>
               Huỷ
              </button>
             </td>
@@ -288,8 +288,8 @@ export default function Header(props){
             <td>
              <label>
               <input
-                  onFocus="this.placeholder = ''"
-                  placeholder={0}
+                  // onFocus="this.placeholder = ''"
+                  placeholder={"0"}
                   defaultValue={0}
                   type="text"
                   id="money3"
@@ -328,7 +328,7 @@ export default function Header(props){
            <tr>
             <td>
              <button className="edit">OK</button>
-             <button className="cancel" onClick="closeFormPlan()">
+             <button className="cancel" /*onClick="closeFormPlan()"*/>
               Huỷ
              </button>
             </td>

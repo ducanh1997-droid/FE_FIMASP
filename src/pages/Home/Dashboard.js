@@ -99,7 +99,7 @@ export default function Dashboard(){
                             fontSize: 20,
                             position: "relative"
                         }}
-                        onClick="openPlan()"
+                        // onClick="openPlan()"
                     >
                         <i
                             className="fa-sharp fa-solid fa-arrow-up-right-from-square"

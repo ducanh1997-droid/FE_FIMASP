@@ -10,7 +10,7 @@ export default function Wallet(){
                 <div
                     className="icon-border-dashboard"
                     style={{cursor: "pointer"}}
-                    onClick="createFormAddAccount()"
+                    // onClick="createFormAddAccount()"
                 >
                     <i className="fa-solid fa-plus"/>
                 </div>

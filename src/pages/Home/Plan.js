@@ -10,7 +10,7 @@ export default function Plan(){
                 <div
                     className="icon-border-dashboard"
                     style={{cursor: "pointer"}}
-                    onClick="createFormAddPlan()"
+                   /* onClick="createFormAddPlan()"*/
                 >
                     <i className="fa-solid fa-plus"/>
                 </div>
@@ -40,7 +40,7 @@ export default function Plan(){
                     <td>Mua xe máy</td>
                     <td style={{color: "#8d8d8d"}}>20/11/2020 - 20/11/2020</td>
                     <td>
-                        <a href="#" onClick="openEditForm()" className="btn btn-info">
+                        <a href="#" /*onClick="openEditForm()"*/ className="btn btn-info">
                             Sửa
                         </a>
                     </td>
