@@ -73,7 +73,7 @@ export default function Profile(){
                 {({ errors, touched }) => (
                     <Form>
                         <div className="row">
-                            <div className="col l-8">
+                            <div className="col l-8" style={{boxSizing:"border-box"}}>
                                 <div id="content-profile">
                                     <div id='general-information'>
                                         <h2>Thông tin chung</h2>
@@ -136,7 +136,7 @@ export default function Profile(){
                                     </div>
                                 </div>
                             </div>
-                            <div className="col l-4">
+                            <div className="col l-4" style={{boxSizing:"border-box"}}>
                                 <div id="sidebar-profile">
                                     <div className={'img8x'}>
                                         {
