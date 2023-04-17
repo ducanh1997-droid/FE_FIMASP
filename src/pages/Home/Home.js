@@ -10,7 +10,7 @@ import Transaction from "./Transaction";
 import  React, {useEffect, useMemo, useState} from "react";
 import Plan from "./Plan";
 import Wallet from "./Wallet";
-import CreateForm from "./CreateForm";
+import CreateTransaction from "./CreateTransaction";
 import context from "../../store/Context";
 import Profile from "./Profile";
 import ChangePassword from "./ChangePassword";
@@ -54,6 +54,7 @@ export default function Home(props) {
     return (
         <>
             <div id='Wrapper'>
+                <CreateTransaction dialog={dialog} close={closeDialog}/>
                 <Header dialog={dialog} close={closeDialog}/>
             </div>
             <div id='WrapperContent'>
