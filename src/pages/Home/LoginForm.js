@@ -55,21 +55,7 @@ export default function LoginForm({setShown}){
         };
         setPwStrict(pwStrict1);
     }
-    function authen(values){
-        let account ={
-            username: values.email,
-            password: values.password
-        }
 
-        axios.post(`http://localhost:8080/user/login`, account).then((resp) => {
-            if(resp.data === ""){
-                window.alert("Account does not exist!")
-                return;
-            }
-            localStorage.setItem('id', resp.data.id)
-            // navigate('')
-        })
-    }
     function save(values){
         let account ={
             username : values.email,
@@ -92,10 +78,9 @@ return(
                 <div className="form-container sign-up-container">
                     <Formik
                         initialValues={{
-                            // username: "",
+
                             email:"",
-                            password:"",
-                            passwordConfirm:""
+                            password:""
                         }
                         }
                         onSubmit={(values)=>{
@@ -154,8 +139,8 @@ return(
                         password1:""
                     }}
                             onSubmit={(values)=>{
-                                // authen(values)
-                                navigate("/dashboard")
+                                authen(values)
+
                             }}
                     // validationSchema={validationStrict}
                     >
@@ -193,4 +178,28 @@ return(
         </div>
     </>
 )
+
+    function authen(values){
+        console.log(values)
+        let account ={
+            username: values.email1,
+            password: values.password1
+        }
+
+        axios.post(`http://localhost:8080/user/login`, account).then((resp) => {
+            if(resp.data === ""){
+                window.alert("Account does not exist!")
+                return;
+            }
+            console.log(resp)
+            JSON.stringify(resp)
+            localStorage.setItem('id', resp.data.id)
+            localStorage.setItem('token', resp.data.token)
+            localStorage.setItem('username', resp.data.username)
+            localStorage.setItem('avatar',resp.data.avatar)
+            window.alert("Register success!")
+            navigate('/dashboard')
+        }).catch(err => window.alert("Wrong password!"));
+    }
+
 }
