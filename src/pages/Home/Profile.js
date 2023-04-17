@@ -4,11 +4,13 @@ import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
 import storage from "../../FirebaseConfig";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import toast, {Toaster} from "react-hot-toast";
+
 export default function Profile(){
     const [user,setUser] = useState({});
     const [image, setImage] = useState("");
+    const navigate = useNavigate()
 
     const [check, setCheck] = useState(false);
     const refInput = useRef(null);
@@ -214,4 +216,6 @@ export default function Profile(){
             );
         }
     }
+
+
 }
