@@ -1,4 +1,15 @@
+import React,{useEffect, useState} from "react";
+import axios from "axios";
+
 export default function Transaction(props) {
+    const [transactions,setTransactions] = useState([]);
+
+    useEffect(() =>{
+        axios.get("http://localhost:8080/cashes/1").then((response)=>{
+            setTransactions(response.data);
+        })
+    },[props.close])
+
     return(
         <div id="content-table" style={{filter:props.dialog==true?"blur(10px)":"blur(0px)"}}>
             <h2 id="page-title">Danh sách giao dịch</h2>
@@ -28,48 +39,31 @@ export default function Transaction(props) {
                 </tr>
                 </tbody>
                 <tbody id="data">
-                <tr>
-                    <td style={{paddingTop: 5, boxSizing: "border-box"}}>
-                        <div style={{float: "left"}} className="icon-border-bus-dashboard">
-                            <i className="fa-light fa-bus"/>
-                        </div>
-                        <p>Di chuyển</p>
-                    </td>
-                    <td style={{color: "#8d8d8d"}}>20/12/2020</td>
-                    <td>Vé tháng xe bus</td>
-                    <td>150.000 đ</td>
-                    <td>
-                        <a href="#" /*onClick="openEditForm()"*/ className="btn btn-info">
-                            Sửa
-                        </a>
-                    </td>
-                    <td>
-                        <a href="#" className="btn btn-delete">
-                            Xoá
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td style={{paddingTop: 10, boxSizing: "border-box"}}>
-                        <div style={{float: "left"}} className="icon-border-dashboard">
-                            <i className="fa-light fa-dumbbell"/>
-                        </div>
-                        <p>Tập thể dục</p>
-                    </td>
-                    <td>20/12/2020</td>
-                    <td>Mua quần áo đá bóng</td>
-                    <td>150.000 đ</td>
-                    <td>
-                        <a href="#" /*onClick="openEditForm()"*/ className="btn btn-info">
-                            Sửa
-                        </a>
-                    </td>
-                    <td>
-                        <a href="#" className="btn btn-delete">
-                            Xoá
-                        </a>
-                    </td>
-                </tr>
+                {transactions.map((item)=>{
+                    return(
+                        <tr key={item.id}>
+                            <td style={{paddingTop: 5, boxSizing: "border-box"}}>
+                                <div style={{float: "left"}} className="icon-border-bus-dashboard" id={item.category.icon}>
+                                    <i className={item.category.icon+' fa-light'}/>
+                                </div>
+                                <p>{item.category.name}</p>
+                            </td>
+                            <td style={{color: "#8d8d8d"}}>{item.date.slice(0,10)}</td>
+                            <td>{item.name}</td>
+                            <td>{item.money.toLocaleString('en-US', {style : 'currency', currency : 'VND'})}</td>
+                            <td>
+                                <a href="#" /*onClick="openEditForm()"*/ className="btn btn-info">
+                                    Sửa
+                                </a>
+                            </td>
+                            <td>
+                                <a href="#" className="btn btn-delete">
+                                    Xoá
+                                </a>
+                            </td>
+                        </tr>
+                    )
+                })}
                 </tbody>
             </table>
             <div id="paging"></div>

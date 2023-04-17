@@ -14,7 +14,7 @@ import CreateTransaction from "./CreateTransaction";
 import context from "../../store/Context";
 import Profile from "./Profile";
 import ChangePassword from "./ChangePassword";
-export default function Home(props) {
+export default React.memo(function Home(props) {
     let content = props.content;
     const [dialog,setDialog] = useState(false);
 
@@ -33,7 +33,7 @@ export default function Home(props) {
 
             case 'Transaction':
 
-                return <Transaction dialog={dialog} open={openDialog} />;
+                return <Transaction dialog={dialog} close={closeDialog} open={openDialog} />;
             case 'Plan':
 
                 return <Plan/>;
@@ -67,7 +67,7 @@ export default function Home(props) {
 
     );
 
-}
+})
 
 
 
