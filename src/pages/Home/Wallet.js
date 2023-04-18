@@ -12,7 +12,7 @@ export default function Wallet(){
     const [click,setClick]=useState(false)
     const [showCreateForm,setShow]=useState(false)
     if(isUpdate){
-        axios.get("http://localhost:3000/wallets").then((res)=>{
+        axios.get("http://localhost:8080/user1/wallets").then((res)=>{
             setWallets(res.data)
             setIsUpdate(false)
             setWalletChoice(res.data[0])
@@ -29,7 +29,7 @@ export default function Wallet(){
             </div>
             <div className={"wallet-container"}>
                 {wallets.map(wallet=>{
-                    return <AWalletElement key={wallet.id} setClick={setClick} wallet={wallet} setWalletChoice={setWalletChoice}></AWalletElement>
+                    return <AWalletElement key={wallet?.id} setClick={setClick} wallet={wallet} setWalletChoice={setWalletChoice}></AWalletElement>
                 })
                 }
             </div>

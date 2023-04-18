@@ -21,7 +21,7 @@ export default function CreateWalletForm({setShow,setIsUpdate}){
             backgroundColor: activeColor,
             limitMoney: values.limitMoney
         }
-        axios.post("http://localhost:3000/wallets",wallet).then(()=>{
+        axios.post("http://localhost:8080/user1/wallets",wallet).then(()=>{
             setIsUpdate(true)
             setShow(false)
         })

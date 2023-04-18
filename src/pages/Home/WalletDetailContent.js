@@ -29,7 +29,7 @@ export default function WalletDetailContent({wallet,setIsUpdate,setWalletChoice,
           backgroundColor: activeColor,
           limitMoney: values.limitMoney
       }
-      axios.put(`http://localhost:3000/wallets/${wallet.id}`,wallet).then((res)=>{
+      axios.put(`http://localhost:8080/user1/wallets/${wallet.id}`,wallet).then((res)=>{
             setEditActive(false)
           setIsUpdate(true)
           setWalletChoice(res.data)
@@ -38,14 +38,14 @@ export default function WalletDetailContent({wallet,setIsUpdate,setWalletChoice,
     }
     function deleteWallet(){
         if (window.confirm("Confirm to delete")){
-            axios.delete(`http://localhost:3000/wallets/${wallet.id}`).then(()=>{
+            axios.delete(`http://localhost:8080/user1/wallets/${wallet.id}`).then(()=>{
                 alert("Success to delete")
                 setIsUpdate(true)
                 setWalletChoice(null)
             })
         }
     }
-    return wallet ===null?(<></>): (<Formik
+    return (wallet ===null||wallet===undefined)?(<></>): (<Formik
 
             initialValues={{
                 id: wallet.id,
