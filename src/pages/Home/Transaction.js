@@ -1,3 +1,6 @@
+
+import {ErrorMessage, Field, Form, Formik} from "formik";
+import * as Yup from 'yup';
 import React,{useEffect, useState} from "react";
 import axios from "axios";
 
@@ -5,13 +8,29 @@ export default function Transaction(props) {
     const [transactions,setTransactions] = useState([]);
 
     useEffect(() =>{
-        axios.get("http://localhost:8080/cashes/1").then((response)=>{
+        axios.get("http://localhost:8080/user1/cashes").then((response)=>{
             setTransactions(response.data);
         })
     },[props.close])
 
+    function save(values) {
+        console.log(values.dateStart);
+        console.log(values.dateEnd);
+        axios.get(`http://localhost:8080/user1/cashes/${values.dateStart}/${values.dateEnd}`).then((res)=>{
+            setTransactions(res.data);
+        })
+    }
+
+    const Validation = Yup.object().shape({
+        dateStart: Yup.date().required( "Vui lòng chọn ngày bắt đầu"),
+        dateEnd: Yup.date().required("Vui lòng chọn ngày kết thúc").min(
+            Yup.ref('dateStart'),
+            "Ngày kết thúc phải lớn hơn ngày bắt đầu"
+        )
+
+    })
     return(
-        <div id="content-table" style={{filter:props.dialog==true?"blur(10px)":"blur(0px)"}}>
+        <div id="content-table" style={{filter:props.dialog || props.dialogUpdateIncome || props.dialogUpdateExpence?"blur(10px)":"blur(0px)"}}>
             <h2 id="page-title">Danh sách giao dịch</h2>
             <hr id="hr-search"/>
             <div style={{display: "inline-block", marginTop: 15}}>
@@ -26,14 +45,59 @@ export default function Transaction(props) {
                     <i className="fa-solid fa-plus"/>
                 </div>
             </div>
+            <Formik initialValues={{
+                dateStart:new Date().toISOString().slice(0, 10),
+                dateEnd:new Date().toISOString().slice(0, 10)
+            }}
+                    onSubmit={(values) => {
+                        save(values)}
+                    }
+                validationSchema={Validation}
+                    enableReinitialize={true}
+            >
+                {({ errors, touched,values,initialValues }) => (
+                    <Form>
+                        <div className="form">
+                                        <label>
+                                            <Field
+                                                // onFocus={(e) => e.target.placeholder = ""}
+                                                // placeholder={0}
+                                                // defaultValue={0}
+                                                type="date"
+                                                id="dateStart"
+                                                name={"dateStart"}
+                                            />
+                                            Ngày bắt đầu
+
+
+                                        </label>
+                            <div style={{color:"red",fontSize:"13px"}}>
+                                                        <ErrorMessage name={'dateStart'}  />
+                                                    </div>
+                                        <label>
+                                            <Field type="date" id="dateEnd" name={'dateEnd'}/>
+                                            Ngày kết thúc
+                                            &ensp;&ensp;
+
+                                        </label>
+                            <div style={{color:"red",fontSize:"13px"}}>
+                                                        <ErrorMessage name={'dateEnd'}  />
+                                                    </div>
+                                        <button type={'submit'} className="edit">Tìm kiếm</button>
+                        </div>
+                    </Form>)}
+            </Formik>
             <hr id="hr-list"/>
+
+
             <table id="table-list">
                 <tbody>
                 <tr>
                     <th>Danh mục</th>
                     <th>Ngày</th>
-                    <th>Tên</th>
+                    <th>Ghi chú</th>
                     <th>Giá</th>
+                    <th>Loại giao dịch</th>
                     <th>Sửa</th>
                     <th>Xoá</th>
                 </tr>
@@ -51,15 +115,18 @@ export default function Transaction(props) {
                             <td style={{color: "#8d8d8d"}}>{item.date.slice(0,10)}</td>
                             <td>{item.name}</td>
                             <td>{item.money.toLocaleString('en-US', {style : 'currency', currency : 'VND'})}</td>
+                            <td>{item.type=="expence"?"Chi phí":"Thu nhập"}</td>
                             <td>
-                                <a href="#" /*onClick="openEditForm()"*/ className="btn btn-info">
-                                    Sửa
-                                </a>
+                                <button onClick={()=>item.type=="expence"?props.openUpdateExpence(item.id,item.category.icon):props.openUpdateIncome(item.id,item.category.icon)} className={'btn btn-info'}>Sửa
+                                </button>
                             </td>
+
                             <td>
-                                <a href="#" className="btn btn-delete">
-                                    Xoá
-                                </a>
+                                {/*<a href="#" className="btn btn-delete">*/}
+                                {/*    Xoá*/}
+                                {/*</a>*/}
+                                <button onClick={() => deleteTransaction(item.id)} className={'btn btn-delete'}>Xoá
+                                </button>
                             </td>
                         </tr>
                     )
@@ -69,4 +136,13 @@ export default function Transaction(props) {
             <div id="paging"></div>
         </div>
     )
+    function deleteTransaction(id){
+        if(window.confirm("OK")){
+            axios.delete(`http://localhost:8080/user1/cashes/${id}`).then((response)=>{
+                axios.get("http://localhost:8080/user1/cashes").then((response)=>{
+                    setTransactions(response.data);
+                })
+            })
+        }
+    }
 }

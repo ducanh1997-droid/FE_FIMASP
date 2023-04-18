@@ -177,7 +177,8 @@ li{
     font-size: 20px;
 }
 .fa-plus{
-    left: 9px;
+    top:5px;
+    left: 7px;
 }
 .fa-filter-circle-dollar{
     left: 7px;
@@ -568,8 +569,8 @@ h5.titles-dashboard{
 .icon-border-dashboard{
     display: inline-block;
     position: relative;
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
     border-radius: 100px;
     background: green;
 }
@@ -1108,7 +1109,7 @@ a.btn-delete:hover{
     top:100px;
     left:30%;
     width:42%;
-    min-height:500px;
+    min-height:550px;
     background-color: #fff;
     border-radius: 10px;
     position: absolute;
@@ -1195,7 +1196,7 @@ a.btn-delete:hover{
     width: 100%;
 }
 
-.tab-body > div.active{
+.tab-body  div.active{
     z-index: 1;
     top: 0px;
     opacity: 1;
