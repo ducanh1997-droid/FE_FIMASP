@@ -1,0 +1,153 @@
+.form-create-wallet{
+position: absolute;
+    width: 50%;
+    height: 60%;
+    z-index: 3;
+    background-color: #f2f2f2;
+    left: 25%;
+    top: 10%;
+}
+.form-create-wallet .walletDetail-content{
+    position: absolute;
+    box-sizing: border-box;
+    font-size: 20px;
+    border-radius: 10px;
+    background-color: #61dafb;
+    width: 43%;
+    height: 90%;
+    left: 2%;
+    top: 4%;
+}
+.form-create-wallet td{
+    position: relative;
+    width: 50%;
+    height: 20%;
+    vertical-align: middle;
+    padding: 10px;
+}
+.form-create-wallet p{
+    margin: 0;
+}
+.sample-wallet-context > p{
+    position: absolute;
+    font-size: 60px;
+    text-align: center;
+    width: 100%;
+    top: 50px;
+    font-weight: 900;
+}
+.form-create-wallet button{
+    width: 30%;
+}
+.form-create-wallet .icon-wallet{
+    margin-right: 10px;
+    position: relative;
+    width: 35px;
+    height: 35px;
+    border-radius: 100px;
+    background: black!important;
+    margin-bottom: 2px;
+}
+.form-create-wallet .block-wallet{
+    display: block;
+    /*text-align: center;*/
+    width: 30%;
+    font-size: 10px;
+    float: left;
+}
+.form-create-wallet .block-wallet:hover{
+    cursor: pointer;
+}
+.form-create-wallet i{
+    position: relative;
+    color: #f2f2f2;
+    left: 7px;
+    top:7px;
+    font-size: 20px!important;
+    font-weight: 900;
+}
+.form-create-wallet .color-sample{
+    float: left;
+    width: 25%;
+    height: 50%;
+    position: relative;
+    box-sizing: border-box;
+    margin-right: 10px;
+}
+.form-create-wallet .color-sample:hover{
+    cursor: pointer;
+}
+.form-create-wallet .sample-wallet-context{
+    position: absolute;
+    width: 50%;
+    height: 90%;
+    background-color: #61dafb;
+    left: 48%;
+    top: 4%;
+}
+.form-create-wallet .wallet{
+    position: absolute;
+    width: 96%;
+    height: 50%;
+    background-color: black;
+    border-radius: 10px;
+    box-sizing: border-box;
+    top: 32%;
+    margin-left: 2%;
+ }
+.form-create-wallet .wallet i {
+    font-size: 30px;
+    color: #f2f2f2;
+    top:10px;
+    left: 87%;
+    position: absolute;
+    font-weight: 900;
+}
+.form-create-wallet .wallet .logoName {
+    font-size: 20px;
+    color: #f2f2f2;
+    margin: 0;
+    top: 10px;
+    left: 10px;
+    position: absolute;
+}
+.form-create-wallet .wallet .walletDetail {
+    font-size: 15px;
+    color: #f2f2f2;
+    margin: 0;
+    bottom: 20px;
+    left: 10px;
+    position: absolute;
+    text-align: center;
+}
+.form-create-wallet .wallet .walletDetail p{
+    margin: 0;
+}
+.form-create-wallet .wallet .walletLimit {
+    font-size: 15px;
+    color: #f2f2f2;
+    margin: 0;
+    bottom: 20px;
+    right: 10px;
+    position: absolute;
+    text-align: center;
+}
+.form-create-wallet .wallet .walletLimit p{
+    margin: 0;
+}
+.form-create-wallet .wallet .walletMoney {
+    width: 40%;
+    font-size: 30px;
+    color: #f2f2f2;
+    margin: 0;
+    top: 70px;
+    right: 30%;
+    position: absolute;
+    text-align: center;
+}
+.form-create-wallet .wallet .walletMoney p{
+    margin: 0;
+    top: 30px;
+    position: absolute;
+    width: 100%;
+}
