@@ -1,9 +1,10 @@
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {useEffect} from "react";
 import axios from "axios";
+import '../../assets/css/home.css'
 
 export default function ConfirmAccount() {
-    const navigate = useNavigate();
+
     const param = useParams();
 
     useEffect(() => {
@@ -15,8 +16,7 @@ export default function ConfirmAccount() {
     return(
         <>
             <h1>Confirm success!</h1>
-            <Link className={'btn btn-primary'} to={'/home'}>Home</Link> &nbsp;
-            <Link className={'btn btn-warning'} to={'/login'}>Login</Link> &nbsp;
+            <Link className={'button-save-profile'} to={'/home'}>Home</Link> &nbsp;
         </>
     )
 

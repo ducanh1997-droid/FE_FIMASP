@@ -7,6 +7,7 @@ import {number} from "yup";
 export default function ChangePassword() {
     const [pw, setPw] = useState("");
     const [idAcc, setIdAcc] = useState(localStorage.getItem('id'))
+    const token = localStorage.getItem('token');
 
     axios.get(`http://localhost:8080/user/${idAcc}`).then((resp) => {
         setPw(resp.data.password)
@@ -42,7 +43,7 @@ export default function ChangePassword() {
 
     return (
         <div id='change-password-block'>
-            <h2>Thay đổi password</h2>
+            <h2>Thay đổi mật khẩu</h2>
             <div className='input-password-box'>
                 <input type={eye1 === false ? "password" : "text"} id='password' placeholder='mật khẩu cũ'/>
                 <i className={eye1 === false ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"} onClick={eyeIcon1}></i>
@@ -79,7 +80,9 @@ export default function ChangePassword() {
             password: $("#re-password").val()
         }
 
-        axios.put(`http://localhost:8080/user/changePassword`, account).then((resp) => {
+        axios.put(`http://localhost:8080/user/changePassword`, account
+        ,{headers: {"Authorization": `Bearer ${token}`}}
+        ).then((resp) => {
             console.log(resp)
             setPw(resp.data.password)
             notify()
