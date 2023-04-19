@@ -39,7 +39,7 @@ export default function Sidebar(){
                 </li>
                 <li onClick={isActiveSetting} style={{display:(active==='setting'?'block':'none')}}>
 
-                    <Link id="logout" className={activeSetting ==='logout'?"active-setting":""} to={`/home`}>Đăng xuất</Link>
+                    <a id="logout" className={activeSetting ==='logout'?"active-setting":""} href={""} onClick={logout}>Đăng xuất</a>
                 </li>
 
                 {/*<li onClick="isActive()">*/}
@@ -55,5 +55,13 @@ export default function Sidebar(){
 
     function isActiveSetting(e){
         setActiveSetting(e.target.id);
+    }
+
+    function logout() {
+        localStorage.removeItem('id')
+        localStorage.removeItem('token')
+        localStorage.removeItem('username')
+        localStorage.removeItem('avatar')
+        navigate('/home')
     }
 }

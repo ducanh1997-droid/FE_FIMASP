@@ -2,6 +2,7 @@ import React,{useEffect, useRef, useState} from "react";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from 'yup'
 import axios from "axios";
+import toast, {Toaster} from "react-hot-toast";
 export default React.memo(function CreateTransaction(props){
     const[active,setActive] = useState(true)
     const [wallets,setWallets] = useState([]);
@@ -9,11 +10,9 @@ export default React.memo(function CreateTransaction(props){
     const [categoriesIncome,setCategoriesIncome] = useState([])
     const [activeCategory,setActiveCategory] = useState("fa-dumbbell")
     const [categorygetId,setCategoryGetId] = useState("1")
-    // const [category, setCategory] = useState({
-    //     activeCategory: "fa-dumbbell",
-    //     categoryId: "",
-    // });
+    const token = localStorage.getItem("token");
     const wrapperRef = useRef(null);
+
     useEffect(() => {
         axios.get("http://localhost:8080/user1/wallets").then((res)=>{
             setWallets(res.data)
@@ -43,38 +42,28 @@ export default React.memo(function CreateTransaction(props){
     function openIncome(){
         setActive(true);
     }
-
     function openExpences(){
         setActive(false);
     }
-
     function categoryActive(e){
-        // setCategory({
-        //     activeCategory: e.currentTarget.id,
-        //     categoryId: e.target.id,
-        // })
         setActiveCategory(e.currentTarget.id);
-        setCategoryGetId(e.target.id)
+        setCategoryGetId(e.currentTarget.classList.item(0))
     }
-
-
     const Validation = Yup.object().shape({
         name: Yup.string().max(15, "Không quá 15 ký tự"),
-        money: Yup.number().required("Vui lòng nhập chi tiêu!").min(0, "Vui lòng nhập chi tiêu!"),
+        money: Yup.string().required("Vui lòng nhập chi tiêu!").min(0, "Vui lòng nhập chi tiêu!").matches(/^[0-9]+$/, "Không đúng định dạng số!"),
         wallet: Yup.object().shape({
             id: Yup.string().required("Vui lòng chọn ví!"),
         })
     })
 
     const Validation1 = Yup.object().shape({
-        name: Yup.string().max(15, "Không quá 15 ký tự"),
+        name: Yup.string().max(20, "Không quá 20 ký tự"),
         money: Yup.number().required("Vui lòng nhập chi tiêu!").min(0, "Vui lòng nhập chi tiêu!"),
         wallet: Yup.object().shape({
             id: Yup.string().required("Vui lòng chọn ví!"),
         })
     })
-
-
 return(
     <>
                     <div id="popup" ref={wrapperRef} style={{display:props.dialog==true?"block":"none"}}>
@@ -106,7 +95,6 @@ return(
                                 }
                             }}
                                     onSubmit={(values,actions) => {
-
                                         save(values)
                                         actions.resetForm()
                                     }
@@ -176,7 +164,8 @@ return(
                                                 {categories.map((item)=>{
                                                     return(
                                                         <div  className="block-category" id={"block-"+item.icon} >
-                                                            <div className="icon-border" id={item.icon} style={{borderRadius:activeCategory===item.icon?"2px":"100px"}} onClick={categoryActive}>
+                                                            {activeCategory===item.icon&&setCategoryGetId(item.id)}
+                                                            <div className={item.id +' icon-border'} id={item.icon} style={{borderRadius:activeCategory===item.icon?"2px":"100px"}} onClick={categoryActive}>
                                                                 <i id={item.id} className={"fa-light " + item.icon} ></i>
                                                             </div>
                                                             <p >{item.name}</p>
@@ -291,7 +280,8 @@ return(
                                                 {categoriesIncome.map((item)=>{
                                                     return(
                                                         <div  className="block-category" id={"block-"+item.icon} >
-                                                            <div className="icon-border" id={item.icon} style={{borderRadius:activeCategory===item.icon?"2px":"100px"}} onClick={categoryActive}>
+                                                            {activeCategory===item.icon&&setCategoryGetId(item.id)}
+                                                            <div className={item.id +' icon-border'} id={item.icon} style={{borderRadius:activeCategory===item.icon?"2px":"100px"}} onClick={categoryActive}>
                                                                 <i id={item.id} className={"fa-light " + item.icon} ></i>
                                                             </div>
                                                             <p >{item.name}</p>
@@ -330,8 +320,9 @@ return(
 )
     function save(values) {
         values.category.id = categorygetId;
-        console.log(values)
-        axios.post('http://localhost:8080/user1/cashes',values).then(()=>{
+        console.log(values);
+        axios.post('http://localhost:8080/user1/cashes',values,{headers: {"Authorization": `Bearer ${token}`}}).then(()=>{
+            props.createSuccess()
             props.close()
         })
     }

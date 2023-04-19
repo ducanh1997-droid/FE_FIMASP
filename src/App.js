@@ -1,9 +1,8 @@
-import logo from './logo.svg';
-import Navbar from "./core/Navbar";
+
 import {createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider, Routes} from "react-router-dom";
 import HomePage from "./pages/Home/HomePage";
 import Home from "./pages/Home/Home";
-import Login from "./pages/Login/Login";
+import ConfirmAccount from "./pages/Login/ConfirmAccount";
 
 
 function App() {
@@ -18,7 +17,7 @@ function App() {
             <Route path={'/setting'} element={<Home content="Setting"/>}></Route>
             <Route path={'/profile'} element={<Home content="Profile"/>}></Route>
             <Route path={'/changePassword'} element={<Home content="ChangePassword"/>}></Route>
-            <Route path={'/logout'} element={<Login/>}></Route>
+            <Route path={'/confirm-email/:id'} element={<ConfirmAccount/>}></Route>
             <Route path={"/home"} element={<HomePage></HomePage>}></Route>
         </>
     ))

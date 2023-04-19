@@ -1,20 +1,17 @@
 import React,{useEffect, useRef, useState} from "react";
-
 import * as Yup from 'yup'
 import axios from "axios";
 import {useParams} from "react-router-dom";
-import {Field, Form, Formik} from "formik";
+import {ErrorMessage, Field, Form, Formik} from "formik";
+import {Toaster} from "react-hot-toast";
 export default React.memo(function UpdateTransactionExpence(props){
     const[cash,setCash] = useState({})
     const [wallets,setWallets] = useState([]);
     const [categories,setCategories] = useState([]);
     const [categoriesIncome,setCategoriesIncome] = useState([])
     const [activeCategory,setActiveCategory] = useState("")
-    const [categorygetId,setCategoryGetId] = useState("1")
-    // const [category, setCategory] = useState({
-    //     activeCategory: "fa-dumbbell",
-    //     categoryId: "",
-    // });
+    const [categorygetId,setCategoryGetId] = useState("1");
+    const token = localStorage.getItem("token");
     const wrapperRef = useRef(null);
     useEffect(() => {
         setActiveCategory(props.icon);
@@ -47,22 +44,17 @@ export default React.memo(function UpdateTransactionExpence(props){
     }, [props,wrapperRef]);
 
     function categoryActive(e){
-        // setCategory({
-        //     activeCategory: e.currentTarget.id,
-        //     categoryId: e.target.id,
-        // })
         setActiveCategory(e.currentTarget.id);
-        setCategoryGetId(e.target.id)
+        setCategoryGetId(e.currentTarget.classList.item(0))
     }
 
-
-    // const Validation = Yup.object().shape({
-    //     fullName: Yup.string().required("Không được để trống!").max(20, "Dài quá 20 kí tự!"),
-    //     phoneNumber: Yup.string().required("Không được để trống!").min(9, "Số điện thoại không đúng định dạng!")
-    //         .max(11, "Số điện thoại không đúng định dạng!"),
-    //     birthday:Yup.string().required("Không được để trống!").matches(/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/,{message:"Chưa đúng định dạng"})
-    // })
-
+    const Validation = Yup.object().shape({
+        name: Yup.string().max(15, "Không quá 15 ký tự"),
+        money: Yup.string().required("Vui lòng nhập chi tiêu!").min(0, "Vui lòng nhập chi tiêu!").matches(/^[0-9]+$/, "Không đúng định dạng số!"),
+        wallet: Yup.object().shape({
+            id: Yup.string().required("Vui lòng chọn ví!"),
+        })
+    })
 
     return(
         <>
@@ -77,8 +69,9 @@ export default React.memo(function UpdateTransactionExpence(props){
                             money: cash.money,
                             type:"expence",
                             name: cash.name,
-                            wallet: cash.wallet,
-
+                            wallet: {
+                                "id":cash.wallet?.id
+                            },
                             account:{
                                 id:'1'
                             },
@@ -87,12 +80,11 @@ export default React.memo(function UpdateTransactionExpence(props){
                                 onSubmit={(values) => {
                                     save(values)}
                                 }
-                            // validationSchema={Validation}
+                            validationSchema={Validation}
                                 enableReinitialize={true}
                         >
                             {({ errors, touched,values,initialValues }) => (
                                 <Form>
-
                                     <div className="form">
                                         <table style={{width:"100%",marginLeft:"10%"}}>
                                             <tbody>
@@ -100,14 +92,14 @@ export default React.memo(function UpdateTransactionExpence(props){
                                                 <td>
                                                     <label>
                                                         <Field
-                                                            // onFocus={(e) => e.target.placeholder = ""}
-                                                            // placeholder={0}
-                                                            // defaultValue={0}
                                                             type="text"
                                                             id="money"
                                                             name={"money"}
                                                         />
-                                                        VND
+                                                        VND &ensp;&ensp;
+                                                        <span style={{color:"red"}}>
+                                                        <ErrorMessage name={'money'}  />
+                                                    </span>
                                                     </label>
                                                 </td>
                                             </tr>
@@ -115,7 +107,10 @@ export default React.memo(function UpdateTransactionExpence(props){
                                                 <td>
                                                     <label>
                                                         <Field type="text" id="action" name={'name'}/>
-                                                        Ghi chú
+                                                        Ghi chú&ensp;&ensp;
+                                                        <span style={{color:"red"}}>
+                                                        <ErrorMessage name={'name'}  />
+                                                    </span>
                                                     </label>
                                                 </td>
                                             </tr>
@@ -124,7 +119,7 @@ export default React.memo(function UpdateTransactionExpence(props){
                                                     <label>Tài khoản</label>
                                                     <div className="select-box">
                                                         <Field as="select" name={"wallet.id"} id="select-box1" className="select">
-                                                            <option value={''}>-----------</option>
+                                                            <option value={''}>-- Chọn ví --</option>
                                                             {wallets.map((item,id)=>{
                                                                 return(
                                                                     <option key={id} value={item.id}>{item.name}</option>
@@ -132,6 +127,10 @@ export default React.memo(function UpdateTransactionExpence(props){
                                                             })
                                                             }
                                                         </Field>
+                                                        &ensp;&ensp;
+                                                        <span style={{color:"red"}}>
+                                                        <ErrorMessage name={'wallet.id'}  />
+                                                    </span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -141,26 +140,14 @@ export default React.memo(function UpdateTransactionExpence(props){
                                                     {categories.map((item)=>{
                                                         return(
                                                             <div  className="block-category" id={"block-"+item.icon} >
-                                                                <div className="icon-border" id={item.icon} style={{borderRadius:activeCategory===item.icon?"2px":"100px"}} onClick={categoryActive}>
+                                                                {activeCategory===item.icon&&setCategoryGetId(item.id)}
+                                                                <div className={item.id +' icon-border'} id={item.icon} style={{borderRadius:activeCategory===item.icon?"2px":"100px"}} onClick={categoryActive}>
                                                                     <i id={item.id} className={"fa-light " + item.icon} ></i>
                                                                 </div>
                                                                 <p >{item.name}</p>
                                                             </div>
                                                         )
                                                     })}
-                                                    {/*<div  className="block-category" id="block-fa-mug-saucer">*/}
-                                                    {/*    <div className="icon-border" style={{borderRadius:activeCategory==="fa-mug-saucer"?"2px":"100px"}} id="fa-mug-saucer" onClick={categoryActive}>*/}
-                                                    {/*        <i className="fa-light fa-mug-saucer"></i>*/}
-                                                    {/*    </div>*/}
-                                                    {/*    <p id="2">Cafe</p>*/}
-                                                    {/*</div>*/}
-
-                                                    {/*<div  className="block-category" id="block-fa-bus" >*/}
-                                                    {/*    <div className="icon-border" id="fa-bus" style={{borderRadius:activeCategory==="fa-bus"?"2px":"100px"}} onClick={categoryActive}>*/}
-                                                    {/*        <i className="fa-light fa-bus"></i>*/}
-                                                    {/*    </div>*/}
-                                                    {/*    <p id="2">Di chuyển</p>*/}
-                                                    {/*</div>*/}
                                                     <br/>
                                                     <br/>
                                                 </td>
@@ -173,7 +160,8 @@ export default React.memo(function UpdateTransactionExpence(props){
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <button type={'submit'} className="edit">OK</button>
+                                                    <button type={'submit'} style={Object.keys(errors).length!==0
+                                                        ?{background:"rgb(141,191,114)",cursor:"not-allowed"}:{background:"rgb(79 161 34)",cursor:"pointer"}} className="edit">OK</button>
                                                     <button type={'button'} className="cancel" onClick={props.closeUpdateExpence}>
                                                         Huỷ
                                                     </button>
@@ -187,14 +175,11 @@ export default React.memo(function UpdateTransactionExpence(props){
                         </Formik>
             </div>
         </>
-
     )
     function save(values) {
         values.id = props.idCashUpdate;
         values.category.id = categorygetId;
-        console.log(values)
-        console.log("OK")
-        axios.put(`http://localhost:8080/user1/cashes/${props.idCashUpdate}`,values).then(()=>{
+        axios.put(`http://localhost:8080/user1/cashes/${props.idCashUpdate}`,values,{headers: {"Authorization": `Bearer ${token}`}}).then(()=>{
             props.closeUpdateExpence()
         })
     }

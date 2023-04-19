@@ -3,19 +3,32 @@ import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from 'yup';
 import React,{useEffect, useState} from "react";
 import axios from "axios";
+import toast, {Toaster} from "react-hot-toast";
 
 export default function Transaction(props) {
     const [transactions,setTransactions] = useState([]);
 
+    const token = localStorage.getItem("token");
+
+    const notify = () => {
+        toast.success("Thêm giao dịch thành công", {
+            position: "top-center", style: {
+                minWidth: '300px',
+                fontSize: "20px"
+            },
+        })
+    }
     useEffect(() =>{
+        if (props.createSuccess) {
+            notify();
+            props.closeCreate();
+        }
         axios.get("http://localhost:8080/user1/cashes").then((response)=>{
             setTransactions(response.data.content);
         })
-    },[props.close])
+    },[props.close,props.createSuccess])
 
     function save(values) {
-        console.log(values.dateStart);
-        console.log(values.dateEnd);
         axios.get(`http://localhost:8080/user1/cashes/${values.dateStart}/${values.dateEnd}`).then((res)=>{
             setTransactions(res.data);
         })
@@ -89,7 +102,7 @@ export default function Transaction(props) {
             </Formik>
             <hr id="hr-list"/>
 
-
+            <Toaster/>
             <table id="table-list">
                 <tbody>
                 <tr>
@@ -134,11 +147,12 @@ export default function Transaction(props) {
                 </tbody>
             </table>
             <div id="paging"></div>
+
         </div>
     )
     function deleteTransaction(id){
         if(window.confirm("OK")){
-            axios.delete(`http://localhost:8080/user1/cashes/${id}`).then((response)=>{
+            axios.delete(`http://localhost:8080/user1/cashes/${id}`,{headers: {"Authorization": `Bearer ${token}`}}).then((response)=>{
                 axios.get("http://localhost:8080/user1/cashes").then((response)=>{
                     setTransactions(response.data.content);
                 })

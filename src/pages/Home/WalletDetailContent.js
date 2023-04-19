@@ -7,6 +7,9 @@ export default function WalletDetailContent({wallet,setIsUpdate,setWalletChoice,
     const [editActive,setEditActive]=useState(false)
     const [activeIcon,setActiveIcon] = useState("")
     const [activeColor,setActiveColor] = useState("")
+
+    const token = localStorage.getItem("token");
+
     useEffect(()=>{
         if(click){
         setActiveIcon(wallet.icon)
@@ -29,7 +32,7 @@ export default function WalletDetailContent({wallet,setIsUpdate,setWalletChoice,
           backgroundColor: activeColor,
           limitMoney: values.limitMoney
       }
-      axios.put(`http://localhost:8080/user1/wallets/${wallet.id}`,wallet).then((res)=>{
+      axios.put(`http://localhost:8080/user1/wallets/${wallet.id}`,wallet,{headers: {"Authorization": `Bearer ${token}`}}).then((res)=>{
             setEditActive(false)
           setIsUpdate(true)
           setWalletChoice(res.data)
@@ -38,7 +41,7 @@ export default function WalletDetailContent({wallet,setIsUpdate,setWalletChoice,
     }
     function deleteWallet(){
         if (window.confirm("Confirm to delete")){
-            axios.delete(`http://localhost:8080/user1/wallets/${wallet.id}`).then(()=>{
+            axios.delete(`http://localhost:8080/user1/wallets/${wallet.id}`,{headers: {"Authorization": `Bearer ${token}`}}).then(()=>{
                 alert("Success to delete")
                 setIsUpdate(true)
                 setWalletChoice(null)
