@@ -33,6 +33,7 @@ export default function Profile(){
         values.username = "minhanh2@gmail.com";
         values.password = "Minhanh1997@";
         values.avatar = image;
+        console.log(values);
         axios.put(`http://localhost:8080/user/update/1`,values).then(()=>{
             notify();
             setUser(values);
@@ -62,7 +63,6 @@ export default function Profile(){
                 city: user.city,
                 zip:user.zip,
                 gender:user.gender,
-                email:user.username
             }}
                     onSubmit={(values) => {
                         save(values)}

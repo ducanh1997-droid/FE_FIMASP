@@ -5,11 +5,13 @@ import HomePage from "./pages/Home/HomePage";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 
+
 function App() {
+    let x=1;
     const routes=createBrowserRouter(createRoutesFromElements(
         <>
             <Route path={'/'} element={<Navigate to={"/home"}></Navigate>}></Route>
-            <Route path={'/dashboard'}  element={<Home content="Dashboard"/>}></Route>
+            <Route path={'/dashboard'} element={<Home content="Dashboard"/>}></Route>
             <Route path={'/transaction'} element={<Home content="Transaction"/>}></Route>
             <Route path={'/plan'} element={<Home content="Plan"/>}></Route>
             <Route path={'/wallet'} element={<Home content="Wallet"/>}></Route>
