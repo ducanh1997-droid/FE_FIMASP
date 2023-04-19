@@ -10,21 +10,41 @@ import Transaction from "./Transaction";
 import  React, {useEffect, useMemo, useState} from "react";
 import Plan from "./Plan";
 import Wallet from "./Wallet";
-import CreateForm from "./CreateForm";
+import CreateTransaction from "./CreateTransaction";
 import context from "../../store/Context";
 import Profile from "./Profile";
 import ChangePassword from "./ChangePassword";
-
-
-export default function Home(props) {
+import UpdateTransaction from "./UpdateTransactionIncome";
+import UpdateTransactionIncome from "./UpdateTransactionIncome";
+import UpdateTransactionExpence from "./UpdateTransactionExpence";
+export default React.memo(function Home(props) {
     let content = props.content;
     const [dialog,setDialog] = useState(false);
-
+    const [dialogUpdateIncome,setDialogUpdateIncome] = useState(false);
+    const [dialogUpdateExpence,setDialogUpdateExpence] = useState(false);
+    const [idCashUpdate,setIdCashUpdate] = useState(0)
+    const [idIconCategoryUpdate,setIdIconCategoryUpdate] = useState("")
     function openDialog() {
         setDialog(true);
     }
     function closeDialog() {
         setDialog(false)
+    }
+    function openDialogUpdateIncome(id,icon) {
+        setDialogUpdateIncome(true);
+        setIdCashUpdate(id);
+        setIdIconCategoryUpdate(icon);
+    }
+    function closeDialogUpdateIncome() {
+        setDialogUpdateIncome(false)
+    }
+    function openDialogUpdateExpence(id,icon) {
+        setDialogUpdateExpence(true);
+        setIdCashUpdate(id);
+        setIdIconCategoryUpdate(icon);
+    }
+    function closeDialogUpdateExpence() {
+        setDialogUpdateExpence(false)
     }
     function renderSwitch() {
 
@@ -35,7 +55,9 @@ export default function Home(props) {
 
             case 'Transaction':
 
-                return <Transaction dialog={dialog} open={openDialog} />;
+                return <Transaction dialog={dialog} close={closeDialog} open={openDialog}
+                        openUpdateIncome={openDialogUpdateIncome} dialogUpdateIncome={dialogUpdateIncome} closeUpdateIncome={closeDialogUpdateIncome}
+                        openUpdateExpence={openDialogUpdateExpence} dialogUpdateExpence={dialogUpdateExpence} closeUpdateExpence={closeDialogUpdateExpence}/>;
             case 'Plan':
 
                 return <Plan/>;
@@ -56,6 +78,9 @@ export default function Home(props) {
     return (
         <>
             <div id='Wrapper'>
+                <UpdateTransactionIncome dialogUpdateIncome={dialogUpdateIncome} idCashUpdate={idCashUpdate} icon={idIconCategoryUpdate} closeUpdateIncome={closeDialogUpdateIncome} />
+                <UpdateTransactionExpence dialogUpdateExpence={dialogUpdateExpence} idCashUpdate={idCashUpdate} icon={idIconCategoryUpdate}  closeUpdateExpence={closeDialogUpdateExpence} />
+                <CreateTransaction dialog={dialog} close={closeDialog} open={openDialog}/>
                 <Header dialog={dialog} close={closeDialog}/>
             </div>
             <div id='WrapperContent'>
@@ -68,7 +93,7 @@ export default function Home(props) {
 
     );
 
-}
+})
 
 
 
