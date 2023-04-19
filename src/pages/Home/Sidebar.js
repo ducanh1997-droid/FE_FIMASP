@@ -39,7 +39,7 @@ export default function Sidebar(){
                 </li>
                 <li onClick={isActiveSetting} style={{display:(active==='setting'?'block':'none')}}>
 
-                    <Link id="logout" className={activeSetting ==='logout'?"active-setting":""} to={`/logout`}>Đăng xuất</Link>
+                    <Link id="logout" className={activeSetting ==='logout'?"active-setting":""} to={`/home`}>Đăng xuất</Link>
                 </li>
 
                 {/*<li onClick="isActive()">*/}

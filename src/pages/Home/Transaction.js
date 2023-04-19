@@ -9,7 +9,7 @@ export default function Transaction(props) {
 
     useEffect(() =>{
         axios.get("http://localhost:8080/user1/cashes").then((response)=>{
-            setTransactions(response.data);
+            setTransactions(response.data.content);
         })
     },[props.close])
 
@@ -140,7 +140,7 @@ export default function Transaction(props) {
         if(window.confirm("OK")){
             axios.delete(`http://localhost:8080/user1/cashes/${id}`).then((response)=>{
                 axios.get("http://localhost:8080/user1/cashes").then((response)=>{
-                    setTransactions(response.data);
+                    setTransactions(response.data.content);
                 })
             })
         }

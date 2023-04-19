@@ -15,7 +15,7 @@ export default React.memo(function CreateTransaction(props){
     // });
     const wrapperRef = useRef(null);
     useEffect(() => {
-        axios.get("http://localhost:8080/wallets").then((res)=>{
+        axios.get("http://localhost:8080/user1/wallets").then((res)=>{
             setWallets(res.data)
         })
         axios.get("http://localhost:8080/categories/expences").then((res)=>{
@@ -183,19 +183,6 @@ return(
                                                         </div>
                                                     )
                                                 })}
-                                                {/*<div  className="block-category" id="block-fa-mug-saucer">*/}
-                                                {/*    <div className="icon-border" style={{borderRadius:activeCategory==="fa-mug-saucer"?"2px":"100px"}} id="fa-mug-saucer" onClick={categoryActive}>*/}
-                                                {/*        <i className="fa-light fa-mug-saucer"></i>*/}
-                                                {/*    </div>*/}
-                                                {/*    <p id="2">Cafe</p>*/}
-                                                {/*</div>*/}
-
-                                                {/*<div  className="block-category" id="block-fa-bus" >*/}
-                                                {/*    <div className="icon-border" id="fa-bus" style={{borderRadius:activeCategory==="fa-bus"?"2px":"100px"}} onClick={categoryActive}>*/}
-                                                {/*        <i className="fa-light fa-bus"></i>*/}
-                                                {/*    </div>*/}
-                                                {/*    <p id="2">Di chuyển</p>*/}
-                                                {/*</div>*/}
                                                 <br/>
                                                 <br/>
                                             </td>
@@ -301,24 +288,6 @@ return(
                                         <tr>
                                             <td id="category-income">
                                                 <label>Danh mục</label><br/><br/>
-                                                {/*<div className={activeCategory==="fa-dumbbell"&&"active-category"} className="block-category" id="block-fa-dumbbell" >*/}
-                                                {/*    <div className="icon-border" id="fa-dumbbell" style={{borderRadius:activeCategory==="fa-dumbbell"?"2px":"100px"}} onClick={category}>*/}
-                                                {/*        <i className="fa-light fa-dumbbell"></i>*/}
-                                                {/*    </div>*/}
-                                                {/*    <p id="1">Tập thể dục</p>*/}
-                                                {/*</div>*/}
-                                                {/*<div className={activeCategory==="fa-bus"&&"active-category"} className="block-category" id="block-fa-bus" >*/}
-                                                {/*    <div className="icon-border" id="fa-bus" style={{borderRadius:activeCategory==="fa-bus"?"2px":"100px"}} onClick={category}>*/}
-                                                {/*        <i className="fa-light fa-bus"></i>*/}
-                                                {/*    </div>*/}
-                                                {/*    <p id="2">Di chuyển</p>*/}
-                                                {/*</div>*/}
-                                                {/*<div className={activeCategory==="fa-mug-saucer"&&"active-category"} className="block-category" id="block-fa-mug-saucer">*/}
-                                                {/*    <div className="icon-border" style={{borderRadius:activeCategory==="fa-mug-saucer"?"2px":"100px"}} id="fa-mug-saucer" onClick={category}>*/}
-                                                {/*        <i className="fa-light fa-mug-saucer"></i>*/}
-                                                {/*    </div>*/}
-                                                {/*    <p id="2">Cafe</p>*/}
-                                                {/*</div>*/}
                                                 {categoriesIncome.map((item)=>{
                                                     return(
                                                         <div  className="block-category" id={"block-"+item.icon} >

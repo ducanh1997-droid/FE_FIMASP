@@ -16,7 +16,7 @@ export default React.memo(function UpdateTransactionIncome(props){
             setCash(response.data)
         })
 
-        axios.get("http://localhost:8080/wallets").then((res)=>{
+        axios.get("http://localhost:8080/user1/wallets").then((res)=>{
             setWallets(res.data)
         })
 
