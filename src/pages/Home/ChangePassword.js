@@ -2,7 +2,6 @@ import {useState} from "react";
 import toast, {Toaster} from 'react-hot-toast';
 import axios from "axios";
 import $ from 'jquery';
-import {number} from "yup";
 
 export default function ChangePassword() {
     const [pw, setPw] = useState("");
