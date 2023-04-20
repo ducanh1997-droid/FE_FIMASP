@@ -26,6 +26,14 @@ export default React.memo(function Home(props) {
     const [idIconCategoryUpdate,setIdIconCategoryUpdate] = useState("");
 
     const [createTransactionSuccess,setCreateTransactionSuccess] = useState(false);
+    const [updateTransactionSuccess,setUpdateTransactionSuccess] = useState(false);
+
+    function openUpdateTransactionSuccess() {
+        setUpdateTransactionSuccess(true);
+    }
+    function closeUpdateTransactionSuccess() {
+        setUpdateTransactionSuccess(false)
+    }
 
     function openCreateTransactionSuccess() {
         setCreateTransactionSuccess(true);
@@ -65,7 +73,7 @@ export default React.memo(function Home(props) {
 
             case 'Transaction':
 
-                return <Transaction createSuccess={createTransactionSuccess} closeCreate={closeCreateTransactionSuccess} dialog={dialog} close={closeDialog} open={openDialog}
+                return <Transaction updateSuccess={updateTransactionSuccess} closeUpdate={closeUpdateTransactionSuccess} createSuccess={createTransactionSuccess} closeCreate={closeCreateTransactionSuccess} dialog={dialog} close={closeDialog} open={openDialog}
                         openUpdateIncome={openDialogUpdateIncome} dialogUpdateIncome={dialogUpdateIncome} closeUpdateIncome={closeDialogUpdateIncome}
                         openUpdateExpence={openDialogUpdateExpence} dialogUpdateExpence={dialogUpdateExpence} closeUpdateExpence={closeDialogUpdateExpence}/>;
             case 'Plan':
@@ -88,8 +96,8 @@ export default React.memo(function Home(props) {
     return (
         <>
             <div id='Wrapper'>
-                <UpdateTransactionIncome dialogUpdateIncome={dialogUpdateIncome} idCashUpdate={idCashUpdate} icon={idIconCategoryUpdate} closeUpdateIncome={closeDialogUpdateIncome} />
-                <UpdateTransactionExpence dialogUpdateExpence={dialogUpdateExpence} idCashUpdate={idCashUpdate} icon={idIconCategoryUpdate}  closeUpdateExpence={closeDialogUpdateExpence} />
+                <UpdateTransactionIncome updateSuccess={openUpdateTransactionSuccess} dialogUpdateIncome={dialogUpdateIncome} idCashUpdate={idCashUpdate} icon={idIconCategoryUpdate} closeUpdateIncome={closeDialogUpdateIncome} />
+                <UpdateTransactionExpence updateSuccess={openUpdateTransactionSuccess} dialogUpdateExpence={dialogUpdateExpence} idCashUpdate={idCashUpdate} icon={idIconCategoryUpdate}  closeUpdateExpence={closeDialogUpdateExpence} />
                 <CreateTransaction createSuccess={openCreateTransactionSuccess} dialog={dialog} close={closeDialog} open={openDialog}/>
                 <Header dialog={dialog} close={closeDialog}/>
             </div>

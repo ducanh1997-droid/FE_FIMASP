@@ -9,7 +9,16 @@ export default function Transaction(props) {
     const [transactions,setTransactions] = useState([]);
 
     const token = localStorage.getItem("token");
+    const idUser = localStorage.getItem("id");
 
+    const notifyUpdate = () => {
+        toast.success("Cập nhật giao dịch thành công", {
+            position: "top-center", style: {
+                minWidth: '300px',
+                fontSize: "20px"
+            },
+        })
+    }
     const notify = () => {
         toast.success("Thêm giao dịch thành công", {
             position: "top-center", style: {
@@ -23,13 +32,17 @@ export default function Transaction(props) {
             notify();
             props.closeCreate();
         }
-        axios.get("http://localhost:8080/user1/cashes").then((response)=>{
+        if (props.updateSuccess) {
+            notifyUpdate();
+            props.closeUpdate();
+        }
+        axios.get(`http://localhost:8080/user${idUser}/cashes`).then((response)=>{
             setTransactions(response.data.content);
         })
-    },[props.close,props.createSuccess])
+    },[props.close,props.createSuccess,props.updateSuccess])
 
     function save(values) {
-        axios.get(`http://localhost:8080/user1/cashes/${values.dateStart}/${values.dateEnd}`).then((res)=>{
+        axios.get(`http://localhost:8080/user${idUser}/cashes/${values.dateStart}/${values.dateEnd}`).then((res)=>{
             setTransactions(res.data);
         })
     }
@@ -152,8 +165,8 @@ export default function Transaction(props) {
     )
     function deleteTransaction(id){
         if(window.confirm("OK")){
-            axios.delete(`http://localhost:8080/user1/cashes/${id}`,{headers: {"Authorization": `Bearer ${token}`}}).then((response)=>{
-                axios.get("http://localhost:8080/user1/cashes").then((response)=>{
+            axios.delete(`http://localhost:8080/user${idUser}/cashes/${id}`,{headers: {"Authorization": `Bearer ${token}`}}).then((response)=>{
+                axios.get(`http://localhost:8080/user${idUser}/cashes`).then((response)=>{
                     setTransactions(response.data.content);
                 })
             })

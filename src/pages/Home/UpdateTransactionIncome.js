@@ -11,14 +11,15 @@ export default React.memo(function UpdateTransactionIncome(props){
     const [categorygetId,setCategoryGetId] = useState("1")
     const wrapperRef = useRef(null);
 
+    const idUser = localStorage.getItem("id");
     const token = localStorage.getItem("token");
     useEffect(() => {
         setActiveCategory(props.icon);
-        axios.get(`http://localhost:8080/user1/cashes/detail/${props.idCashUpdate}`).then((response) => {
+        axios.get(`http://localhost:8080/user${idUser}/cashes/detail/${props.idCashUpdate}`).then((response) => {
             setCash(response.data)
         })
 
-        axios.get("http://localhost:8080/user1/wallets").then((res)=>{
+        axios.get(`http://localhost:8080/user${idUser}/wallets`).then((res)=>{
             setWallets(res.data)
         })
 
@@ -66,7 +67,7 @@ export default React.memo(function UpdateTransactionIncome(props){
                                 "id":cash.wallet?.id
                             },
                             account:{
-                                id:'1'
+                                id:idUser
                             },
                             category:cash.category,
                         }}
@@ -172,7 +173,8 @@ export default React.memo(function UpdateTransactionIncome(props){
     function save(values) {
         values.id = props.idCashUpdate;
         values.category.id = categorygetId;
-        axios.put(`http://localhost:8080/user1/cashes/${props.idCashUpdate}`,values,{headers: {"Authorization": `Bearer ${token}`}}).then(()=>{
+        axios.put(`http://localhost:8080/user${idUser}/cashes/${props.idCashUpdate}`,values,{headers: {"Authorization": `Bearer ${token}`}}).then(()=>{
+            props.updateSuccess()
             props.closeUpdateIncome()
         })
     }

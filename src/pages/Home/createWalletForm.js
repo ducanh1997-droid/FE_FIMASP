@@ -6,6 +6,7 @@ import("./CreateWalletForm.css")
 export default function CreateWalletForm({setShow,setIsUpdate}){
     const [activeIcon,setActiveIcon] = useState("")
     const [activeColor,setActiveColor] = useState("")
+    const idUser = localStorage.getItem("id")
     function setIcon(e){
         setActiveIcon(e.currentTarget.id);
     }
@@ -21,7 +22,7 @@ export default function CreateWalletForm({setShow,setIsUpdate}){
             backgroundColor: activeColor,
             limitMoney: values.limitMoney
         }
-        axios.post("http://localhost:8080/user1/wallets",wallet).then(()=>{
+        axios.post(`http://localhost:8080/user${idUser}/wallets`,wallet).then(()=>{
             setIsUpdate(true)
             setShow(false)
         })

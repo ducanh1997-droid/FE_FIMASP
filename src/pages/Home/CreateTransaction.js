@@ -13,11 +13,12 @@ export default React.memo(function CreateTransaction(props){
     const token = localStorage.getItem("token");
     const wrapperRef = useRef(null);
 
+    const idUser = localStorage.getItem("id");
     useEffect(() => {
-        axios.get("http://localhost:8080/user1/wallets").then((res)=>{
+        axios.get(`http://localhost:8080/user${idUser}/wallets`).then((res)=>{
             setWallets(res.data)
         })
-        axios.get("http://localhost:8080/categories/expences").then((res)=>{
+        axios.get(`http://localhost:8080/categories/expences`).then((res)=>{
             setCategories(res.data)
         })
         axios.get("http://localhost:8080/categories/income").then((res)=>{
@@ -88,7 +89,7 @@ return(
                                 },
 
                                 account:{
-                                    id:'1'
+                                    id:idUser
                                 },
                                 category:{
                                     id:'1'
@@ -209,7 +210,7 @@ return(
                                 },
 
                                 account:{
-                                    id:'1'
+                                    id:idUser
                                 },
                                 category:{
                                     id:'1'
@@ -316,12 +317,11 @@ return(
                         </div>
                     </div>
     </>
-
 )
     function save(values) {
         values.category.id = categorygetId;
         console.log(values);
-        axios.post('http://localhost:8080/user1/cashes',values,{headers: {"Authorization": `Bearer ${token}`}}).then(()=>{
+        axios.post(`http://localhost:8080/user${idUser}/cashes`,values,{headers: {"Authorization": `Bearer ${token}`}}).then(()=>{
             props.createSuccess()
             props.close()
         })

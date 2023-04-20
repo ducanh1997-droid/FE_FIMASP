@@ -11,8 +11,10 @@ export default function Wallet(){
     const [isUpdate,setIsUpdate]=useState(true)
     const [click,setClick]=useState(false)
     const [showCreateForm,setShow]=useState(false)
+
+    const idUser = localStorage.getItem("id");
     if(isUpdate){
-        axios.get("http://localhost:8080/user1/wallets").then((res)=>{
+        axios.get(`http://localhost:8080/user${idUser}/wallets`).then((res)=>{
             setWallets(res.data)
             setIsUpdate(false)
             setWalletChoice(res.data[0])
