@@ -65,7 +65,7 @@ export default React.memo(function UpdateTransactionExpence(props){
         <>
             <div id="popup" ref={wrapperRef} style={{display:props.dialogUpdateExpence?"block":"none"}}>
                 <div className="tab-header">
-                    <div className={"active"} id="expense" style={{width:"100%"}}>
+                    <div className={"active"} id="expense" style={{width:"100%",fontSize:"20px"}}>
                         Chi phí
                     </div>
                 </div>

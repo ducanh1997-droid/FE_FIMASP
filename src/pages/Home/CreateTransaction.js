@@ -238,6 +238,7 @@ return(
                                                         type="text"
                                                         id="money"
                                                         name={"money"}
+
                                                     />
                                                     VND &ensp;&ensp;
                                                     <span style={{color:"red"}}>
@@ -320,7 +321,6 @@ return(
 )
     function save(values) {
         values.category.id = categorygetId;
-        console.log(values);
         axios.post(`http://localhost:8080/user${idUser}/cashes`,values,{headers: {"Authorization": `Bearer ${token}`}}).then(()=>{
             props.createSuccess()
             props.close()

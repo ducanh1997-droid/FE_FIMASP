@@ -94,7 +94,7 @@ body{
     float: right;
     width: 84%;
     min-height: 800px;
-    background: #ecf0f5;
+    background: #f5f6fa;
 }
 #sidebar{
     border-radius: 2px;
@@ -938,7 +938,7 @@ hr#hr-search,hr#hr-search-account,hr#hr-search-plan{
 #input-table{
     margin-top: 20px;
 }
-#input-table tr,td{
+#input-table tr,#input-table td{
     text-align: left;
     font-weight: bold;
     width:100%;
@@ -1111,10 +1111,10 @@ a.btn-delete:hover{
     width:42%;
     min-height:550px;
     background-color: #fff;
-    border-radius: 10px;
+    border-radius: 5px;
     position: absolute;
-    border:3px solid #acb0b1;
-    text-align: center;
+    border:2px solid #acb0b1;
+    /*text-align: center;*/
     padding-bottom: 20px;
 }
 /*#popup input{*/
@@ -1204,6 +1204,10 @@ a.btn-delete:hover{
     margin-top: 0px;
 }
 
+.tab-body td,.tab-body tr{
+    min-height: 70px;
+
+}
 
 
 #money,#money3,#money2{
@@ -1214,6 +1218,7 @@ a.btn-delete:hover{
     width: 100px;
     margin-top: 20px;
     text-align: center;
+    margin-bottom: 20px;
 }
 #action{
     border:none;
@@ -1223,6 +1228,7 @@ a.btn-delete:hover{
     width: 100px;
     margin-top: 5px;
     text-align: center;
+    margin-bottom: 20px;
 }
 #action1,#action3,#action2{
     border:none;

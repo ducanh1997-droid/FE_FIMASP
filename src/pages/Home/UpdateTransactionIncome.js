@@ -54,7 +54,7 @@ export default React.memo(function UpdateTransactionIncome(props){
         <>
             <div id="popup" ref={wrapperRef} style={{display:props.dialogUpdateIncome?"block":"none"}}>
                 <div className="tab-header">
-                    <div className={"active"} id="income" style={{width:"100%"}}>
+                    <div className={"active"} id="income" style={{width:"100%",fontSize:"20px"}}>
                         Thu nhập
                     </div>
                 </div>
