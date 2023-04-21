@@ -7,6 +7,7 @@ import OtherTooltip from "./OtherTooltip";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import $ from 'jquery';
+import Swal from "sweetalert2";
 
 
 export default function LoginForm({setShown}) {
@@ -165,7 +166,7 @@ export default function LoginForm({setShown}) {
                                 <ErrorMessage name={"email1"}></ErrorMessage>
                                 <Field type="password" id="password1" name="password1" placeholder="Password"/>
                                 <ErrorMessage name={"password1"}></ErrorMessage>
-                                <a href="#">Forgot your password?</a>
+                                <a href="#" onClick={backPassword}>Forgot your password?</a>
                                 <button type={"submit"}>Sign In</button>
                             </Form>
                         </Formik>
@@ -203,7 +204,10 @@ export default function LoginForm({setShown}) {
         let pw = $("#password").val();
         let pw1 = $("#passwordConfirm").val();
         if (pw !== pw1) {
-            window.alert("Password does not match!")
+            Swal.fire({
+                icon: 'error',
+                text: 'Password does not match!',
+            })
             return
         }
 
@@ -217,12 +221,25 @@ export default function LoginForm({setShown}) {
 
         console.log(account)
 
-        axios.post('http://localhost:8080/user/register', account).then(() => {
-            window.alert("Register success!")
-            window.alert("Email checkout please!")
+        axios.post('http://localhost:8080/user/register', account).then((resp) => {
+            console.log(resp)
+            if(resp.data){
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Register success!\nEmail checkout please!',
+                })
+            }else {
+                Swal.fire({
+                    icon: 'error',
+                    text: 'Account was existed!',
+                })
+            }
 
         }).catch(err =>
-            window.alert("Fail")
+            Swal.fire({
+                icon: 'error',
+                text: 'Account does not created!',
+            })
         )
 
     }
@@ -237,7 +254,10 @@ export default function LoginForm({setShown}) {
 
         axios.post(`http://localhost:8080/user/login`, account).then((resp) => {
             if (resp.data === "") {
-                window.alert("Account does not exist!")
+                Swal.fire({
+                    icon: 'error',
+                    text: 'Account does not exist!',
+                })
                 return;
             }
             console.log(resp)
@@ -246,9 +266,49 @@ export default function LoginForm({setShown}) {
             localStorage.setItem('token', resp.data.token)
             localStorage.setItem('username', resp.data.username)
             localStorage.setItem('avatar', resp.data.avatar)
-            window.alert("Login success!")
+            Swal.fire('Login success!', '', 'success')
             navigate('/dashboard')
-        }).catch(err => window.alert("Wrong password!"));
+        }).catch(err => Swal.fire({
+            icon: 'error',
+            text: 'Wrong the password!',
+        }));
+    }
+
+
+    function backPassword() {
+        Swal.fire({
+            title: 'Enter your email',
+            input: 'text',
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Send',
+            showLoaderOnConfirm: true,
+            preConfirm: (email) => {
+                console.log(email)
+
+                return axios.get(`http://localhost:8080/user/back-password/${email}`)
+                    .then(response => {
+                        console.log(response)
+                        if(response.data){
+                        Swal.fire(
+                            `please check: '${email}' to get password!`
+                        )}else {
+                            Swal.showValidationMessage(
+                                `Email: '${email}' does not exist!`
+                            )
+                        }
+
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
+
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then(r => {
+        })
     }
 
 }

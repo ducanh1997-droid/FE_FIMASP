@@ -17,6 +17,7 @@ import ChangePassword from "./ChangePassword";
 import UpdateTransaction from "./UpdateTransactionIncome";
 import UpdateTransactionIncome from "./UpdateTransactionIncome";
 import UpdateTransactionExpence from "./UpdateTransactionExpence";
+import Swal from "sweetalert2";
 export default React.memo(function Home(props) {
     let content = props.content;
     const [dialog,setDialog] = useState(false);
@@ -92,6 +93,7 @@ export default React.memo(function Home(props) {
         </>
 
     );
+
 
 })
 
