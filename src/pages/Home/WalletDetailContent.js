@@ -46,7 +46,6 @@ export default function WalletDetailContent({wallet,setIsUpdate,setWalletChoice,
         }
     }
     return wallet ===null?(<></>): (<Formik
-
             initialValues={{
                 id: wallet.id,
                 name: wallet.name,
@@ -58,7 +57,10 @@ export default function WalletDetailContent({wallet,setIsUpdate,setWalletChoice,
         >
         {()=>(
             <Form className={"walletDetail-content"}>
-            <table className={"walletDetail-content"}>
+                <div className={"choice-box-icon"} onClick={()=>{}}>
+                    <i className={"fa fa-ellipsis-v"} style={{fontSize: "25px"}}></i>
+                </div>
+            <table className={"walletDetail-content-table"}>
                 <thead></thead>
                 <tbody>
                 <tr>

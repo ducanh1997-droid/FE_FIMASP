@@ -1,3 +1,5 @@
+import SimpleSlider from "./demo";
+
 export default function Dashboard(){
     return(
         <div id="content-dashboard">
@@ -34,18 +36,6 @@ export default function Dashboard(){
                 <div id="current-account">
                     <h6>Tài khoản</h6>
                     <div id="card-bank">
-                        <div id="card-left">
-                            <p id="name-account">John Demin</p>
-                            <p id="account-money">1.000.000 VND</p>
-                            <p id="account-number">1234 **** **** 5671</p>
-                        </div>
-                        <div id="card-right">
-                            <i className="fa-regular fa-credit-card-blank"/>
-                            <div id="exp-block">
-                                <p id="exp-title">Exp</p>
-                                <p id="exp">09/24</p>
-                            </div>
-                        </div>
                     </div>
                     <div id="add-card">
                         <p>+ Add account</p>

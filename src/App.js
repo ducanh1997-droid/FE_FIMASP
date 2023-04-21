@@ -4,6 +4,8 @@ import {createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterPr
 import HomePage from "./pages/Home/HomePage";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
+import SimpleSlider from "./pages/Home/demo";
+import AsNavFor from "./pages/Home/SlideNavFor";
 
 function App() {
     const routes=createBrowserRouter(createRoutesFromElements(
@@ -23,6 +25,8 @@ function App() {
   return (
     <div className="App">
         <RouterProvider router={routes}></RouterProvider>
+        {/*<SimpleSlider></SimpleSlider>*/}
+        {/*<AsNavFor></AsNavFor>*/}
     </div>
   );
 }
