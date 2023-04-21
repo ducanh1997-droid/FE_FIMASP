@@ -2,11 +2,13 @@
 import {Field, Form, Formik} from "formik";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import ChoiceModalBox from "./ChoiceModalBox";
 import("./WalletDetailContent.css");
 export default function WalletDetailContent({wallet,setIsUpdate,setWalletChoice,click,setClick}){
     const [editActive,setEditActive]=useState(false)
     const [activeIcon,setActiveIcon] = useState("")
     const [activeColor,setActiveColor] = useState("")
+    const [shown,setShown]=useState(false)
     useEffect(()=>{
         if(click){
         setActiveIcon(wallet.icon)
@@ -57,8 +59,8 @@ export default function WalletDetailContent({wallet,setIsUpdate,setWalletChoice,
         >
         {()=>(
             <Form className={"walletDetail-content"}>
-                <div className={"choice-box-icon"} onClick={()=>{}}>
-                    <i className={"fa fa-ellipsis-v"} style={{fontSize: "25px"}}></i>
+                <div className={"choice-box-icon"} onClick={()=>{setShown(!shown)}}>
+                    <i className={"fa fa-ellipsis-v"} style={{fontSize: "25px",left: "0",top: "0"}}></i>
                 </div>
             <table className={"walletDetail-content-table"}>
                 <thead></thead>
@@ -124,6 +126,9 @@ export default function WalletDetailContent({wallet,setIsUpdate,setWalletChoice,
                 </tr>
                 </tbody>
             </table>
+                <div>
+                    {shown&&<ChoiceModalBox></ChoiceModalBox>}
+                </div>
             </Form>)}
         </Formik>
         )

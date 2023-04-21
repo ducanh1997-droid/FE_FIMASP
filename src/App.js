@@ -6,6 +6,7 @@ import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import SimpleSlider from "./pages/Home/demo";
 import AsNavFor from "./pages/Home/SlideNavFor";
+import ChoiceModalBox from "./pages/Home/ChoiceModalBox";
 
 function App() {
     const routes=createBrowserRouter(createRoutesFromElements(
@@ -27,6 +28,7 @@ function App() {
         <RouterProvider router={routes}></RouterProvider>
         {/*<SimpleSlider></SimpleSlider>*/}
         {/*<AsNavFor></AsNavFor>*/}
+        {/*<ChoiceModalBox></ChoiceModalBox>*/}
     </div>
   );
 }
