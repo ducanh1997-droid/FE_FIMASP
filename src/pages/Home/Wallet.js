@@ -1,10 +1,8 @@
 import React, {useState} from "react";
 import axios from "axios";
-import AWalletElement from "./AWalletElement";
-import WalletDetailContent from "./WalletDetailContent";
 import CreateWalletForm from "./createWalletForm";
 import SimpleSlider from "./demo";
-import DashBoardWalletElement from "./DashBoardWallet";
+
 
 import("./Wallet.css")
 export default function Wallet(){
@@ -15,6 +13,7 @@ export default function Wallet(){
     const [isUpdate,setIsUpdate]=useState(true)
     const [click,setClick]=useState(false)
     const [showCreateForm,setShow]=useState(false)
+    const [showUpdateForm,setUpdate]=useState(false)
     if(isUpdate){
         axios.get("http://localhost:3000/wallets").then((res)=>{
             setWallets(res.data)
@@ -47,7 +46,6 @@ export default function Wallet(){
                 <thead>
                 <tr>
                     <td>Index</td>
-                    {/*<td>Wallet image</td>*/}
                     <td>Name</td>
                     <td>Total money</td>
                     <td>Limit money</td>
@@ -60,7 +58,6 @@ export default function Wallet(){
                 return(
                     <tr key={wallet.id} id={""+index} onClick={(e)=>{nav1.slickGoTo(e.currentTarget.id)}}>
                         <td>{++index}</td>
-                        {/*<td><div className={"table-wallet-container"}></div></td>*/}
                         <td>{wallet.name}</td>
                         <td>{wallet.totalMoney}</td>
                         <td>{wallet.limitMoney}</td>
@@ -72,13 +69,14 @@ export default function Wallet(){
                 <tfoot></tfoot>
             </table>
             </div>
-                  <SimpleSlider wallets={wallets} nav1={nav1} setNav1={setNav1}></SimpleSlider>
+                  <SimpleSlider wallets={wallets} nav1={nav1} setNav1={setNav1} setUpdate={setUpdate} setWalletChoice={setWalletChoice} setIsUpdate={setIsUpdate}></SimpleSlider>
             {/*<div className={"wallet-statistics"}></div>*/}
             {/*<div className={"wallet-chart"}>*/}
             {/*    <WalletDetailContent wallet={walletChoice} click={click} setClick={setClick} setWalletChoice={setWalletChoice} setIsUpdate={setIsUpdate}></WalletDetailContent>*/}
             {/*</div>*/}
         </div>
-            {showCreateForm&&<CreateWalletForm setIsUpdate={setIsUpdate} setShow={setShow}></CreateWalletForm>}
+            {showCreateForm&&!showUpdateForm&&<CreateWalletForm setIsUpdate={setIsUpdate} setShow={setShow}></CreateWalletForm>}
+            {!showCreateForm&&showUpdateForm&&<CreateWalletForm setIsUpdate={setIsUpdate} wallet={walletChoice} setWalletChoice={setWalletChoice} setUpdate={setUpdate}></CreateWalletForm>}
         </>
     )
 }

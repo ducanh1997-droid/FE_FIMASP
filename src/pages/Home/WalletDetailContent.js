@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import ChoiceModalBox from "./ChoiceModalBox";
 import("./WalletDetailContent.css");
-export default function WalletDetailContent({wallet,setIsUpdate,setWalletChoice,click,setClick}){
+export default function WalletDetailContent({wallet,setIsUpdate,setWalletChoice,click,setClick,setUpdate}){
     const [editActive,setEditActive]=useState(false)
     const [activeIcon,setActiveIcon] = useState("")
     const [activeColor,setActiveColor] = useState("")
@@ -121,13 +121,12 @@ export default function WalletDetailContent({wallet,setIsUpdate,setWalletChoice,
                                     setClick(false)
                                 }}
                         >{!editActive?"Edit":"Back"}</button>
-                        {!editActive &&<button type={"button"} onClick={deleteWallet}>Delete</button>}
                     </td>
                 </tr>
                 </tbody>
             </table>
                 <div>
-                    {shown&&<ChoiceModalBox></ChoiceModalBox>}
+                    {shown&&<ChoiceModalBox wallet={wallet} setWalletChoice={setWalletChoice} setUpdate={setUpdate} setIsUpdate={setIsUpdate}></ChoiceModalBox>}
                 </div>
             </Form>)}
         </Formik>

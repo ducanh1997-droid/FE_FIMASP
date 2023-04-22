@@ -6,7 +6,7 @@ import "./slick/slick-theme.css";
 import AWalletElement from "./AWalletElement";
 import DashBoardWalletElement from "./DashBoardWallet";
 import WalletDetailContent from "./WalletDetailContent";
-export default function  SimpleSlider({wallets,nav1,setNav1})  {
+export default function  SimpleSlider({wallets,nav1,setNav1,setIsUpdate,setWalletChoice,setUpdate})  {
     // let [nav1,setNav1]=useState();
     let [nav2,setNav2]=useState();
         const settings = {
@@ -30,7 +30,7 @@ export default function  SimpleSlider({wallets,nav1,setNav1})  {
             <div className={"wallet-chart"}>
                 <Slider {...settings} asNavFor={nav1} ref={slider => (setNav2(slider))}>
                     {wallets?.map(wallet=>{
-                        return   <WalletDetailContent wallet={wallet} ></WalletDetailContent>
+                        return   <WalletDetailContent wallet={wallet} setIsUpdate={setIsUpdate} setUpdate={setUpdate} setWalletChoice={setWalletChoice}></WalletDetailContent>
                     })}
                 </Slider>
             </div>

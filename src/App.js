@@ -7,6 +7,7 @@ import Login from "./pages/Login/Login";
 import SimpleSlider from "./pages/Home/demo";
 import AsNavFor from "./pages/Home/SlideNavFor";
 import ChoiceModalBox from "./pages/Home/ChoiceModalBox";
+import CreateWalletForm from "./pages/Home/createWalletForm";
 
 function App() {
     const routes=createBrowserRouter(createRoutesFromElements(
@@ -29,6 +30,7 @@ function App() {
         {/*<SimpleSlider></SimpleSlider>*/}
         {/*<AsNavFor></AsNavFor>*/}
         {/*<ChoiceModalBox></ChoiceModalBox>*/}
+        {/*<CreateWalletForm></CreateWalletForm>*/}
     </div>
   );
 }

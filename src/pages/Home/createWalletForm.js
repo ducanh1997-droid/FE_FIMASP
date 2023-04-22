@@ -3,9 +3,9 @@ import {useState} from "react";
 import axios from "axios";
 import("./CreateWalletForm.css")
 
-export default function CreateWalletForm({setShow,setIsUpdate}){
-    const [activeIcon,setActiveIcon] = useState("")
-    const [activeColor,setActiveColor] = useState("")
+export default function CreateWalletForm({setShow,setIsUpdate,wallet,setWalletChoice,setUpdate}){
+    const [activeIcon,setActiveIcon] = useState(wallet===undefined?"":wallet.icon)
+    const [activeColor,setActiveColor] = useState(wallet===undefined?"":wallet.backgroundColor)
     function setIcon(e){
         setActiveIcon(e.currentTarget.id);
     }
@@ -26,18 +26,43 @@ export default function CreateWalletForm({setShow,setIsUpdate}){
             setShow(false)
         })
     }
+    function update(values){
+        let wallet={
+            id: values.id,
+            name: values.name,
+            totalMoney: values.totalMoney,
+            icon: activeIcon,
+            backgroundColor: activeColor,
+            limitMoney: values.limitMoney
+        }
+        axios.put(`http://localhost:3000/wallets/${wallet.id}`,wallet).then((res)=>{
+                setIsUpdate(true)
+                setWalletChoice(res.data)
+                setUpdate(false)
+            }
+        )
+    }
     return (
         <div className={"form-create-wallet"}>
             <Formik
-                initialValues={{
+                initialValues={wallet===undefined?{
                     id: "",
                     name: "",
                     totalMoney: "",
                     limitMoney: ""
+                }:{
+                    id: wallet.id,
+                    name: wallet.name,
+                    totalMoney: wallet.totalMoney,
+                    limitMoney: wallet.limitMoney
                 }}
                 onSubmit={(values) => {
                     if(activeIcon!==""&&activeColor!==""){
-                        save(values)
+                        if(wallet===undefined){
+                            save(values)
+                        }else{
+                            update(values)
+                        }
                     }
                 }}
             >
@@ -47,14 +72,20 @@ export default function CreateWalletForm({setShow,setIsUpdate}){
                         <tbody>
                         <tr>
                             <td><p>Name:</p></td>
+                        </tr>
+                        <tr>
                             <td><Field name={"name"}></Field></td>
                         </tr>
                         <tr>
                             <td><p>Total Money:</p></td>
+                        </tr>
+                        <tr>
                             <td><Field name={"totalMoney"}></Field></td>
                         </tr>
                         <tr>
                             <td><p>Icon:</p></td>
+                        </tr>
+                        <tr>
                             <td>
                                 <div className="block-wallet" id="block-fa-dumbbell" >
                                     <div className="icon-wallet" id="fas fa-credit-card" style={{borderRadius:activeIcon==="fas fa-credit-card"?"2px":"100px"}} onClick={setIcon}>
@@ -78,6 +109,8 @@ export default function CreateWalletForm({setShow,setIsUpdate}){
                         </tr>
                         <tr>
                             <td><p>Background:</p></td>
+                        </tr>
+                        <tr>
                             <td>
                                 <div className={"color-sample"} style={{backgroundImage: "linear-gradient(to right bottom, green, black, blue)",opacity:activeColor==="linear-gradient(to right bottom, green, black, blue)"?"1":"0.3"}} onClick={setColor}></div>
                                 <div className={"color-sample"} style={{backgroundImage: "linear-gradient(to right, red, yellow)",opacity:activeColor==="linear-gradient(to right, red, yellow)"?"1":"0.3"}} onClick={setColor}></div>
@@ -86,20 +119,24 @@ export default function CreateWalletForm({setShow,setIsUpdate}){
                         </tr>
                         <tr>
                             <td><p>Limit:</p></td>
+                        </tr>
+                        <tr>
                             <td><Field name={"limitMoney"}></Field></td>
                         </tr>
                         <tr>
                             <td colSpan={2}>
-                                <button type={"submit"}>Confirm</button>
+                                <button type={"submit"} style={{backgroundColor:"#78dd74"}}>Confirm</button>
                                 <button type="button"
-                                        onClick={()=>{setShow(false)}}
+                                        style={{float:"right",backgroundColor:"#f44336cc"}}
+                                        onClick={()=>{
+                                            wallet===undefined?setShow(false):setUpdate(false)}}
                                 >Close</button>
                             </td>
                         </tr>
                         </tbody>
                     </table>
-                    <div className={"sample-wallet-context"}>
-                        <p>Sample wallet</p>
+                    {/*<div className={"sample-wallet-context"}>*/}
+                        {/*<p>Sample wallet</p>*/}
                         <div className={"wallet"} style={{backgroundImage: activeColor}}>
                             <p className={"logoName"}>Fimasp</p>
                             <i className={activeIcon}></i>
@@ -115,7 +152,7 @@ export default function CreateWalletForm({setShow,setIsUpdate}){
                                 <p className={"walletName"}>{values?.limitMoney}</p>
                             </div>
                         </div>
-                    </div>
+                    {/*</div>*/}
                 </Form>
             }
             </Formik>

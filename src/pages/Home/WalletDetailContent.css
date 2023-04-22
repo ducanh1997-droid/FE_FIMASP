@@ -2,7 +2,7 @@
     position: relative;
     background-color: #f2f2f2;
     width: 100%;
-    height: 300px!important;
+    height: 363px!important;
     /*display: flex;*/
     /*justify-content: center;*/
     border-radius: 10px;
@@ -106,7 +106,7 @@
 }
 .choice-modal-box ul{
     list-style-type: none;
-    line-height: 3.5;
+    line-height: 2.5;
     box-sizing: border-box;
     position: relative;
     width: 100%;
@@ -117,7 +117,7 @@
 .choice-modal-box ul li{
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: stretch;
     padding: 0px 25px;
 }
 .choice-modal-box ul li:hover{
@@ -128,5 +128,5 @@
 .choice-modal-box ul li i{
     padding-right: 15px;
     left: 0;
-    top:0;
+    top: 15px;
 }
