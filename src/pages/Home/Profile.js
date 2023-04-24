@@ -227,7 +227,10 @@ export default function Profile() {
             .then((resp) => {
                 console.log(resp)
                 notify();
-                setUser(...resp.data);
+                setUser(resp.data);
+                localStorage.avatar = user.avatar;
+                localStorage.getItem('avatar');
+                console.log(localStorage.getItem('avatar'));
             }).catch((err) => {
             console.log(err)
         })
