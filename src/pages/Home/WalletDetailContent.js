@@ -115,12 +115,12 @@ export default function WalletDetailContent({wallet,setIsUpdate,setWalletChoice,
                 <tr>
                     <td colSpan={2}>
                         {editActive &&<button type={"submit"}>Confirm</button>}
-                        <button type={!editActive?"button":"reset"}
-                                onClick={()=>{
-                                    setEditActive(!editActive)
-                                    setClick(false)
-                                }}
-                        >{!editActive?"Edit":"Back"}</button>
+                        {/*<button type={!editActive?"button":"reset"}*/}
+                        {/*        onClick={()=>{*/}
+                        {/*            setEditActive(!editActive)*/}
+                        {/*            setClick(false)*/}
+                        {/*        }}*/}
+                        {/*>{!editActive?"Edit":"Back"}</button>*/}
                     </td>
                 </tr>
                 </tbody>
