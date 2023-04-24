@@ -32,6 +32,7 @@ export default function Profile() {
     useEffect(() => {
         axios.get(`http://localhost:8080/user/${idAcc}`).then((response) => {
             setUser(response.data);
+
             setImage(response.data.avatar)
         })
     }, [idAcc])
@@ -42,12 +43,9 @@ export default function Profile() {
             .max(11, "Số điện thoại không đúng định dạng!"),
         birthday: Yup.string().required("Không được để trống!").matches(/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/, {message: "Chưa đúng định dạng"})
     })
-
-
     const handleClick = () => {
         refInput.current.click();
     }
-
     if (localStorage.getItem('id') === '' || localStorage.getItem('id') === null) {
         return (
             <>
@@ -76,12 +74,8 @@ export default function Profile() {
                 >
                     {({errors, touched}) => (
                         <Form>
-
                             <div id="content-profile">
-
                                     <Toaster/>
-
-
                                 <div id='general-information'>
 
                                     <h2>Thông tin chung</h2>

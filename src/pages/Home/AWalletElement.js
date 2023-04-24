@@ -1,7 +1,7 @@
 import("./AWalletElement.css")
 export default function AWalletElement({wallet,setWalletChoice,setClick}){
     return(
-        <div className={"wallet-block"} onClick={()=>{
+        <div className={"wallet-block wallet-hover"} onClick={()=>{
             setWalletChoice(wallet)
             setClick(true)
         }}>

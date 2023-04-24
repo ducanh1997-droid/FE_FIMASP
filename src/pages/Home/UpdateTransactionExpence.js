@@ -35,7 +35,7 @@ export default React.memo(function UpdateTransactionExpence(props){
             setCash(response.data)
         })
         axios.get(`http://localhost:8080/user${idUser}/wallets`).then((res)=>{
-            setWallets(res.data)
+            setWallets(res.data.content)
         })
         axios.get(`http://localhost:8080/user${idUser}/categories/default/ex`).then((res)=>{
             setCategories(res.data)

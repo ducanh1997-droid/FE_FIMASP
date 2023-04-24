@@ -1,36 +1,39 @@
 .wallet-content-account{
-    background-color: #e3dbdbeb !important;
+    background-color: #f5f6fa !important;
     width: 100%;
-    height: 100%;
+     min-height: 1593px;
     position: absolute;
+    padding: 32px 22px;
+    box-sizing: border-box;
 }
-.wallet-container{
+
+.wallet-container {
     display: block;
-    /*flex-direction: column;*/
-    /*justify-content: flex-start;*/
-    /*align-items: center;*/
-    /*flex-wrap: nowrap;*/
     position: absolute;
-    height: 75%;
-    width: 32%;
+    height: 43%;
+    width: 65%;
     background-color: #ffffff;
     border-radius: 10px;
-    margin: 10px;
+    margin: -18px;
     padding: 10px;
     overflow-x: hidden;
     overflow-y: auto;
     box-sizing: border-box;
+    top: 8%;
 }
-.wallet-detail{
-    display: flex;
-    flex-direction: column;
+.wallet-container h1{
+    position: relative;
+    text-align: center;
+    top: 35px;
+}
+.wallet-detail {
     align-items: center;
     position: absolute;
-    width: 32%;
-    height: 28%;
+    width: 25%;
+    height: 16%;
     background-color: #ffffff;
     border-radius: 10px;
-    left: 33%;
+    left: 69%;
     padding: 10px;
     margin: 10px;
     box-sizing: border-box;
@@ -47,33 +50,124 @@
     box-sizing: border-box;
     top: 30%;
 }
-.wallet-chart{
+.wallet-chart {
     position: absolute;
     width: 32%;
-    height: 28%;
+    height: 26%;
     background-color: #ffffff;
     border-radius: 10px;
     left: 66%;
     padding: 10px;
     margin: 10px;
     box-sizing: border-box;
+    top: 23%;
 }
-.icon-border-wallet{
-    display: inline-block;
-    position: absolute;
-    width: 32px;
-    height: 31px;
-    border-radius: 25px;
-    background: #ffffff;
-    z-index: 1;
-    left: 14%;
-    top: 0%;
+.wallet-head{
+    padding-bottom: 28px;
+}
+.wallet-head-between{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     box-sizing: border-box;
 }
-.icon-border-wallet i{
-    left: 6px;
+.icon-border-wallet {
+    display: flex;
+    width: 145px;
+    height: 41px;
+    padding-left: 6px;
+    padding-right: 6px;
+    border-radius: 19px;
+    background: #6576ff;
+    box-sizing: border-box;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.icon-border-wallet .wallet-head-between{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+.icon-border-wallet i {
+    font-size: 20px;
+    color: white;
+    display: block;
+    position: static;
+    box-sizing: border-box;
+    line-height: 38px;
+}
+.icon-border-wallet span{
+    line-height: 38px;
+    margin-left: 7px;
+    padding-left: 10px;
+    display: block;
+    box-sizing: border-box;
+    color: white;
+}
+.wallet-list-table {
+    border: 1px solid #dbdfea;
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    text-align: center;
+    top: 85px;
+    position: relative;
+}
+.wallet-list-table tr,td{
+    width: auto;
+    vertical-align: middle;
+    text-align: center;
+}
+.wallet-list-table thead{
+    background-color: #ecebea;
+}
+.wallet-list-table  tr {
+    border-bottom: 1px solid #ddd;
+}
+/*tr:nth-child(even) {background-color: #f2f2f2;}*/
+.wallet-list-table tbody tr:hover{
+    background-color: #f2f2f2;
+    cursor: pointer;
+}
+.table-wallet-container{
+    position: relative;
+height: 30%;
+}
+.wallet-list-table thead,.wallet-list-table tbody,.wallet-list-table tfoot,.wallet-list-table tr,.wallet-list-table td,.wallet-list-table th {
+    border-color: inherit;
+    border-style: solid;
+}
+.wallet-transaction-list {
+    display: block;
     position: absolute;
-    font-size: 25px;
-    color: black;
-    top: 3px;
+    height: 27%;
+    width: 65%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    margin: -18px;
+    padding: 25px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    box-sizing: border-box;
+    top: 54%;
+}
+.transaction-list-table{
+    border: 1px solid #dbdfea;
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+.transaction-list-table td{
+    height: 40px;
+}
+.transaction-list-table tr {
+    border-bottom: 1px solid #ddd;
+}
+.pagination-btn-container{
+    position: relative;
+    top: 100px;
 }

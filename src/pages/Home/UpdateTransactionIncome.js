@@ -30,7 +30,7 @@ export default React.memo(function UpdateTransactionIncome(props){
         })
 
         axios.get(`http://localhost:8080/user${idUser}/wallets`).then((res)=>{
-            setWallets(res.data)
+            setWallets(res.data.content)
         })
 
         axios.get(`http://localhost:8080/user${idUser}/categories/default/in`).then((res)=>{

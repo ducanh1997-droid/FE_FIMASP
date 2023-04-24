@@ -1,11 +1,40 @@
-.walletDetail-content{
+.walletDetail-content {
+    position: relative;
+    background-color: #f2f2f2;
+    width: 100%;
+    height: 363px!important;
+    /*display: flex;*/
+    /*justify-content: center;*/
+    border-radius: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+.walletDetail-content .choice-box-icon{
+    position: absolute;
+    top: 10px;
+    width: 30px;
+    height: 30px;
+    right: 7px;
+    z-index: 1;
+    border-radius: 25px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.walletDetail-content .choice-box-icon:hover{
+    background-color: #af9a9a;
+    cursor: pointer;
+}
+.walletDetail-content-table{
     position: absolute;
     box-sizing: border-box;
     font-size: 20px;
     border-radius: 10px;
-    background-color: #61dafb;
+    background-color: #f2f2f2;
     width: 94%;
     height: 90%;
+    top: 30px;
 }
 .walletDetail-content td{
     position: relative;
@@ -40,7 +69,6 @@
 }
 .walletDetail-content i{
     position: relative;
-    color: #f2f2f2;
     left: 7px;
     top:7px;
     font-size: 20px!important;
@@ -56,4 +84,49 @@
 }
 .walletDetail-content .color-sample:hover{
     cursor: pointer;
+}
+.choice-modal-box {
+    position: absolute;
+    width: 46%;
+    height: 65%;
+    background-color: #ffffff;
+    z-index: 2;
+    border: 1px black solid;
+    border-radius: 10px;
+    padding: 15px 0px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    left: 52%;
+    top: 13%;
+}
+.choice-modal-box ul{
+    list-style-type: none;
+    line-height: 2.5;
+    box-sizing: border-box;
+    position: relative;
+    width: 100%;
+    font-size: 18px;
+    font-weight: 900;
+
+ }
+.choice-modal-box ul li{
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    padding: 0px 25px;
+}
+.choice-modal-box ul li:hover{
+    background-color: #f2f2f2;
+    color: greenyellow;
+    cursor: pointer;
+}
+.choice-modal-box ul li i{
+    padding-right: 15px;
+    left: 0;
+    top: 15px;
 }
