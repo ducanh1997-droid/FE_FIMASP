@@ -25,7 +25,6 @@ export default function Transaction(props) {
             },
         })
     }
-
     const notify = () => {
         toast.success("Thêm giao dịch thành công", {
             position: "top-center", style: {
@@ -35,6 +34,7 @@ export default function Transaction(props) {
         })
     }
     useEffect(() =>{
+        setSearchDate(false);
         if (props.createSuccess) {
             notify();
             props.closeCreate();
@@ -52,6 +52,7 @@ export default function Transaction(props) {
         })
     },[props.close,props.createSuccess,props.updateSuccess])
 
+
     function findAllTransaction(currentPage){
         currentPage-=1;
         axios.get(`http://localhost:8080/user${idUser}/cashes?page=${currentPage}&size=${numOfPage}`).then((response)=>{
@@ -64,7 +65,7 @@ export default function Transaction(props) {
     function search(values,currentPage) {
         setValuesSearch(values);
         currentPage-=1;
-        if(values.dateEnd===""  || values.dateStart===""){
+        if(values.dateEnd==="" || values.dateStart===""){
             setSearchDate(false)
             findAllTransaction(currentPage)
         }else{
@@ -76,9 +77,7 @@ export default function Transaction(props) {
                 setCurrentPage(response.data.number+1);
             })
         }
-
     }
-
     const Validation = Yup.object().shape({
         dateStart: Yup.date(),
         dateEnd: Yup.date().min(
@@ -89,11 +88,11 @@ export default function Transaction(props) {
     function prevPage() {
         let prevPage =1
         if(currentPage>prevPage){
-                if(searchDate){
-                    search(valuesSearch,currentPage-prevPage)
-                }else{
-                    findAllTransaction(currentPage-prevPage);
-                }
+            if(searchDate){
+                search(valuesSearch,currentPage-prevPage)
+            }else{
+                findAllTransaction(currentPage-prevPage);
+            }
         }
     }
     function nextPage() {

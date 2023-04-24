@@ -198,7 +198,7 @@ li{
     left: 7px;
 }
 .fa-question{
-    left: 10px;
+    left: 11px;
 }
 .fa-school{
     top: 6px;
@@ -557,6 +557,8 @@ h5.titles-dashboard{
 .block-category p{
     font-size: 12px;
 }
+
+
 .icon-border{
     margin-right: 10px;
     position: relative;
@@ -582,11 +584,14 @@ h5.titles-dashboard{
     border-radius: 100px;
     background: red;
 }
-#fa-gift-card{
-    background: blue;
+#fa-plus{
+    background: #8d8d8d;
 }
 #fa-question{
-    background: red;
+    background: #8d8d8d;
+}
+#fa-gift-card{
+    background: blue;
 }
 #fa-hand-holding-dollar{
     background: #45da75;
@@ -1109,13 +1114,14 @@ a.btn-delete:hover{
     top:100px;
     left:30%;
     width:42%;
-    min-height:550px;
+    min-height:500px;
     background-color: #fff;
-    border-radius: 5px;
+    border-radius: 0px;
     position: absolute;
     border:2px solid #acb0b1;
     /*text-align: center;*/
     padding-bottom: 20px;
+    box-shadow: 0 5px 10px rgba(0,0,0,.1);
 }
 /*#popup input{*/
 /*    margin-top: 20px;*/
@@ -1187,7 +1193,7 @@ a.btn-delete:hover{
     width: 100%;
     top: -200%;
     opacity: 0;
-    margin-top: 5px;
+
     transform: scale(0.9);
     transition: opacity 500ms ease-in-out 0ms,
     transform 500ms ease-in-out 0ms;
@@ -1253,9 +1259,7 @@ a.btn-delete:hover{
     text-indent: -100%;
     opacity: 1;
 }
-.tab-body {
-    padding-left:20px;
-}
+
 .form #account{
 
 }
