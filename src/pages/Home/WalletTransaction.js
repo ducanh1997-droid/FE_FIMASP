@@ -12,18 +12,21 @@ export default function WalletTransaction({wallet,setCurrentIndex}){
     // const [pageChoice,setPageChoice]=useState(0)
     let index=page*5;
     useEffect(()=>{
-        axios.get(`http://localhost:8080/user6/cashes/${wallet?.id}/page${page}`).then((res)=> {
-            setTransaction(res.data.content)
-            setTotalPages(res.data.totalPages)
-        })
-    },[page])
-    useEffect(()=>{
-        axios.get(`http://localhost:8080/user6/cashes/${wallet?.id}/page${page}`).then((res)=> {
-            setTransaction(res.data.content)
-            setTotalPages(res.data.totalPages)
-            setPage(0)
-        })
-    },[wallet])
+        if(wallet!==undefined) {
+            axios.get(`http://localhost:8080/user6/cashes/${wallet?.id}/page${page}`).then((res) => {
+                setTransaction(res.data.content)
+                setTotalPages(res.data.totalPages)
+                setPage(0)
+            })
+        }
+    },[page,wallet])
+    // useEffect(()=>{
+    //     axios.get(`http://localhost:8080/user6/cashes/${wallet?.id}/page${page}`).then((res)=> {
+    //         setTransaction(res.data.content)
+    //         setTotalPages(res.data.totalPages)
+    //         setPage(0)
+    //     })
+    // },[wallet])
     function createPageArray(value){
        let array=[]
         if(totalPages>=6) {

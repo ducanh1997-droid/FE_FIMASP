@@ -30,7 +30,7 @@ export default function  SimpleSlider({wallets,nav1,setNav1,setIsUpdate,setWalle
             <div className={"wallet-chart"}>
                 <Slider {...settings} asNavFor={nav1} ref={slider => (setNav2(slider))}>
                     {wallets?.map(wallet=>{
-                        return   <WalletDetailContent wallet={wallet} setIsUpdate={setIsUpdate} setUpdate={setUpdate} setWalletChoice={setWalletChoice}></WalletDetailContent>
+                        return   <WalletDetailContent key={wallet.id} wallet={wallet} setIsUpdate={setIsUpdate} setUpdate={setUpdate} setWalletChoice={setWalletChoice}></WalletDetailContent>
                     })}
                 </Slider>
             </div>

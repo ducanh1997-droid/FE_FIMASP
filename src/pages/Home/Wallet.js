@@ -30,11 +30,6 @@ export default function Wallet(){
             setIsUpdate(false)
         })
     },[page,isUpdate])
-    useEffect(()=>{
-        axios.get(`http://localhost:3000/wallets`).then((res)=> {
-            setWalletChoice(res.data[0])
-        })
-    },[])
     function createPageArray(value){
         let array=[]
         if(totalPages>=5) {
@@ -61,7 +56,7 @@ export default function Wallet(){
         return<div>
             {((page>=totalPages-3)||(4<page+1))&&(totalPages>6)&&<><button style={{border:"none",background:"#fff"}} id={"1"} onClick={(e)=>{setPage(+e.currentTarget.id-1)}}>1</button><p style={{display:"inline-block"}}>...</p></>}
             {arrays.map(arr=>{
-                return <button style={arr!==page+1?{backgroundColor:"white",display:"inline-block",border:"none"}:{background:"#ff4568",display:"inline-block",border:"none",padding:"5px 10px",color:"#fff",borderRadius:"50px"}} id={""+arr} onClick={(e)=>{setPage(+e.currentTarget.id-1)}}>{arr}</button>
+                return <button key={arr} style={arr!==page+1?{backgroundColor:"white",display:"inline-block",border:"none"}:{background:"#ff4568",display:"inline-block",border:"none",padding:"5px 10px",color:"#fff",borderRadius:"50px"}} id={""+arr} onClick={(e)=>{setPage(+e.currentTarget.id-1)}}>{arr}</button>
             })}
             {((totalPages-3>page+1)||(page+1<=4))&&(totalPages>6)&&<><p style={{display:"inline-block"}}>...</p>< button style={{border:"none",background:"#fff"}} id={""+totalPages} onClick={(e)=>{setPage(+e.currentTarget.id-1)}}>{totalPages}</button></>}
         </div>
