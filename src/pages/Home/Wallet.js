@@ -172,7 +172,7 @@ export default function Wallet(){
            <WalletTransaction wallet={wallets[currentIndex]} setCurrentIndex={setCurrentIndex}></WalletTransaction>
         </div>
             {showCreateForm&&!showUpdateForm&&<CreateWalletForm setIsUpdate={setIsUpdate} setShow={setShow}></CreateWalletForm>}
-            {!showCreateForm&&showUpdateForm&&<CreateWalletForm setIsUpdate={setIsUpdate} wallet={walletChoice} setWalletChoice={setWalletChoice} setUpdate={setUpdate}></CreateWalletForm>}
+            {!showCreateForm&&showUpdateForm&&<CreateWalletForm setIsUpdate={setIsUpdate} wallet={wallets[currentIndex]} setWalletChoice={setWalletChoice} setUpdate={setUpdate}></CreateWalletForm>}
 
         </>
     )

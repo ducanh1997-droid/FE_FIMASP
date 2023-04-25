@@ -32,7 +32,7 @@ export default function CreateWalletForm({setShow,setIsUpdate,wallet,setWalletCh
             totalMoney: values.totalMoney,
             icon: activeIcon,
             backgroundColor: activeColor,
-            limitMoney: values.limitMoney
+            limitMoney: values.limitMoney===""?values.totalMoney:values.limitMoney
         }
         axios.post(`http://localhost:8080/user${idUser}/wallets`,wallet).then(()=>{
             setIsUpdate(true)
@@ -46,7 +46,7 @@ export default function CreateWalletForm({setShow,setIsUpdate,wallet,setWalletCh
             totalMoney: values.totalMoney,
             icon: activeIcon,
             backgroundColor: activeColor,
-            limitMoney: values.limitMoney
+            limitMoney: values.limitMoney===""?values.totalMoney:values.limitMoney
         }
 
         axios.put(`http://localhost:8080/user${idUser}/wallets/${wallet.id}`,wallet,{headers: {"Authorization": `Bearer ${token}`}}).then((res)=>{

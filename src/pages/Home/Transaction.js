@@ -184,7 +184,7 @@ export default function Transaction(props) {
                                                 <td className={'feature-field'} style={{color: "#8d8d8d"}}>{item.date.slice(0,10)}</td>
                                                 <td>{item.name}</td>
                                                 <td className={'feature-field'}>{item.money.toLocaleString('en-US', {style : 'currency', currency : 'VND'})}</td>
-                                                <td>{item.wallet.name}</td>
+                                                <td>{item.wallet&&item.wallet.name||"Thuộc ví đã bị xóa"}</td>
                                                 <td>{item.type=="expence"?"Chi phí":"Thu nhập"}</td>
                                                 <td style={{position:"relative"}}>
                                                     <i className="fa-regular fa-pen-to-square" onClick={()=>item.type=="expence"?props.openUpdateExpence(item.id,item.category.icon):props.openUpdateIncome(item.id,item.category.icon)}></i>
