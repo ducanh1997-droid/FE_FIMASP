@@ -1,18 +1,29 @@
-import {Field, Form, Formik} from "formik";
+import {ErrorMessage, Field, Form, Formik} from "formik";
+import * as Yup from "yup"
 import {useState} from "react";
 import axios from "axios";
+import {ref} from "yup";
 import("./CreateWalletForm.css")
 
 export default function CreateWalletForm({setShow,setIsUpdate,wallet,setWalletChoice,setUpdate}){
     const [activeIcon,setActiveIcon] = useState(wallet===undefined?"":wallet.icon)
     const [activeColor,setActiveColor] = useState(wallet===undefined?"":wallet.backgroundColor)
+    const [errorMsgIcon,setErrorIcon]= useState(false)
+    const [errorMsgColor,setErrorColor]= useState(false)
+    const validationStrict=Yup.object().shape({
+        name: Yup.string().required("Không được để trống trường này").max(15,"Tên quá dài"),
+        totalMoney: Yup.number().required("Không được để trống trường này").when("limitMoney",([limitMoney],schema)=>{return limitMoney? schema.min(Yup.ref("limitMoney"),"Không được nhỏ hơn"):schema}),
+        limitMoney: Yup.number().max(Yup.ref("totalMoney"),"Không được lớn hơn")
+    })
     const idUser = localStorage.getItem("id")
     const token = localStorage.getItem("token")
     function setIcon(e){
         setActiveIcon(e.currentTarget.id);
+        setErrorIcon(false)
     }
     function setColor(e){
         setActiveColor(e.currentTarget.style.backgroundImage)
+        setErrorColor(false)
     }
     function save(values){
         let wallet={
@@ -66,27 +77,37 @@ export default function CreateWalletForm({setShow,setIsUpdate,wallet,setWalletCh
                         }else{
                             update(values)
                         }
+                    }else{
+                        if (activeIcon===""){ setErrorIcon(true)}
+                        if (activeColor===""){ setErrorColor(true)}
                     }
                 }}
+                validationSchema={validationStrict}
             >
                 {({values})=><Form>
                     <table className={"walletDetail-content"}>
                         <thead></thead>
                         <tbody>
                         <tr>
-                            <td><p>Tên ví:</p></td>
+                            <td><p>Tên ví</p></td>
                         </tr>
                         <tr>
-                            <td><Field name={"name"}></Field></td>
+                            <td>
+                                <Field name={"name"}></Field>
+                            <ErrorMessage name={"name"}></ErrorMessage>
+                            </td>
                         </tr>
                         <tr>
-                            <td><p>Số tiền trong ví:</p></td>
+                            <td><p>Số tiền trong ví</p></td>
                         </tr>
                         <tr>
-                            <td><Field name={"totalMoney"}></Field></td>
+                            <td>
+                                <Field name={"totalMoney"}></Field>
+                            <ErrorMessage name={"totalMoney"}></ErrorMessage>
+                            </td>
                         </tr>
                         <tr>
-                            <td><p>Danh mục:</p></td>
+                            <td><p>Loại ví</p></td>
                         </tr>
                         <tr>
                             <td>
@@ -107,7 +128,7 @@ export default function CreateWalletForm({setShow,setIsUpdate,wallet,setWalletCh
                                         <i className="fa-light fa-mug-saucer"></i>
                                     </div>
                                     <p id="2">Cafe</p>
-                                </div>
+                                </div>{errorMsgIcon&&"Cần chọn icon"}
                             </td>
                         </tr>
                         <tr>
@@ -118,13 +139,17 @@ export default function CreateWalletForm({setShow,setIsUpdate,wallet,setWalletCh
                                 <div className={"color-sample"} style={{backgroundImage: "linear-gradient(to right bottom, green, black, blue)",opacity:activeColor==="linear-gradient(to right bottom, green, black, blue)"?"1":"0.3"}} onClick={setColor}></div>
                                 <div className={"color-sample"} style={{backgroundImage: "linear-gradient(to right, red, yellow)",opacity:activeColor==="linear-gradient(to right, red, yellow)"?"1":"0.3"}} onClick={setColor}></div>
                                 <div className={"color-sample"} style={{backgroundImage: "linear-gradient(to right, blue, purple)",opacity:activeColor==='linear-gradient(to right, blue, purple)'?"1":"0.3"}} onClick={setColor}></div>
+                                {errorMsgColor&&"Cần chọn màu nền cho ví"}
                             </td>
                         </tr>
                         <tr>
                             <td><p style={{margin: "10px 0"}}>Giới hạn chi tiêu ví:</p></td>
                         </tr>
                         <tr>
-                            <td><Field  style={{marginBottom: "10px"}}name={"limitMoney"}></Field></td>
+                            <td>
+                                <Field  style={{marginBottom: "10px"}}name={"limitMoney"}></Field>
+                                <ErrorMessage name={"limitMoney"}></ErrorMessage>
+                            </td>
                         </tr>
                         <tr>
                             <td colSpan={2} >
@@ -144,14 +169,14 @@ export default function CreateWalletForm({setShow,setIsUpdate,wallet,setWalletCh
                             <p className={"logoName"}>Fimasp</p>
                             <i className={activeIcon}></i>
                             <div className={"walletDetail"}>
-                                <p>Wallet 's name:</p>
+                                <p>Wallet 's name</p>
                                 <p className={"walletName"}>{values?.name}</p>
                             </div>
                             <div className={"walletMoney"}>
                                 <p>{values?.totalMoney}</p>
                             </div>
                             <div className={"walletLimit"}>
-                                <p>Limit:</p>
+                                <p>Limit</p>
                                 <p className={"walletName"}>{values?.limitMoney}</p>
                             </div>
                         </div>
