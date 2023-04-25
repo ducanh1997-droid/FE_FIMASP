@@ -1,6 +1,8 @@
 import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
-
+import arrow from "../../assets/img/448-arrow.png";
+import {ErrorMessage, Field, Form, Formik} from "formik";
+import * as Yup from "yup";
 export default function WalletTransaction({wallet,setCurrentIndex}){
     const [transactions,setTransaction]=useState([])
     const [page,setPage]=useState(0)
@@ -10,13 +12,13 @@ export default function WalletTransaction({wallet,setCurrentIndex}){
     // const [pageChoice,setPageChoice]=useState(0)
     let index=page*5;
     useEffect(()=>{
-        axios.get(`http://localhost:8080/user1/cashes/${wallet?.id}/page${page}`).then((res)=> {
+        axios.get(`http://localhost:8080/user6/cashes/${wallet?.id}/page${page}`).then((res)=> {
             setTransaction(res.data.content)
             setTotalPages(res.data.totalPages)
         })
     },[page])
     useEffect(()=>{
-        axios.get(`http://localhost:8080/user1/cashes/${wallet?.id}/page${page}`).then((res)=> {
+        axios.get(`http://localhost:8080/user6/cashes/${wallet?.id}/page${page}`).then((res)=> {
             setTransaction(res.data.content)
             setTotalPages(res.data.totalPages)
             setPage(0)
@@ -24,7 +26,7 @@ export default function WalletTransaction({wallet,setCurrentIndex}){
     },[wallet])
     function createPageArray(value){
        let array=[]
-        if(totalPages>=5) {
+        if(totalPages>=6) {
             if (4 < value && value < totalPages - 3) {
                 for (let i = 0; i < 5; i++) {
                     array.push(i + value - 2)
@@ -46,60 +48,152 @@ export default function WalletTransaction({wallet,setCurrentIndex}){
     }
     function createPageDiv(arrays){
         return<div>
-            {4<page+1&&<button>1...</button>}
+            {((page>=totalPages-3)||(4<page+1))&&(totalPages>6)&&<><button style={{border:"none",background:"#fff"}} id={"1"} onClick={(e)=>{setPage(+e.currentTarget.id-1)}}>1</button><p style={{display:"inline-block"}}>...</p></>}
             {arrays.map(arr=>{
-                return <button style={{backgroundColor: arr!==page+1?"white":"red"}} id={""+arr} onClick={(e)=>{setPage(+e.currentTarget.id-1)}}>{arr}</button>
+                return <button style={arr!==page+1?{backgroundColor:"white",display:"inline-block",border:"none"}:{background:"#ff4568",display:"inline-block",border:"none",padding:"5px 10px",color:"#fff",borderRadius:"50px"}} id={""+arr} onClick={(e)=>{setPage(+e.currentTarget.id-1)}}>{arr}</button>
             })}
-            {totalPages-3>page+1&&<button>...{totalPages}</button>}
+            {((totalPages-3>page+1)||(page+1<=4))&&(totalPages>6)&&<><p style={{display:"inline-block"}}>...</p>< button style={{border:"none",background:"#fff"}} id={""+totalPages} onClick={(e)=>{setPage(+e.currentTarget.id-1)}}>{totalPages}</button></>}
         </div>
     }
+
+    function search(values,currentPage) {
+        // setValuesSearch(values);
+        // currentPage-=1;
+        // if(values.dateEnd==="" || values.dateStart===""){
+        //     setSearchDate(false)
+        //     findAllTransaction(currentPage)
+        // }else{
+        //     axios.get(`http://localhost:8080/user6/cashes/${wallet?.id}/page${page}`).then((res)=> {
+        //         setTransaction(res.data.content)
+        //         setTotalPages(res.data.totalPages)
+        //     })
+        // }
+    }
+    const Validation = Yup.object().shape({
+        dateStart: Yup.date(),
+        dateEnd: Yup.date().min(
+            Yup.ref('dateStart'),
+            "Ngày kết thúc phải lớn hơn ngày bắt đầu"
+        )
+    })
 return(
     <>
         <div className={"wallet-transaction-list"}>
             <div className={"wallet-head"}>
                 <div className={"wallet-head-between"}>
-                    <div className={"wallet-head-content"}><h2>Transaction History</h2></div>
+                    <div className={"wallet-head-content"}><h2>Lịch sử thu chi</h2></div>
                     <div className={"wallet-head-content"}>
-                        <div
-                            className="icon-border-wallet"
-                            style={{cursor: "pointer"}}
-                            // onClick={()=>{setShow(true)}}
-                        >
-                            <i className="fa-solid fa-plus"/>
-                            <span>Add Wallet</span>
+                        <div id='block-search-transaction'>
+                            <Formik initialValues={{
+                                dateStart:"",
+                                dateEnd:""
+                            }}
+                                    onSubmit={(values) => {
+                                        search(values)}
+                                    }
+                                    validationSchema={Validation}
+                                    enableReinitialize={true}
+                            >
+                                {({ errors, touched,values,initialValues }) => (
+                                    <Form style={{display:'inline-flex'}}>
+                                        <div>
+                                            <div id='label-input-date-transaction'
+                                            >
+                                                <label>Ngày bắt đầu</label>
+                                                <br/>
+                                                <Field
+                                                    type="date"
+                                                    id="dateStart"
+                                                    name={"dateStart"}/>
+                                            </div>
+                                            <div style={{color:"red",fontSize:"13px"}}>
+
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div id='label-input-date-transaction'
+                                            >
+                                                <label>Ngày kết thúc</label><br/>
+                                                <Field type="date" id="dateEnd" name={'dateEnd'}/>
+                                            </div>
+                                            <div style={{color:"red",fontSize:"13px"}}>
+                                                <ErrorMessage name={'dateEnd'}  />
+                                            </div>
+                                        </div>
+                                        <button id="btn-search-transaction-date" type={'submit'} className="edit">Tìm kiếm</button>
+                                    </Form>)}
+                            </Formik>
                         </div>
                     </div>
                 </div>
             </div>
-            <table className={"transaction-list-table"}>
-                <thead>
-                <tr>
-                    <td>Index</td>
-                    <td>Name</td>
-                    <td>Total money</td>
-                    <td>Limit money</td>
-                    <td>Description</td>
-                </tr>
-                </thead>
-                <tbody>
-                {
-                    transactions.map(transaction=>{
+            {/*<table className={"transaction-list-table"}>*/}
+            {/*    <thead>*/}
+            {/*    <tr>*/}
+            {/*        <td>Index</td>*/}
+            {/*        <td>Name</td>*/}
+            {/*        <td>Total money</td>*/}
+            {/*        <td>Limit money</td>*/}
+            {/*        <td>Description</td>*/}
+            {/*    </tr>*/}
+            {/*    </thead>*/}
+            {/*    <tbody>*/}
+            {/*    {*/}
+            {/*        transactions.map(transaction=>{*/}
+            {/*            return(*/}
+            {/*                <tr key={transaction?.id} >*/}
+            {/*                    <td>{++index}</td>*/}
+            {/*                    <td>{transaction?.name}</td>*/}
+            {/*                    <td>{transaction?.money}</td>*/}
+            {/*                    <td>{transaction?.type}</td>*/}
+            {/*                    <td></td>*/}
+            {/*                </tr>*/}
+            {/*            )*/}
+            {/*        })}*/}
+            {/*    </tbody>*/}
+            {/*    <tfoot></tfoot>*/}
+            {/*</table>*/}
+            <div id='list-transaction'>
+                <table id='table-list-transaction' style={{minWidth:"769px",fontSize:"15px"}}>
+                    <thead>
+                    <tr>
+                        <th style={{paddingLeft: "30px"}} >Danh mục</th>
+                        <th>Ngày</th>
+                        <th>Ghi chú</th>
+                        <th>Số tiền</th>
+                        <th>Ví</th>
+                        <th>Loại</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {transactions.map((item)=>{
                         return(
-                            <tr key={transaction?.id} >
-                                <td>{++index}</td>
-                                <td>{transaction?.name}</td>
-                                <td>{transaction?.money}</td>
-                                <td>{transaction?.type}</td>
-                                <td></td>
+                            <tr key={item.id} className={'active-row'}>
+                                <td  className={'feature-field'} style={{paddingTop: 5, boxSizing: "border-box",paddingLeft: "17px",minWidth:"150px"}}>
+                                    <div style={{float: "left"}} className="icon-border-bus-dashboard" id={item.category.icon}>
+                                        <i className={item.category.icon+' fa-light'}/>
+                                    </div>
+                                    <p style={{display:"inline-block",marginLeft:"5px",marginTop:"5px"}}>{item.category.name}</p>
+                                </td>
+                                <td className={'feature-field'} style={{color: "#8d8d8d"}}>{item.date.slice(0,10)}</td>
+                                <td>{item.name}</td>
+                                <td className={'feature-field'}>{item.money.toLocaleString('en-US', {style : 'currency', currency : 'VND'})}</td>
+                                <td>{item.wallet.name}</td>
+                                <td>{item.type=="expence"?"Chi phí":"Thu nhập"}</td>
+
+
                             </tr>
                         )
                     })}
-                </tbody>
-                <tfoot></tfoot>
-            </table>
-            <button onClick={()=>{setPage(page-1)}}> {"<"} </button>
-            {createPageDiv(createPageArray(page+1))}
-            <button onClick={()=>{setPage(page+1)}}>></button>
+
+                    </tbody>
+                </table>
+            </div>
+            <div id='pagination'>
+                <button className='btn-pre-next1' style={{cursor:page===0?"not-allowed":"pointer",fontSize:"15px"}}  onClick={page===0?null:()=>{setPage(page-1)}} ><img style={{width:"12px"}} src={arrow} alt=""/>Trước</button>
+                    {createPageDiv(createPageArray(page+1))}
+                <button className='btn-pre-next2' style={{cursor:page===totalPages-1?"not-allowed":"pointer",fontSize:"15px"}} onClick={page===totalPages-1?null:()=>{setPage(page+1)}}>Sau <img style={{width:"12px"}} src={arrow} alt=""/></button>
+            </div>
         </div>
     </>
 )

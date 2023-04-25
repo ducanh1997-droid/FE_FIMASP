@@ -1,7 +1,7 @@
 .wallet-content-account{
     background-color: #f5f6fa !important;
     width: 100%;
-     min-height: 1593px;
+     min-height: 1500px;
     position: absolute;
     padding: 32px 22px;
     box-sizing: border-box;
@@ -10,7 +10,7 @@
 .wallet-container {
     display: block;
     position: absolute;
-    height: 43%;
+    height: 39%;
     width: 65%;
     background-color: #ffffff;
     border-radius: 10px;
@@ -31,12 +31,12 @@
     position: absolute;
     width: 25%;
     height: 16%;
-    background-color: #ffffff;
     border-radius: 10px;
     left: 69%;
     padding: 10px;
     margin: 10px;
     box-sizing: border-box;
+    top:6.3%
 }
 .wallet-statistics{
     position: absolute;
@@ -53,17 +53,18 @@
 .wallet-chart {
     position: absolute;
     width: 32%;
-    height: 26%;
+
     background-color: #ffffff;
     border-radius: 10px;
     left: 66%;
-    padding: 10px;
-    margin: 10px;
+    padding: 0px 10px 10px 10px;
+    margin: 0 10px 10px 10px;
     box-sizing: border-box;
-    top: 23%;
+    top: 24.5%;
+    box-shadow: 0 0 3.125rem 0 rgba(82, 63, 105, 0.15);
 }
 .wallet-head{
-    padding-bottom: 28px;
+    padding-bottom: 0px;
 }
 .wallet-head-between{
     display: flex;
@@ -100,8 +101,6 @@
 }
 .icon-border-wallet span{
     line-height: 38px;
-    margin-left: 7px;
-    padding-left: 10px;
     display: block;
     box-sizing: border-box;
     color: white;
@@ -118,7 +117,7 @@
 .wallet-list-table tr,td{
     width: auto;
     vertical-align: middle;
-    text-align: center;
+
 }
 .wallet-list-table thead{
     background-color: #ecebea;
@@ -142,16 +141,16 @@ height: 30%;
 .wallet-transaction-list {
     display: block;
     position: absolute;
-    height: 27%;
+    min-height: 43%;
     width: 65%;
     background-color: #ffffff;
     border-radius: 10px;
     margin: -18px;
-    padding: 25px;
+    padding: 15px 20px 10px 25px;
     overflow-x: hidden;
     overflow-y: auto;
     box-sizing: border-box;
-    top: 54%;
+    top: 49%;
 }
 .transaction-list-table{
     border: 1px solid #dbdfea;
@@ -170,4 +169,54 @@ height: 30%;
 .pagination-btn-container{
     position: relative;
     top: 100px;
+}
+ #block-search-transaction #btn-search-transaction-date:hover{
+    background: #67CE73FF;
+    color: #fff;
+}
+ #block-search-transaction{
+    margin-top: 20px;
+    /*float: right;*/
+}
+ #block-search-transaction form > div{
+    display: inline-block;
+}
+ #block-search-transaction form input{
+    height: 20px;
+    padding: 0 10px;
+    font-size: 15px;
+    border: none;
+    outline: none;
+    background: none;
+}
+
+ #block-search-transaction form label{
+    font-size: 13px;
+    color: #8d8d8d;
+}
+
+.wallet-head-content  #label-input-date-transaction{
+    border: 1px solid #ced4da;
+    background: #fff;
+    padding: 0px 5px 0 10px;
+    margin-right: 20px;
+    border-radius: 6px;
+}
+
+ #btn-search-transaction-date{
+    height: 37px;
+    text-transform: uppercase;
+    padding: 6px 30px;
+    background-color: #55ce63;
+    border: 1px solid #6ed77a;
+    color: #ffffff;
+    border-radius: 5px;
+    font-size: 12px;
+    font-family: 'Tilt Neon', cursive;
+    letter-spacing: 2px;
+    font-weight: 500;
+}
+ #btn-search-transaction-date:hover{
+    background: #67CE73FF;
+    color: #fff;
 }

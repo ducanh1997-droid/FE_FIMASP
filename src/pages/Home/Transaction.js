@@ -52,7 +52,6 @@ export default function Transaction(props) {
         })
     },[props.close,props.createSuccess,props.updateSuccess])
 
-
     function findAllTransaction(currentPage){
         currentPage-=1;
         axios.get(`http://localhost:8080/user${idUser}/cashes?page=${currentPage}&size=${numOfPage}`).then((response)=>{
@@ -164,7 +163,7 @@ export default function Transaction(props) {
                         <thead>
                            <tr>
                                <th style={{paddingLeft: "50px"}} >Danh mục</th>
-                               <th>Ngày giao dịch</th>
+                               <th>Ngày</th>
                                <th>Ghi chú</th>
                                <th>Số tiền</th>
                                <th>Ví</th>

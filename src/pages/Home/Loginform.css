@@ -12,8 +12,8 @@
     font-family: 'Montserrat', sans-serif;
     height: 100vh;
     margin: -20px 0 50px;
-    left: 200px;
-    top: -10px;
+    left: 22%;
+    top: -35px;
     z-index: 995;
 }
 .LoginForm #container{

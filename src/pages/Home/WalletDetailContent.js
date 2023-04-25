@@ -71,15 +71,15 @@ export default function WalletDetailContent({wallet,setIsUpdate,setWalletChoice,
                 <thead></thead>
                 <tbody>
                 <tr>
-                    <td><p>Name:</p></td>
+                    <td><p>Tên ví:</p></td>
                     <td>{!editActive?<p>{wallet.name}</p>:<Field name={"name"}></Field>}</td>
                 </tr>
                 <tr>
-                    <td><p>Total Money:</p></td>
-                    <td>{!editActive?<p>{wallet.totalMoney}</p>:<Field name={"totalMoney"}></Field>}</td>
+                    <td><p>Số tiền trong ví:</p></td>
+                    <td>{!editActive?<p>{wallet.totalMoney.toLocaleString('en-US', {style : 'currency', currency : 'VND'})}</p>:<Field name={"totalMoney"}></Field>}</td>
                 </tr>
                 <tr>
-                    <td><p>Icon:</p></td>
+                    <td><p>Danh mục:</p></td>
                     <td>{!editActive?<i className={wallet.icon}></i>:<>
                         <div className="block-wallet" id="block-fa-dumbbell" >
                         <div className="icon-wallet" id="fas fa-credit-card" style={{borderRadius:activeIcon==="fas fa-credit-card"?"2px":"100px"}} onClick={setIcon}>
@@ -103,7 +103,7 @@ export default function WalletDetailContent({wallet,setIsUpdate,setWalletChoice,
                     </td>
                 </tr>
                 <tr>
-                    <td><p>Background:</p></td>
+                    <td><p>Hình nền thẻ:</p></td>
                     <td>{!editActive?<div className={"color-sample"} style={{backgroundImage: wallet.backgroundColor}}></div>:(
                         <>
                         <div className={"color-sample"} style={{backgroundImage: "linear-gradient(to right bottom, green, black, blue)",opacity:activeColor==="linear-gradient(to right bottom, green, black, blue)"?"1":"0.3"}} onClick={setColor}></div>
@@ -114,8 +114,8 @@ export default function WalletDetailContent({wallet,setIsUpdate,setWalletChoice,
                     </td>
                 </tr>
                 <tr>
-                    <td><p>Limit:</p></td>
-                    <td>{!editActive?<p>{wallet.limitMoney}</p>:<Field name={"limitMoney"}></Field>}</td>
+                    <td><p>Giới hạn chi tiêu:</p></td>
+                    <td>{!editActive?<p>{wallet.limitMoney.toLocaleString('en-US', {style : 'currency', currency : 'VND'})}</p>:<Field name={"limitMoney"}></Field>}</td>
                 </tr>
                 <tr>
                     <td colSpan={2}>

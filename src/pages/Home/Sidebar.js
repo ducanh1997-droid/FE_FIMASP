@@ -18,12 +18,12 @@ export default function Sidebar(){
                 </li>
                 <li onClick={isActive}>
                     <i className="fa-solid fa-ruler" style={{color:(active ==='plan'?"#ffffff":"#8d8d8d")}}></i>
-                    <Link id="plan" className={active ==='plan'?"active-sidebar":""} to={`/plan`}>Lập kế hoạch</Link>
+                    <Link id="plan" className={active ==='plan'?"active-sidebar":""} to={`/plan`}>Danh mục</Link>
                     {/*<a id="plan"  href="#">Lập kế hoạch</a>*/}
                 </li>
                 <li onClick={isActive}>
                     <i className="fa-solid fa-piggy-bank" style={{color:(active ==='account'?"#ffffff":"#8d8d8d")}}></i>
-                    <Link id="account" className={active ==='account'?"active-sidebar":""} to={`/wallet`}>Tài khoản</Link>
+                    <Link id="account" className={active ==='account'?"active-sidebar":""} to={`/wallet`}>Quản lý ví</Link>
                 </li>
                 <li onClick={isActive}>
                     <i className="fa-solid fa-gear" style={{color:(active ==='setting'?"#ffffff":"#8d8d8d")}}></i>
@@ -41,11 +41,6 @@ export default function Sidebar(){
 
                     <a id="logout" className={activeSetting ==='logout'?"active-setting":""} href={""} onClick={logout}>Đăng xuất</a>
                 </li>
-
-                {/*<li onClick="isActive()">*/}
-                {/*    <i className="fa-solid fa-chart-column"></i>*/}
-                {/*    <a id="chart" href="#">Biểu đồ</a>*/}
-                {/*</li>*/}
             </ul>
         </div>
     )

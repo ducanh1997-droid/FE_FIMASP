@@ -28,6 +28,9 @@ export default React.memo(function Home(props) {
     const [createTransactionSuccess,setCreateTransactionSuccess] = useState(false);
     const [updateTransactionSuccess,setUpdateTransactionSuccess] = useState(false);
 
+    const [imgHeader,setImgHeader] = useState(localStorage.getItem("avatar"));
+
+
     function openUpdateTransactionSuccess() {
         setUpdateTransactionSuccess(true);
     }
@@ -85,7 +88,7 @@ export default React.memo(function Home(props) {
 
             case 'Profile':
 
-                return <Profile/>;
+                return <Profile setImageHeader={setImgHeader} />;
             case 'ChangePassword':
 
                 return <ChangePassword/>;
@@ -99,7 +102,7 @@ export default React.memo(function Home(props) {
                 <UpdateTransactionIncome updateSuccess={openUpdateTransactionSuccess} dialogUpdateIncome={dialogUpdateIncome} idCashUpdate={idCashUpdate} icon={idIconCategoryUpdate} closeUpdateIncome={closeDialogUpdateIncome} />
                 <UpdateTransactionExpence updateSuccess={openUpdateTransactionSuccess} dialogUpdateExpence={dialogUpdateExpence} idCashUpdate={idCashUpdate} icon={idIconCategoryUpdate}  closeUpdateExpence={closeDialogUpdateExpence} />
                 <CreateTransaction createSuccess={openCreateTransactionSuccess} dialog={dialog} close={closeDialog} open={openDialog}/>
-                <Header dialog={dialog} close={closeDialog}/>
+                <Header imageHeader={imgHeader} dialog={dialog} close={closeDialog}/>
             </div>
             <div id='WrapperContent'>
                 <Sidebar/>

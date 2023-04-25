@@ -4,12 +4,14 @@ import AWalletElement from "./AWalletElement";
 import WalletDetailContent from "./WalletDetailContent";
 import CreateWalletForm from "./createWalletForm";
 import SimpleSlider from "./demo";
+
 import WalletTransaction from "./WalletTransaction";
+import arrow from "../../assets/img/448-arrow.png";
 
-
+import ("../../assets/css/transaction.css")
 import("./Wallet.css")
 export default function Wallet(){
-    let [nav1,setNav1]=useState();
+    let [nav1,setNav1]=useState(null);
     const [wallets,setWallets]=useState([])
     const [walletChoice,setWalletChoice]=useState(null)
     const [currentIndex,setCurrentIndex]=useState(0)
@@ -26,9 +28,13 @@ export default function Wallet(){
             setWallets(res.data.content)
             setTotalPages(res.data.totalPages)
             setIsUpdate(false)
-            setWalletChoice(res.data[0])
         })
     },[page,isUpdate])
+    useEffect(()=>{
+        axios.get(`http://localhost:3000/wallets`).then((res)=> {
+            setWalletChoice(res.data[0])
+        })
+    },[])
     function createPageArray(value){
         let array=[]
         if(totalPages>=5) {
@@ -53,11 +59,11 @@ export default function Wallet(){
     }
     function createPageDiv(arrays){
         return<div>
-            {4<page+1&&<button>1...</button>}
+            {((page>=totalPages-3)||(4<page+1))&&(totalPages>6)&&<><button style={{border:"none",background:"#fff"}} id={"1"} onClick={(e)=>{setPage(+e.currentTarget.id-1)}}>1</button><p style={{display:"inline-block"}}>...</p></>}
             {arrays.map(arr=>{
-                return <button style={{backgroundColor: arr!==page+1?"white":"red"}} id={""+arr} onClick={(e)=>{setPage(+e.currentTarget.id-1)}}>{arr}</button>
+                return <button style={arr!==page+1?{backgroundColor:"white",display:"inline-block",border:"none"}:{background:"#ff4568",display:"inline-block",border:"none",padding:"5px 10px",color:"#fff",borderRadius:"50px"}} id={""+arr} onClick={(e)=>{setPage(+e.currentTarget.id-1)}}>{arr}</button>
             })}
-            {totalPages-3>page+1&&<button>...{totalPages}</button>}
+            {((totalPages-3>page+1)||(page+1<=4))&&(totalPages>6)&&<><p style={{display:"inline-block"}}>...</p>< button style={{border:"none",background:"#fff"}} id={""+totalPages} onClick={(e)=>{setPage(+e.currentTarget.id-1)}}>{totalPages}</button></>}
         </div>
     }
     return(<>
@@ -65,7 +71,7 @@ export default function Wallet(){
 
             <div className={"wallet-head"}>
                 <div className={"wallet-head-between"}>
-                    <div className={"wallet-head-content"}><h1>Wallet</h1></div>
+                    <div className={"wallet-head-content"}><h1>Quản lý ví tiền</h1></div>
                     <div className={"wallet-head-content"}>
                         <div
                             className="icon-border-wallet"
@@ -73,49 +79,94 @@ export default function Wallet(){
                             onClick={()=>{setShow(true)}}
                         >
                             <i className="fa-solid fa-plus"/>
-                            <span>Add Wallet</span>
+                            <span>Thêm ví mới</span>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div className={"wallet-container"}>
-                 <h1>Wallet 's list</h1>
-                 <table className={"wallet-list-table"}>
-                <thead>
-                <tr>
-                    <td>Index</td>
-                    <td>Name</td>
-                    <td>Total money</td>
-                    <td>Limit money</td>
-                    <td>Description</td>
-                </tr>
-                </thead>
-                <tbody>
-                {
-                    wallets.map(wallet=>{
-                return(
-                    <tr key={wallet.id} id={""+index} onClick={(e)=>{
-                        nav1.slickGoTo(e.currentTarget.id-5*page );
-                        setWalletChoice(wallets[+e.currentTarget.id])
-                        setCurrentIndex(e.currentTarget.id-5*page)
-                    }
-                    }>
-                        <td>{++index}</td>
-                        <td>{wallet.name}</td>
-                        <td>{wallet.totalMoney}</td>
-                        <td>{wallet.limitMoney}</td>
-                        <td></td>
+            {/*     <h1>Wallet 's list</h1>*/}
+            {/*     <table className={"wallet-list-table"}>*/}
+            {/*    <thead>*/}
+            {/*    <tr>*/}
+            {/*        <td>Index</td>*/}
+            {/*        <td>Name</td>*/}
+            {/*        <td>Total money</td>*/}
+            {/*        <td>Limit money</td>*/}
+            {/*        <td>Description</td>*/}
+            {/*    </tr>*/}
+            {/*    </thead>*/}
+            {/*    <tbody>*/}
+            {/*    {*/}
+            {/*        wallets.map(wallet=>{*/}
+            {/*    return(*/}
+            {/*        <tr key={wallet.id} id={""+index} onClick={(e)=>{*/}
+            {/*            nav1.slickGoTo(e.currentTarget.id-5*page );*/}
+            {/*            setWalletChoice(wallets[+e.currentTarget.id])*/}
+            {/*            setCurrentIndex(e.currentTarget.id-5*page)*/}
+            {/*        }*/}
+            {/*        }>*/}
+            {/*            <td>{++index}</td>*/}
+            {/*            <td>{wallet.name}</td>*/}
+            {/*            <td>{wallet.totalMoney}</td>*/}
+            {/*            <td>{wallet.limitMoney}</td>*/}
+            {/*            <td></td>*/}
+            {/*        </tr>*/}
+            {/*    )*/}
+            {/*    })}*/}
+            {/*    </tbody>*/}
+            {/*    <tfoot></tfoot>*/}
+            {/*</table>*/}
+            {/*    <div className={"pagination-btn-container"}>*/}
+            {/*    <button onClick={()=>{setPage(page-1)}}> {"<"} </button>*/}
+            {/*    {createPageDiv(createPageArray(page+1))}*/}
+            {/*    <button onClick={()=>{setPage(page+1)}}>></button>*/}
+            {/*    </div>*/}
+
+            <div id='list-transaction'>
+                <table id='table-list-transaction' style={{minWidth:"769px",fontSize:"15px"}}>
+                    <thead>
+                    <tr>
+                        <th style={{paddingLeft: "50px"}} >Danh mục</th>
+                        <th>Tên ví</th>
+                        <th>Giới hạn chi tiêu</th>
+                        <th>Số tiền</th>
+                        <th>Mô tả</th>
                     </tr>
-                )
-                })}
-                </tbody>
-                <tfoot></tfoot>
-            </table>
-                <div className={"pagination-btn-container"}>
-                <button onClick={()=>{setPage(page-1)}}> {"<"} </button>
-                {createPageDiv(createPageArray(page+1))}
-                <button onClick={()=>{setPage(page+1)}}>></button>
+                    </thead>
+                    <tbody>
+                    {wallets.map((item)=>{
+
+                        return(
+                            <tr key={item.id} className={'active-row'} id={""+index++} onClick={(e)=>{
+                                nav1.slickGoTo(e.currentTarget.id-5*page );
+                                setWalletChoice(wallets[+e.currentTarget.id])
+                                setCurrentIndex(e.currentTarget.id-5*page)
+                            }
+                            }>
+                                <td className={'feature-field'} style={{paddingTop: 5, boxSizing: "border-box",paddingLeft: "10px"}}>
+                                    <div style={{float: "left"}} className="icon-border-bus-dashboard" id={item.icon}>
+                                        <i className={item.icon+' fa-light'}/>
+                                    </div>
+                                    <p style={{display:"inline-block",marginLeft:"10px",marginTop:"5px"}}>{item.name}</p>
+                                </td>
+                                <td className={'feature-field'} style={{color: "#8d8d8d"}}>{item.name}</td>
+                                <td>{item.limitMoney}</td>
+                                <td className={'feature-field'}>{item.totalMoney.toLocaleString('en-US', {style : 'currency', currency : 'VND'})}</td>
+                                <td>Thẻ ngân hàng</td>
+                            </tr>
+                        )
+
+                    })}
+
+                    </tbody>
+                </table>
+            </div>
+                <div id='pagination'>
+                    <button className='btn-pre-next1' style={{cursor:page===0?"not-allowed":"pointer",fontSize:"15px"}}  onClick={page===0?null:()=>{setPage(page-1)}} ><img style={{width:"12px"}} src={arrow} alt=""/>Trước</button>
+                    {createPageDiv(createPageArray(page+1))}
+                    <button className='btn-pre-next2' style={{cursor:page===totalPages-1?"not-allowed":"pointer",fontSize:"15px"}} onClick={page===totalPages-1?null:()=>{setPage(page+1)}}>Sau <img style={{width:"12px"}} src={arrow} alt=""/></button>
                 </div>
             </div>
                   <SimpleSlider wallets={wallets} nav1={nav1} setNav1={setNav1} setUpdate={setUpdate} setWalletChoice={setWalletChoice} setIsUpdate={setIsUpdate}></SimpleSlider>

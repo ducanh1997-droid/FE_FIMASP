@@ -81,9 +81,9 @@
     display: inline-block;
 }
 #content-transaction #block-search-transaction form input{
-    height: 30px;
+    height: 35px;
     padding: 0 10px;
-    font-size: 20px;
+    font-size: 23px;
     border: none;
     outline: none;
     background: none;
@@ -96,8 +96,8 @@
 #label-input-date-transaction{
     border: 1px solid #ced4da;
     background: #fff;
-    padding: 5px 10px 0 15px;
-    margin-right: 45px;
+    padding: 5px 10px 0 20px;
+    margin-right: 20px;
     border-radius: 6px;
 }
 #label-input-date-transaction:focus-within{
@@ -117,7 +117,7 @@
 #table-list-transaction thead tr{
     background: #f8f9fa;
     color: #1b2559;
-    text-align: left;
+    text-align: center;
     height: 80px;
 
 }

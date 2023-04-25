@@ -8,7 +8,7 @@ import DashBoardWalletElement from "./DashBoardWallet";
 import WalletDetailContent from "./WalletDetailContent";
 export default function  SimpleSlider({wallets,nav1,setNav1,setIsUpdate,setWalletChoice,setUpdate})  {
     // let [nav1,setNav1]=useState();
-    let [nav2,setNav2]=useState();
+    let [nav2,setNav2]=useState(null);
         const settings = {
             dots: false,
             infinite: false,

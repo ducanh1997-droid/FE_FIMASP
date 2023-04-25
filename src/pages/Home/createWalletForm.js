@@ -3,12 +3,11 @@ import {useState} from "react";
 import axios from "axios";
 import("./CreateWalletForm.css")
 
-
-
 export default function CreateWalletForm({setShow,setIsUpdate,wallet,setWalletChoice,setUpdate}){
     const [activeIcon,setActiveIcon] = useState(wallet===undefined?"":wallet.icon)
     const [activeColor,setActiveColor] = useState(wallet===undefined?"":wallet.backgroundColor)
     const idUser = localStorage.getItem("id")
+    const token = localStorage.getItem("token")
     function setIcon(e){
         setActiveIcon(e.currentTarget.id);
     }
@@ -38,9 +37,10 @@ export default function CreateWalletForm({setShow,setIsUpdate,wallet,setWalletCh
             backgroundColor: activeColor,
             limitMoney: values.limitMoney
         }
-        axios.put(`http://localhost:3000/wallets/${wallet.id}`,wallet).then((res)=>{
+
+        axios.put(`http://localhost:8080/user${idUser}/wallets/${wallet.id}`,wallet,{headers: {"Authorization": `Bearer ${token}`}}).then((res)=>{
                 setIsUpdate(true)
-                setWalletChoice(res.data)
+                setWalletChoice(wallet)
                 setUpdate(false)
             }
         )
@@ -74,19 +74,19 @@ export default function CreateWalletForm({setShow,setIsUpdate,wallet,setWalletCh
                         <thead></thead>
                         <tbody>
                         <tr>
-                            <td><p>Name:</p></td>
+                            <td><p>Tên ví:</p></td>
                         </tr>
                         <tr>
                             <td><Field name={"name"}></Field></td>
                         </tr>
                         <tr>
-                            <td><p>Total Money:</p></td>
+                            <td><p>Số tiền trong ví:</p></td>
                         </tr>
                         <tr>
                             <td><Field name={"totalMoney"}></Field></td>
                         </tr>
                         <tr>
-                            <td><p>Icon:</p></td>
+                            <td><p>Danh mục:</p></td>
                         </tr>
                         <tr>
                             <td>
@@ -111,7 +111,7 @@ export default function CreateWalletForm({setShow,setIsUpdate,wallet,setWalletCh
                             </td>
                         </tr>
                         <tr>
-                            <td><p>Background:</p></td>
+                            <td><p style={{margin: "10px 0"}}>Hình nền ví:</p></td>
                         </tr>
                         <tr>
                             <td>
@@ -121,13 +121,13 @@ export default function CreateWalletForm({setShow,setIsUpdate,wallet,setWalletCh
                             </td>
                         </tr>
                         <tr>
-                            <td><p>Limit:</p></td>
+                            <td><p style={{margin: "10px 0"}}>Giới hạn chi tiêu ví:</p></td>
                         </tr>
                         <tr>
-                            <td><Field name={"limitMoney"}></Field></td>
+                            <td><Field  style={{marginBottom: "10px"}}name={"limitMoney"}></Field></td>
                         </tr>
                         <tr>
-                            <td colSpan={2}>
+                            <td colSpan={2} >
                                 <button type={"submit"} style={{backgroundColor:"#78dd74"}}>Confirm</button>
                                 <button type="button"
                                         style={{float:"right",backgroundColor:"#f44336cc"}}

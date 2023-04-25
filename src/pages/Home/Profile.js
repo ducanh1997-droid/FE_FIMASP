@@ -8,7 +8,7 @@ import toast, {Toaster} from "react-hot-toast";
 import {Link} from "react-router-dom";
 
 
-export default function Profile() {
+export default function Profile({setImageHeader}) {
     const [user, setUser] = useState({});
     const [image, setImage] = useState("");
 
@@ -37,6 +37,9 @@ export default function Profile() {
         })
     }, [idAcc])
 
+    useEffect(()=>{
+        setImageHeader(user.avatar)
+    },[user])
     const Validation = Yup.object().shape({
         fullName: Yup.string().required("Không được để trống!").max(20, "Dài quá 20 kí tự!"),
         phoneNumber: Yup.string().required("Không được để trống!").min(9, "Số điện thoại không đúng định dạng!")
@@ -159,9 +162,9 @@ export default function Profile() {
                                     <div className="details-profile">
                                         <h2>{user.fullName} <br/><span>{user.username}</span></h2>
                                         <div className="descriptions-profile">
-                                            <h3>{user.birthday}<br/><span>Birthday</span></h3>
-                                            <h3>{user.address}<br/><span>City</span></h3>
-                                            <h3>{user.phoneNumber}<br/><span>Phone</span></h3>
+                                            <h3>{user.birthday}<br/><span>Ngày sinh</span></h3>
+                                            <h3>{user.address}<br/><span>Địa chỉ</span></h3>
+                                            <h3>{user.phoneNumber}<br/><span>Số điện thoại</span></h3>
                                         </div>
                                     </div>
                                 </div>
@@ -227,7 +230,9 @@ export default function Profile() {
             .then((resp) => {
                 console.log(resp)
                 notify();
-                setUser(...resp.data);
+                setUser(resp.data);
+                localStorage.setItem('avatar', user.avatar)
+
             }).catch((err) => {
             console.log(err)
         })
