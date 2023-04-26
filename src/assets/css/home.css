@@ -1487,3 +1487,8 @@ a.btn-delete:hover{
     position: relative;
     top: 40px;
 }
+.dashboard-wallet{
+display: inline-block;
+position: static !important;
+    width: 60% !important;
+}

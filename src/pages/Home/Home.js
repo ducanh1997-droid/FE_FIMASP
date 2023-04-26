@@ -24,7 +24,7 @@ export default React.memo(function Home(props) {
     const [dialogUpdateExpence,setDialogUpdateExpence] = useState(false);
     const [idCashUpdate,setIdCashUpdate] = useState(0)
     const [idIconCategoryUpdate,setIdIconCategoryUpdate] = useState("");
-
+    const [active,setActive] = useState('dashboard');
     const [createTransactionSuccess,setCreateTransactionSuccess] = useState(false);
     const [updateTransactionSuccess,setUpdateTransactionSuccess] = useState(false);
 
@@ -72,7 +72,7 @@ export default React.memo(function Home(props) {
         switch(content) {
             case 'Dashboard':
 
-                return <Dashboard/>;
+                return <Dashboard setActive={setActive}/>;
 
             case 'Transaction':
 
@@ -105,7 +105,7 @@ export default React.memo(function Home(props) {
                 <Header imageHeader={imgHeader} dialog={dialog} close={closeDialog}/>
             </div>
             <div id='WrapperContent'>
-                <Sidebar/>
+                <Sidebar active={active} setActive={setActive}/>
                 <div id='content'>
                     {renderSwitch()}
                 </div>

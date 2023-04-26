@@ -7,11 +7,13 @@ import SimpleSlider from "./demo";
 
 import WalletTransaction from "./WalletTransaction";
 import arrow from "../../assets/img/448-arrow.png";
+import {useLocation, useParams} from "react-router-dom";
 
 import ("../../assets/css/transaction.css")
 import("./Wallet.css")
 export default function Wallet(){
     let [nav1,setNav1]=useState(null);
+    const {status}=useParams()
     const [wallets,setWallets]=useState([])
     const [walletChoice,setWalletChoice]=useState(null)
     const [currentIndex,setCurrentIndex]=useState(0)
@@ -23,6 +25,12 @@ export default function Wallet(){
     const [page,setPage]=useState(0)
     const [totalPages,setTotalPages]=useState(0)
     let index=page*5;
+    useEffect(()=>{
+        if(status==="true"){
+            setShow(true)
+        }
+    },[])
+
     useEffect(()=>{
         axios.get(`http://localhost:8080/user${idUser}/wallets/page${page}`).then((res)=> {
             setWallets(res.data.content)

@@ -1,9 +1,9 @@
 import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
 
-export default function Sidebar(){
+export default function Sidebar({active,setActive}){
     let navigate = useNavigate();
-    const [active,setActive] = useState('dashboard');
+
     const [activeSetting,setActiveSetting] = useState('profile');
     return(
         <div id="sidebar">
@@ -22,8 +22,8 @@ export default function Sidebar(){
                     {/*<a id="plan"  href="#">Lập kế hoạch</a>*/}
                 </li>
                 <li onClick={isActive}>
-                    <i className="fa-solid fa-piggy-bank" style={{color:(active ==='account'?"#ffffff":"#8d8d8d")}}></i>
-                    <Link id="account" className={active ==='account'?"active-sidebar":""} to={`/wallet`}>Quản lý ví</Link>
+                    <i className="fa-solid fa-piggy-bank" style={{color:(active ==='wallet'?"#ffffff":"#8d8d8d")}}></i>
+                    <Link id="wallet" className={active ==='wallet'?"active-sidebar":""} to={`/wallet`}>Quản lý ví</Link>
                 </li>
                 <li onClick={isActive}>
                     <i className="fa-solid fa-gear" style={{color:(active ==='setting'?"#ffffff":"#8d8d8d")}}></i>

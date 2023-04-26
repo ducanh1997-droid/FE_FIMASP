@@ -1,6 +1,7 @@
 import {Link} from "react-router-dom";
 import SimpleSlider from "./demo";
-export default function Dashboard() {
+import DashboardWalletSlider from "./dashboardWalletSlider";
+export default function Dashboard({setActive}) {
 
     if (localStorage.getItem('id') === '' || localStorage.getItem('id') === null) {
         return (
@@ -44,22 +45,23 @@ export default function Dashboard() {
                     </div>
                     <div id="current-account">
                         <h6>Tài khoản</h6>
-                        <div id="card-bank">
-                            <div id="card-left">
-                                <p id="name-account">John Demin</p>
-                                <p id="account-money">1.000.000 VND</p>
-                                <p id="account-number">1234 **** **** 5671</p>
-                            </div>
-                            <div id="card-right">
-                                <i className="fa-regular fa-credit-card-blank"/>
-                                <div id="exp-block">
-                                    <p id="exp-title">Exp</p>
-                                    <p id="exp">09/24</p>
-                                </div>
-                            </div>
-                        </div>
+                        {/*<div id="card-bank">*/}
+                        {/*    <div id="card-left">*/}
+                        {/*        <p id="name-account">John Demin</p>*/}
+                        {/*        <p id="account-money">1.000.000 VND</p>*/}
+                        {/*        <p id="account-number">1234 **** **** 5671</p>*/}
+                        {/*    </div>*/}
+                        {/*    <div id="card-right">*/}
+                        {/*        <i className="fa-regular fa-credit-card-blank"/>*/}
+                        {/*        <div id="exp-block">*/}
+                        {/*            <p id="exp-title">Exp</p>*/}
+                        {/*            <p id="exp">09/24</p>*/}
+                        {/*        </div>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
+                        <DashboardWalletSlider></DashboardWalletSlider>
                         <div id="add-card">
-                            <p>+ Add account</p>
+                            <Link to={"/wallet/true"} state={{active: "true"}} onClick={()=>{setActive("wallet")}}>+ Add account</Link>
                         </div>
                     </div>
                     <div id="planning">
