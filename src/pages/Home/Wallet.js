@@ -62,7 +62,7 @@ export default function Wallet(){
         </div>
     }
     return(<>
-        <div className="content-account wallet-content-account" style={!showCreateForm?{filter: "blur(0px)"}:{filter: "blur(3px)"}}>
+        <div className="content-account wallet-content-account" style={(!showCreateForm&&!showUpdateForm)?{filter: "blur(0px)"}:{filter: "blur(3px)"}}>
 
             <div className={"wallet-head"}>
                 <div className={"wallet-head-between"}>
