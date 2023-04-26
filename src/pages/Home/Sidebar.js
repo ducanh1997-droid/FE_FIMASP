@@ -18,7 +18,7 @@ export default function Sidebar(){
                 </li>
                 <li onClick={isActive}>
                     <i className="fa-solid fa-ruler" style={{color:(active ==='plan'?"#ffffff":"#8d8d8d")}}></i>
-                    <Link id="plan" className={active ==='plan'?"active-sidebar":""} to={`/plan`}>Lập kế hoạch</Link>
+                    <Link id="plan" className={active ==='plan'?"active-sidebar":""} to={`/plan`}>Ví</Link>
                     {/*<a id="plan"  href="#">Lập kế hoạch</a>*/}
                 </li>
                 <li onClick={isActive}>

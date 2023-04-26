@@ -177,10 +177,10 @@ export default function Transaction(props) {
                                         return(
                                             <tr key={item.id} className={'active-row'}>
                                                 <td className={'feature-field'} style={{paddingTop: 5, boxSizing: "border-box",paddingLeft: "25px"}}>
-                                                    <div style={{float: "left"}} className="icon-border-bus-dashboard" id={item.category.icon}>
-                                                        <i className={item.category.icon+' fa-light'}/>
+                                                    <div style={{float: "left"}} className="icon-border-bus-dashboard" id={item.category?.icon}>
+                                                        <i className={item.category?.icon+' fa-light'}/>
                                                     </div>
-                                                    <p style={{display:"inline-block",marginLeft:"10px",marginTop:"5px"}}>{item.category.name}</p>
+                                                    <p style={{display:"inline-block",marginLeft:"10px",marginTop:"5px"}}>{item.category===null? 'Danh mục này đã xóa': item.category.name }</p>
                                                 </td>
                                                 <td className={'feature-field'} style={{color: "#8d8d8d"}}>{item.date.slice(0,10)}</td>
                                                 <td>{item.name}</td>

@@ -240,7 +240,7 @@ export default function Profile() {
                 console.log(resp)
                 notify();
                 setUser(resp.data);
-                refreshPage()
+                // refreshPage()
             }).catch((err) => {
             console.log(err)
         })

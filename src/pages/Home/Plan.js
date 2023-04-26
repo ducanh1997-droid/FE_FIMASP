@@ -1,6 +1,23 @@
 import {Link} from "react-router-dom";
+import axios from "axios";
+import React, {useEffect, useState} from "react";
+import Swal from "sweetalert2";
+import "../../assets/css/transaction.css";
 
 export default function Plan() {
+    const idAcc = localStorage.getItem('id');
+    const [categories, setCategories] = useState([]);
+    const token = localStorage.getItem("token");
+
+    useEffect(() => {
+        axios.get(`http://localhost:8080/user${idAcc}/categories`).then((resp) => {
+            console.log(resp)
+            setCategories(resp.data)
+        }).catch(err => {
+            Swal.fire('Data not found')
+        })
+    },[])
+
 
     if (localStorage.getItem('id') === '' || localStorage.getItem('id') === null) {
         return (
@@ -12,16 +29,14 @@ export default function Plan() {
     } else {
         return (
             <div id="content-plan">
-                <h2 id="page-title-plan">Danh sách Kế hoạch</h2>
+                <h2 id="page-title-plan">Hiện tại có {categories.length} ví</h2>
                 <hr id="hr-search-plan"/>
                 <div style={{display: "inline-block", marginTop: 15}}>
-                    <h1 id="page-title-list-plan" style={{float: "left"}}>
-                        Thêm kế hoạch
-                    </h1>
+                    <h1 id="page-title-list-plan" style={{float: "left"}}>Thêm ví</h1>
                     <div
                         className="icon-border-dashboard"
                         style={{cursor: "pointer"}}
-                        /* onClick="createFormAddPlan()"*/
+                     onClick={createCategory}
                     >
                         <i className="fa-solid fa-plus"/>
                     </div>
@@ -30,40 +45,74 @@ export default function Plan() {
                 <table id="table-list-plan">
                     <tbody>
                     <tr>
-                        <th>Danh mục</th>
-                        <th>Số tiền</th>
-                        <th>Ghi chú</th>
-                        <th>Khoảng thời gian</th>
-                        <th>Tỉ lệ</th>
-                        <th>Sửa</th>
-                        <th>Xoá</th>
+                        <th>STT</th>
+                        <th>Icon</th>
+                        <th>Tên ví</th>
+                        <th>Kiểu ví</th>
+                        <th>Hành động</th>
                     </tr>
                     </tbody>
                     <tbody id="data-plan">
-                    <tr>
-                        <td style={{paddingTop: 5, boxSizing: "border-box"}}>
-                            <div style={{float: "left"}} className="icon-border-bus-dashboard">
-                                <i className="fa-light fa-bus"/>
-                            </div>
-                            <p>Tài khoản</p>
-                        </td>
-                        <td>150.000 đ</td>
-                        <td>Mua xe máy</td>
-                        <td style={{color: "#8d8d8d"}}>20/11/2020 - 20/11/2020</td>
-                        <td>
-                            <a href="#" /*onClick="openEditForm()"*/ className="btn btn-info">
-                                Sửa
-                            </a>
-                        </td>
-                        <td>
-                            <a href="#" className="btn btn-delete">
-                                Xoá
-                            </a>
-                        </td>
-                    </tr>
+                    {categories.map((item)=>{
+                        return(
+                            <tr key={item.id} className={'active-row'}>
+                                <td>{categories.indexOf(item) +1}</td>
+                                <td className={'feature-field'} style={{paddingTop: 5, boxSizing: "border-box",paddingLeft: "25px"}}>
+                                    <div style={{float: "left"}} className="icon-border-bus-dashboard" >
+                                        <i className={item.icon +' fa-light'}/>
+                                    </div>
+                                </td>
+                                <td>{item.name}</td>
+                                <td>{item.typeCategory}</td>
+                                <td style={{position:"relative"}}>
+                                    <i className="fa-regular fa-pen-to-square"></i>&nbsp;&nbsp;&nbsp;
+                                    <i className="fa-solid fa-trash-can" onClick={() => deleteCategory(item.id)}></i>
+                                </td>
+                            </tr>
+                        )
+                    })}
                     </tbody>
                 </table>
             </div>
         )
+    }
+
+    function createCategory() {
+
+
+
+    }
+
+    function deleteCategory(id) {
+
+        Swal.fire({
+            title: 'Are you sure?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`http://localhost:8080/user${idAcc}/categories/${id}`
+                    , {headers: {"Authorization": `Bearer ${token}`}}).then((resp) =>{
+                    console.log(resp)
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                    axios.get(`http://localhost:8080/user${idAcc}/categories`).then((resp) => {
+                        console.log(resp)
+                        setCategories(resp.data)
+                    }).catch(err => {
+                        Swal.fire('Data not found')
+                    })
+
+                }).catch(err => Swal.fire('Has Error!'))
+
+            }
+        })
+
     }
 }
