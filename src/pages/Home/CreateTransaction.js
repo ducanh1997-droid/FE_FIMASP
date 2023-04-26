@@ -114,6 +114,24 @@ export default React.memo(function CreateTransaction(props){
             id: Yup.string().required("Vui lòng chọn ví!"),
         })
     })
+
+    function GetTotalMoney({id}){
+        for(let i=0;i<wallets.length;i++){
+            if(id == wallets[i].id){
+                return `Tổng tiền: ${wallets[i].totalMoney} Giới hạn chi tiêu: ${wallets[i].limitMoney}`
+            }
+        }
+    }
+
+    function CheckToTalMoney({id,money}){
+        for(let i=0;i<wallets.length;i++){
+            if(id == wallets[i].id){
+                if(wallets[i].limitMoney<money){
+                    return `Vượt quá giới hạn chi tiêu của ví`
+                }
+            }
+        }
+    }
 return(
     <>
                     <div id="popup" ref={wrapperRef} style={{display:props.dialog==true?"block":"none"}}>
@@ -164,14 +182,23 @@ return(
                                                         type="text"
                                                         name={"money"}
                                                     />
+                                                    <span style={{color:"red", fontSize:"15px",margin:0,position:"absolute",bottom:"-25px"}}>
+                                                        <ErrorMessage name={'money'}  />
+                                                    </span>
+                                                    <span style={{color:"red", fontSize:"15px",margin:0,position:"absolute",bottom:"-25px"}}>
+                                                        <CheckToTalMoney id={values.wallet.id} money={values.money}/>
+                                                    </span>
                                                 </div>
                                                 <div className='inputBox'>
                                                     <span>Ghi chú :</span>
                                                     <Field type="text" name={'name'}/>
+                                                    <span style={{color:"red", fontSize:"15px",margin:0,position:"absolute",bottom:"-25px"}}>
+                                                        <ErrorMessage name={'name'}  />
+                                                    </span>
                                                 </div>
                                                 <div className='inputBox'>
                                                     <span>Chọn ví :</span>
-                                                    <Field as="select" name={"wallet.id"} id="select-box1" className="select">
+                                                    <Field as="select" name={"wallet.id"} id="select-box1"  className="select">
                                                         <option value={''}>-- Chọn ví --</option>
                                                         {wallets.map((item,id)=>{
                                                             return(
@@ -180,6 +207,13 @@ return(
                                                         })
                                                         }
                                                     </Field>
+                                                    <span style={{color:"blue", fontSize:"15px",margin:0,position:"absolute",bottom:"-30px",width:"322px"}}><GetTotalMoney id={values.wallet.id}/></span>
+                                                    {/*<span style={{color:"red", fontSize:"15px",margin:0,position:"absolute",bottom:"-25px"}}>*/}
+                                                    {/*    Tổng tiền: {values.wallet.id}*/}
+                                                    {/*</span>*/}
+                                                    <span style={{color:"red", fontSize:"15px",margin:0,position:"absolute",bottom:"-25px"}}>
+                                                        <ErrorMessage name={'wallet.id'}  />
+                                                    </span>
                                                 </div>
                                             </div>
                                                 <div ref={categoryRef} className='popup-detail-category' style={popupCategory?{display:"block"}:{display:"none"}}>

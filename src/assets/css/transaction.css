@@ -221,3 +221,7 @@
     background: linear-gradient(#ff4568,#ff4568);
     background-repeat: no-repeat;
 }
+
+.inputBox{
+    position: relative;
+}

@@ -117,6 +117,11 @@ export default function Transaction(props) {
                     </div>
                 </div>
                 <Toaster/>
+                <div id='statistical-transaction-time'>
+                    <div className='statistical-total-money-transaction'>
+
+                    </div>
+                </div>
                 <div id='block-search-transaction'>
                          <Formik initialValues={{
                             dateStart:"",
