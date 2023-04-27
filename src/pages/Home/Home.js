@@ -68,7 +68,6 @@ export default React.memo(function Home(props) {
         setDialogUpdateExpence(false)
     }
     function renderSwitch() {
-
         switch(content) {
             case 'Dashboard':
 

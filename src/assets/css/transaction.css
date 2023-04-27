@@ -60,7 +60,7 @@
     height: 60px;
     text-transform: uppercase;
     padding: 12px 62px;
-    background-color: #55ce63;
+    background-color: #4da64e;
     border: 1px solid #6ed77a;
     color: #ffffff;
     border-radius: 5px;
@@ -224,4 +224,39 @@
 
 .inputBox{
     position: relative;
+}
+#statistical-transaction-time{
+    margin-top: 20px;
+
+}
+.statistical-total-money-transaction,.statistical-income-money-transaction,.statistical-expense-money-transaction{
+    width: 350px;
+    background: #1b2559;
+    height: 70px;
+    border-radius: 6px;
+    color: #fff;
+    padding: 10px 15px 0;
+    display: inline-block;
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+.statistical-income-money-transaction{
+    background: #4cb2ca;
+}
+.statistical-expense-money-transaction{
+    background: #4da64e;
+}
+.statistical-transaction-title{
+    display: inline-block;
+    line-height: 30px;
+}
+
+.statistical-transaction-number{
+    display: inline-block;
+    float: right;
+}
+.statistical-transaction-number h4{
+    font-size: 23px;
+    margin-top: 15px;
 }

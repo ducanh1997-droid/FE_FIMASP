@@ -101,7 +101,7 @@ export default React.memo(function CreateTransaction(props){
         setDisplayCategoryPick1(true);
     }
     const Validation = Yup.object().shape({
-        name: Yup.string().max(15, "Không quá 15 ký tự"),
+        name: Yup.string().max(15, "Không quá 20 ký tự"),
         money: Yup.string().required("Vui lòng nhập chi tiêu!").min(0, "Vui lòng nhập chi tiêu!").matches(/^[0-9]+$/, "Không đúng định dạng số!"),
         wallet: Yup.object().shape({
             id: Yup.string().required("Vui lòng chọn ví!"),
@@ -109,7 +109,7 @@ export default React.memo(function CreateTransaction(props){
     })
     const Validation1 = Yup.object().shape({
         name: Yup.string().max(20, "Không quá 20 ký tự"),
-        money: Yup.number().required("Vui lòng nhập chi tiêu!").min(0, "Vui lòng nhập chi tiêu!"),
+        money: Yup.string().required("Vui lòng nhập thu nhập!").min(0, "Vui lòng nhập thu nhập!").matches(/^[0-9]+$/, "Không đúng định dạng số!"),
         wallet: Yup.object().shape({
             id: Yup.string().required("Vui lòng chọn ví!"),
         })
@@ -118,17 +118,48 @@ export default React.memo(function CreateTransaction(props){
     function GetTotalMoney({id}){
         for(let i=0;i<wallets.length;i++){
             if(id == wallets[i].id){
-                return `Tổng tiền: ${wallets[i].totalMoney} Giới hạn chi tiêu: ${wallets[i].limitMoney}`
+                if(wallets[i].limitMoney == 0){
+                    return `Tổng tiền: ${wallets[i].totalMoney} Giới hạn chi tiêu của ví đã hết`
+                }else{
+                    return `Tổng tiền: ${wallets[i].totalMoney} Giới hạn chi tiêu: ${wallets[i].limitMoney}`
+                }
             }
         }
     }
 
-    function CheckToTalMoney({id,money}){
+    function CheckToTalMoney(id,money){
         for(let i=0;i<wallets.length;i++){
             if(id == wallets[i].id){
                 if(wallets[i].limitMoney<money){
                     return `Vượt quá giới hạn chi tiêu của ví`
                 }
+            }
+        }
+        return false;
+    }
+
+    function updateWalletExpense(id,moneyExpence){
+        for(let i=0;i<wallets.length;i++){
+            if(id == wallets[i].id){
+                wallets[i].totalMoney -= moneyExpence;
+                wallets[i].limitMoney -= moneyExpence;
+                wallets[i].account = null;
+                wallets[i].account={
+                    id:idUser
+                }
+                 return wallets[i];
+            }
+        }
+    }
+    function updateWalletIncome(id,moneyIncome){
+        for(let i=0;i<wallets.length;i++){
+            if(id == wallets[i].id){
+                wallets[i].totalMoney += Number(moneyIncome);
+                wallets[i].account = null;
+                wallets[i].account={
+                    id:idUser
+                }
+                return wallets[i];
             }
         }
     }
@@ -162,11 +193,14 @@ return(
                                     id:'1'
                                 }
                             }}
+
                                     onSubmit={(values,actions) => {
-                                        save(values)
-                                        actions.resetForm()
-                                    }
-                                    }
+                                        if(CheckToTalMoney(values.wallet.id,values.money)==false){
+                                            save(values)
+                                            actions.resetForm()
+                                        }
+                                    }}
+
                                 validationSchema={Validation}
                                     enableReinitialize={true}
                             >
@@ -186,7 +220,8 @@ return(
                                                         <ErrorMessage name={'money'}  />
                                                     </span>
                                                     <span style={{color:"red", fontSize:"15px",margin:0,position:"absolute",bottom:"-25px"}}>
-                                                        <CheckToTalMoney id={values.wallet.id} money={values.money}/>
+                                                        {/*<CheckToTalMoney id={values.wallet.id} money={values.money}/>*/}
+                                                        {CheckToTalMoney(values.wallet.id,values.money)}
                                                     </span>
                                                 </div>
                                                 <div className='inputBox'>
@@ -207,7 +242,7 @@ return(
                                                         })
                                                         }
                                                     </Field>
-                                                    <span style={{color:"blue", fontSize:"15px",margin:0,position:"absolute",bottom:"-30px",width:"322px"}}><GetTotalMoney id={values.wallet.id}/></span>
+                                                    <span style={{color:"blue", fontSize:"15px",margin:0,position:"absolute",bottom:"-30px",width:"350px"}}><GetTotalMoney id={values.wallet.id}/></span>
                                                     {/*<span style={{color:"red", fontSize:"15px",margin:0,position:"absolute",bottom:"-25px"}}>*/}
                                                     {/*    Tổng tiền: {values.wallet.id}*/}
                                                     {/*</span>*/}
@@ -273,7 +308,7 @@ return(
                                             </div>
                                         </div>
                                             <div style={{display:"inline-flex",width:"100%",marginTop:"20px"}}>
-                                                <input value="Lưu" style={Object.keys(errors).length!==0
+                                                <input value="Lưu" style={(Object.keys(errors).length!==0 || CheckToTalMoney(values.wallet.id,values.money)!=false)
                                                     ?{background:"6BBD8EFF",cursor:"not-allowed"}:{background:"#3ab06c",cursor:"pointer"}} type="submit" className={'btn-submit-transaction'}/>
                                                 <input value="Hủy" type="button" className={'btn-reject-transaction'} onClick={props.close}/>
                                             </div>
@@ -316,10 +351,16 @@ return(
                                                             type="text"
                                                             name={"money"}
                                                         />
+                                                        <span style={{color:"red", fontSize:"15px",margin:0,position:"absolute",bottom:"-25px"}}>
+                                                        <ErrorMessage name={'money'}  />
+                                                    </span>
                                                     </div>
                                                     <div className='inputBox'>
                                                         <span>Ghi chú :</span>
                                                         <Field type="text" name={'name'}/>
+                                                        <span style={{color:"red", fontSize:"15px",margin:0,position:"absolute",bottom:"-25px"}}>
+                                                        <ErrorMessage name={'name'}  />
+                                                    </span>
                                                     </div>
                                                     <div className='inputBox'>
                                                         <span>Chọn ví :</span>
@@ -332,6 +373,10 @@ return(
                                                             })
                                                             }
                                                         </Field>
+                                                        <span style={{color:"blue", fontSize:"15px",margin:0,position:"absolute",bottom:"-30px",width:"350px"}}><GetTotalMoney id={values.wallet.id}/></span>
+                                                        <span style={{color:"red", fontSize:"15px",margin:0,position:"absolute",bottom:"-25px"}}>
+                                                            <ErrorMessage name={'wallet.id'}  />
+                                                        </span>
                                                     </div>
                                                 </div>
                                                 <div ref={categoryRef1} className='popup-detail-category' style={popupCategory1?{display:"block"}:{display:"none"}}>
@@ -408,6 +453,19 @@ return(
     function save(values) {
         values.category.id = categorygetId;
         axios.post(`http://localhost:8080/user${idUser}/cashes`,values,{headers: {"Authorization": `Bearer ${token}`}}).then(()=>{
+            if(values.type === "expence"){
+                let wallet = updateWalletExpense(values.wallet.id,values.money);
+                console.log(wallet);
+                axios.put(`http://localhost:8080/user${idUser}/wallets/${values.wallet.id}`,wallet,{headers: {"Authorization": `Bearer ${token}`}}).then((res)=>{
+
+                })
+            }else{
+                let walletIncome = updateWalletIncome(values.wallet.id,values.money);
+                console.log(walletIncome);
+                axios.put(`http://localhost:8080/user${idUser}/wallets/${values.wallet.id}`,walletIncome,{headers: {"Authorization": `Bearer ${token}`}}).then((res)=>{
+
+                })
+            }
             props.createSuccess()
             props.close()
         })

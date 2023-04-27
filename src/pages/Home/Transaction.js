@@ -8,7 +8,8 @@ import "../../assets/css/transaction.css";
 import arrow  from "./../../assets/img/448-arrow.png"
 export default function Transaction(props) {
     const [transactions,setTransactions] = useState([]);
-
+    const [transactionsAll,setTransactionsAll] = useState([]);
+    const [wallets,setWallets] = useState([]);
     const token = localStorage.getItem("token");
     const idUser = localStorage.getItem("id");
     const [searchDate,setSearchDate] = useState(false);
@@ -17,6 +18,10 @@ export default function Transaction(props) {
     const [totalPage,setTotalPage] = useState(1);
     const [totalElement,setTotalElement] = useState(0);
     const [valuesSearch,setValuesSearch] = useState({});
+    // const [totalMoneyAll,setTotalMoneyAll] = useState(0);
+    let totalMoneyAll = 0
+    let totalIncomeFollowTime = 0;
+    let totalExpenseFollowTime = 0;
     const notifyUpdate = () => {
         toast.success("Cập nhật giao dịch thành công", {
             position: "top-center", style: {
@@ -34,6 +39,9 @@ export default function Transaction(props) {
         })
     }
     useEffect(() =>{
+        axios.get(`http://localhost:8080/user${idUser}/wallets`).then((res)=>{
+            setWallets(res.data.content)
+        })
         setSearchDate(false);
         if (props.createSuccess) {
             notify();
@@ -44,6 +52,9 @@ export default function Transaction(props) {
             props.closeUpdate();
         }
         let current =currentPage- 1
+        axios.get(`http://localhost:8080/user${idUser}/cashes`).then((response)=>{
+            setTransactionsAll(response.data.content);
+        })
         axios.get(`http://localhost:8080/user${idUser}/cashes?page=${current}&size=${numOfPage}`).then((response)=>{
             setTransactions(response.data.content);
             setTotalPage(response.data.totalPages);
@@ -52,8 +63,34 @@ export default function Transaction(props) {
         })
     },[props.close,props.createSuccess,props.updateSuccess])
 
+    function totalMoney(){
+        for(let i=0;i<wallets.length;i++){
+            totalMoneyAll+=wallets[i].totalMoney
+        }
+        return totalMoneyAll;
+    }
+
+    function totalIncomeTime(){
+        for(let i=0;i<transactionsAll.length;i++){
+            if(transactionsAll[i].type == "income"){
+                totalIncomeFollowTime+=transactionsAll[i].money
+            }
+        }
+        return totalIncomeFollowTime;
+    }
+    function totalExpenseTime(){
+        for(let i=0;i<transactionsAll.length;i++){
+            if(transactionsAll[i].type == "expence"){
+                totalExpenseFollowTime+=transactionsAll[i].money
+            }
+        }
+        return totalExpenseFollowTime;
+    }
     function findAllTransaction(currentPage){
         currentPage-=1;
+        axios.get(`http://localhost:8080/user${idUser}/cashes`).then((response)=>{
+            setTransactionsAll(response.data.content);
+        })
         axios.get(`http://localhost:8080/user${idUser}/cashes?page=${currentPage}&size=${numOfPage}`).then((response)=>{
             setTransactions(response.data.content);
             setTotalPage(response.data.totalPages);
@@ -68,6 +105,9 @@ export default function Transaction(props) {
             setSearchDate(false)
             findAllTransaction(currentPage)
         }else{
+            axios.get(`http://localhost:8080/user${idUser}/cashes/${values.dateStart}/${values.dateEnd}`).then((response)=>{
+                setTransactionsAll(response.data.content);
+            })
             axios.get(`http://localhost:8080/user${idUser}/cashes/${values.dateStart}/${values.dateEnd}?page=${currentPage}&size=${numOfPage}`).then((response)=>{
                 setSearchDate(true);
                 setTransactions(response.data.content);
@@ -119,7 +159,35 @@ export default function Transaction(props) {
                 <Toaster/>
                 <div id='statistical-transaction-time'>
                     <div className='statistical-total-money-transaction'>
-
+                        <div className={'statistical-transaction-title'}>
+                            <h3>Tổng tiền</h3>
+                            <p>Tổng tiền còn lại trên các ví</p>
+                        </div>
+                        <div className={'statistical-transaction-number'}>
+                            <h4>{totalMoney().toLocaleString('en-US', {style : 'currency', currency : 'VND'})}</h4>
+                        </div>
+                    </div>
+                    <div>
+                        <div className='statistical-income-money-transaction'>
+                            <div className={'statistical-transaction-title'}>
+                                <h3>Chi tiêu</h3>
+                                <p>Tổng chi tiêu</p>
+                            </div>
+                            <div className={'statistical-transaction-number'}>
+                                <h4>{totalExpenseTime().toLocaleString('en-US', {style : 'currency', currency : 'VND'})}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div className='statistical-expense-money-transaction'>
+                            <div className={'statistical-transaction-title'}>
+                                <h3>Thu nhập</h3>
+                                <p>Tổng thu nhập</p>
+                            </div>
+                            <div className={'statistical-transaction-number'}>
+                                <h4>{totalIncomeTime().toLocaleString('en-US', {style : 'currency', currency : 'VND'})}</h4>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div id='block-search-transaction'>
@@ -178,7 +246,9 @@ export default function Transaction(props) {
                         </thead>
                         <tbody>
                         {transactions.map((item)=>{
+                            {totalMoneyAll+=item.money}
                                         return(
+
                                             <tr key={item.id} className={'active-row'}>
                                                 <td className={'feature-field'} style={{paddingTop: 5, boxSizing: "border-box",paddingLeft: "25px"}}>
                                                     <div style={{float: "left"}} className="icon-border-bus-dashboard" id={item.category.icon}>
@@ -219,6 +289,9 @@ export default function Transaction(props) {
             axios.delete(`http://localhost:8080/user${idUser}/cashes/${id}`,{headers: {"Authorization": `Bearer ${token}`}}).then((response)=>{
                 axios.get(`http://localhost:8080/user${idUser}/cashes`).then((response)=>{
                     setTransactions(response.data.content);
+                })
+                axios.get(`http://localhost:8080/user${idUser}/cashes`).then((response)=>{
+                    setTransactionsAll(response.data.content);
                 })
             })
         }
