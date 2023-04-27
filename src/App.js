@@ -3,6 +3,8 @@ import {createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterPr
 import HomePage from "./pages/Home/HomePage";
 import Home from "./pages/Home/Home";
 import ConfirmAccount from "./pages/Login/ConfirmAccount";
+import {UpdateCategory} from "./pages/Home/UpdateCategory";
+import {CreateCategory} from "./pages/Home/CreateCategory";
 
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
             <Route path={'/changePassword'} element={<Home content="ChangePassword"/>}></Route>
             <Route path={'/confirm-email/:id'} element={<ConfirmAccount/>}></Route>
             <Route path={"/home"} element={<HomePage></HomePage>}></Route>
+            <Route path={"/updateCategory/:id"} element={<UpdateCategory/>}></Route>
+            <Route path={"/createCategory"} element={<CreateCategory/>}></Route>
         </>
     ))
   return (

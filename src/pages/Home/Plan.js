@@ -1,4 +1,4 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import React, {useEffect, useState} from "react";
 import Swal from "sweetalert2";
@@ -8,6 +8,7 @@ export default function Plan() {
     const idAcc = localStorage.getItem('id');
     const [categories, setCategories] = useState([]);
     const token = localStorage.getItem("token");
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get(`http://localhost:8080/user${idAcc}/categories`).then((resp) => {
@@ -29,16 +30,14 @@ export default function Plan() {
     } else {
         return (
             <div id="content-plan">
-                <h2 id="page-title-plan">Hiện tại có {categories.length} ví</h2>
+                <h1 id="page-title-plan">Hiện tại có {categories.length} danh mục</h1>
                 <hr id="hr-search-plan"/>
                 <div style={{display: "inline-block", marginTop: 15}}>
-                    <h1 id="page-title-list-plan" style={{float: "left"}}>Thêm ví</h1>
+                    <h1 id="page-title-list-plan" style={{float: "left"}}>Thêm danh mục</h1>
                     <div
                         className="icon-border-dashboard"
-                        style={{cursor: "pointer"}}
-                     onClick={createCategory}
-                    >
-                        <i className="fa-solid fa-plus"/>
+                        style={{cursor: "pointer"}}>
+                        <Link to={'/createCategory'}><i className="fa-solid fa-plus"/></Link>
                     </div>
                 </div>
                 <hr id="hr-list-plan"/>
@@ -47,8 +46,8 @@ export default function Plan() {
                     <tr>
                         <th>STT</th>
                         <th>Icon</th>
-                        <th>Tên ví</th>
-                        <th>Kiểu ví</th>
+                        <th>Danh mục</th>
+                        <th>Kiểu danh mục</th>
                         <th>Hành động</th>
                     </tr>
                     </tbody>
@@ -64,9 +63,14 @@ export default function Plan() {
                                 </td>
                                 <td>{item.name}</td>
                                 <td>{item.typeCategory}</td>
-                                <td style={{position:"relative"}}>
-                                    <i className="fa-regular fa-pen-to-square"></i>&nbsp;&nbsp;&nbsp;
-                                    <i className="fa-solid fa-trash-can" onClick={() => deleteCategory(item.id)}></i>
+                                <td id={'showIcon'}  style={{position:"relative"}} >
+                                    {item.id>8? (<>
+
+                                        <Link className={'button-save-profile'} to={"/updateCategory/"+ item.id}>
+                                            <i className="fa-regular fa-pen-to-square" > </i></Link>
+                                        <i className="fa-solid fa-trash-can" onClick={() => deleteCategory(item.id)}></i>
+                                    </>): ''}
+
                                 </td>
                             </tr>
                         )
@@ -77,11 +81,6 @@ export default function Plan() {
         )
     }
 
-    function createCategory() {
-
-
-
-    }
 
     function deleteCategory(id) {
 
@@ -109,7 +108,7 @@ export default function Plan() {
                         Swal.fire('Data not found')
                     })
 
-                }).catch(err => Swal.fire('Has Error!'))
+                }).catch(err => Swal.fire('Có lỗi xảy ra, bạn không thể xóa danh mục này!'))
 
             }
         })
