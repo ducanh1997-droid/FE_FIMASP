@@ -674,7 +674,7 @@ h5.titles-dashboard{
 #content-right-dashboard{
     display: inline-block;
     float: right;
-    height: 700px;
+    min-height: 750px;
     border: 1px solid #ece8e8;
     border-radius: 11px;
     width: 45%;
@@ -841,6 +841,7 @@ h5.titles-dashboard{
     font-size: 20px;
 }
 .name-and-price-plan{
+    margin-top: -8px;
     float: left;
 }
 .name-and-price-plan .name-plan{
@@ -874,6 +875,7 @@ h5.titles-dashboard{
     color: #fff;
     font-size: 14px;
     margin-right: 5px;
+    margin-top:-1px;
 }
 .percentage-1{
     display: inline-block;
@@ -905,6 +907,24 @@ h5.titles-dashboard{
     background: green;
 }
 .bar-2{
+    margin: 0;
+    width: 40%;
+    animation: animate-2 3s;
+    height: 20px;
+    position: relative;
+    border-radius: 1000px;
+    background: #189122;
+}
+.bar-3{
+    margin: 0;
+    width: 40%;
+    animation: animate-2 3s;
+    height: 20px;
+    position: relative;
+    border-radius: 1000px;
+    background: #449ae1;
+}
+.bar-1{
     margin: 0;
     width: 40%;
     animation: animate-2 3s;

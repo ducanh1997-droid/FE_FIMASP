@@ -122,8 +122,9 @@
 
 }
 #table-list-transaction th,#table-list-transaction td{
-    padding: 12px 15px;
+    padding: 12px 15px 12px 0px;
     width: 230px;
+    text-align: left;
     vertical-align: middle;
 }
 
@@ -134,12 +135,15 @@
 
 }
 
-#table-list-transaction tbody tr{
-    background: #fff;
+.payment-history #table-list-transaction tbody tr{
+    border:none;
 }
 
 #table-list-transaction tbody tr:last-of-type{
     border-bottom: 2px solid #009879;
+}
+.payment-history #table-list-transaction tbody tr:last-of-type{
+    border:none
 }
 .active-row{
 

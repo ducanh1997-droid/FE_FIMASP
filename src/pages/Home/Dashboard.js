@@ -1,7 +1,40 @@
 import {Link} from "react-router-dom";
 import SimpleSlider from "./demo";
+import "./../../assets/css/transaction.css"
+import React, {useEffect, useState} from "react";
+import axios from "axios";
 export default function Dashboard() {
+    const [transactionsAll,setTransactionsAll] = useState([]);
+    const [transactionsByCategory,setTransactionsByCategory] = useState([]);
+    const [totalMoneyExByTime,setTotalMoneyExByTime] = useState(0);
+    const [wallets,setWallets] = useState([]);
+    const token = localStorage.getItem("token");
+    const idUser = localStorage.getItem("id");
+    let totalMoneyAll = 0
+    let msc=Date.now();
+    let startDate,endDate
+    endDate=(new Date(msc+7*60*60*1000)).toISOString().slice(0,10)
+    startDate=(new Date(msc+7*60*60*1000-6*24*60*60*1000)).toISOString().slice(0,10)
 
+    useEffect(() =>{
+        axios.get(`http://localhost:8080/user${idUser}/wallets`).then((res)=>{
+            setWallets(res.data.content)
+        })
+        axios.get(`http://localhost:8080/user${idUser}/cashes/ex`).then((response)=>{
+            setTransactionsAll(response.data);
+        })
+        axios.get(`http://localhost:8080/user${idUser}/cashes/ex/category/${startDate}/${endDate}`).then((response)=>{
+            setTransactionsByCategory(response.data);
+        })
+        axios.get(`http://localhost:8080/user${idUser}/cashes/ex/${startDate}/${endDate}`).then((response)=>{
+            setTotalMoneyExByTime(response.data);
+        })
+    },[])
+
+    // function getMostExpenseByCategory(){
+    //     let sortTransactionsByCategory = transactionsByCategory.sort(function(a, b){return a+b});
+    //     return sortTransactionsByCategory;
+    // }
     if (localStorage.getItem('id') === '' || localStorage.getItem('id') === null) {
         return (
             <>
@@ -63,35 +96,23 @@ export default function Dashboard() {
                         </div>
                     </div>
                     <div id="planning">
-                        <h6>Lập kế hoạch</h6>
-                        <div className="plan-block">
-                            <div className="name-and-price-plan">
-                                <p className="name-plan">Buy a Macbook</p>
-                                <p className="price-plan">15.000.000 đ/20.000.000 đ</p>
-                            </div>
-                            <div className="plan-bar">
-                                <div className="bar">
-                                    <span className="percentage">70%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="button-detail-planning">
-                            <i className="fa-solid fa-arrow-up-right"/>
-                        </div>
-                        <div className="plan-block">
-                            <div className="name-and-price-plan">
-                                <p className="name-plan">Buy a car</p>
-                                <p className="price-plan">1.500.000.000 đ/2.000.000.000 đ</p>
-                            </div>
-                            <div className="plan-bar">
-                                <div className="bar-2">
-                                    <span className="percentage">40%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="button-detail-planning">
-                            <i className="fa-solid fa-arrow-up-right"/>
-                        </div>
+                        <h6>Chi tiêu nhiều nhất trong tuần</h6>
+                        {transactionsByCategory.map((item,index)=>{
+                            return(
+                                index<3?
+                                    <div className="plan-block">
+                                        <div className="name-and-price-plan">
+                                            <p className="name-plan">{item.name}</p>
+                                            <p className="price-plan">{item.money.toLocaleString('en-US', {style : 'currency', currency : 'VND'})}</p>
+                                        </div>
+                                        <div className="plan-bar">
+                                            <div className={'bar-'+(index+1)} style={{width:Math.round(item.money/totalMoneyExByTime*100)+"%"}}>
+                                                <span className="percentage">{Math.round(item.money/totalMoneyExByTime*100)}%</span>
+                                            </div>
+                                        </div>
+                                    </div>:<></>
+                            )
+                        })}
                     </div>
                 </div>
                 <div className="payment-history">
@@ -117,6 +138,41 @@ export default function Dashboard() {
                                 style={{top: 0}}
                             />
                         </div>
+                    </div>
+
+                    <div id='list-transaction'>
+                        <table id='table-list-transaction' style={{minWidth:"630px",fontSize:"14px",boxShadow:"none"}}>
+                            <thead>
+                            <tr>
+                                <th style={{paddingLeft: "30px"}} >Danh mục</th>
+                                <th>Ngày</th>
+                                <th>Ghi chú</th>
+                                <th>Số tiền</th>
+                                <th>Ví</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {transactionsAll.reverse().map((item,index)=>{
+                                {totalMoneyAll+=item.money}
+                                return(
+                                    index<5?
+                                    <tr key={item.id} className={'active-row'} id={index}>
+                                        <td className={'feature-field'} style={{paddingTop: 5, boxSizing: "border-box",paddingLeft: "0px"}}>
+                                            <div style={{float: "left"}} className="icon-border-bus-dashboard" id={item.category.icon}>
+                                                <i className={item.category.icon+' fa-light'}/>
+                                            </div>
+                                            <p style={{display:"inline-block",marginLeft:"10px",marginTop:"5px"}}>{item.category.name}</p>
+                                        </td>
+                                        <td className={'feature-field'} style={{color: "#8d8d8d"}}>{item.date.slice(0,10)}</td>
+                                        <td>{item.name}</td>
+                                        <td className={'feature-field'}>{item.money.toLocaleString('en-US', {style : 'currency', currency : 'VND'})}</td>
+                                        <td>{item.wallet&&item.wallet.name||"Thuộc ví đã bị xóa"}</td>
+                                    </tr>:<></>
+                                )
+                            })}
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
