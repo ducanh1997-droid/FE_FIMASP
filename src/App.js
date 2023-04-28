@@ -5,6 +5,7 @@ import Home from "./pages/Home/Home";
 import ConfirmAccount from "./pages/Login/ConfirmAccount";
 import {UpdateCategory} from "./pages/Home/UpdateCategory";
 import {CreateCategory} from "./pages/Home/CreateCategory";
+import LoginWithGoogle from "./pages/Login/LoginWithGoogle";
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route path={"/home"} element={<HomePage></HomePage>}></Route>
             <Route path={"/updateCategory/:id"} element={<UpdateCategory/>}></Route>
             <Route path={"/createCategory"} element={<CreateCategory/>}></Route>
+            <Route path={'/loginGoogle'} element={<LoginWithGoogle/>}></Route>
         </>
     ))
   return (

@@ -8,6 +8,7 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import $ from 'jquery';
 import Swal from "sweetalert2";
+import LoginWithGoogle from "../Login/LoginWithGoogle";
 
 export default function LoginForm({setShown}) {
     const navigate = useNavigate();
@@ -165,6 +166,7 @@ export default function LoginForm({setShown}) {
                                 <ErrorMessage name={"email1"}></ErrorMessage>
                                 <Field type="password" id="password1" name="password1" placeholder="Password"/>
                                 <ErrorMessage name={"password1"}></ErrorMessage>
+                                <LoginWithGoogle></LoginWithGoogle>
                                 <a href="#" onClick={backPassword}>Forgot your password?</a>
                                 <button type={"submit"}>Sign In</button>
                             </Form>
@@ -265,7 +267,7 @@ export default function LoginForm({setShown}) {
             localStorage.setItem('token', resp.data.token)
             localStorage.setItem('username', resp.data.username)
             localStorage.setItem('avatar', resp.data.avatar)
-            Swal.fire('Login success!', '', 'success')
+            Swal.fire('LoginWithGoogle success!', '', 'success')
             navigate('/dashboard')
         }).catch(err => Swal.fire({
             icon: 'error',
