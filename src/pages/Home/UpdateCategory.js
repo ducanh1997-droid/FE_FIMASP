@@ -150,6 +150,8 @@ export function UpdateCategory(props) {
             Swal.fire({
                 icon: 'success',
                 title: 'Update success!',
+                showConfirmButton: false,
+                timer: 1000
             })
         }).catch(err => {
             console.log(err)

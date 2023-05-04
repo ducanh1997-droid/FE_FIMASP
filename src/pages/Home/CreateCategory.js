@@ -18,7 +18,7 @@ export function CreateCategory(){
     })
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/user${idUser}/categories`).then((resp) => {
+        axios.get(`http://localhost:8080/user1/categories`).then((resp) => {
             setCategories(resp.data)
             console.log(resp.data)
         })
@@ -120,6 +120,8 @@ export function CreateCategory(){
         Swal.fire({
             icon: 'success',
             title: 'Create success!',
+            showConfirmButton: false,
+            timer: 1000
         })
     }).catch(err =>{
         console.log(err)

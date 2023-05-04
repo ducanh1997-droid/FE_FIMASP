@@ -2,6 +2,7 @@ import {useState} from "react";
 import toast, {Toaster} from 'react-hot-toast';
 import axios from "axios";
 import $ from 'jquery';
+import {Link} from "react-router-dom";
 
 export default function ChangePassword() {
     const [pw, setPw] = useState("");
@@ -40,25 +41,35 @@ export default function ChangePassword() {
         setEye2(!eye2);
     }
 
-    return (
-        <div id='change-password-block'>
-            <h2>Thay đổi mật khẩu</h2>
-            <div className='input-password-box'>
-                <input type={eye1 === false ? "password" : "text"} id='password' placeholder='mật khẩu cũ'/>
-                <i className={eye1 === false ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"} onClick={eyeIcon1}></i>
-            </div>
-            <div className='input-password-box'>
-                <input type={eye2 === false ? "password" : "text"} id='re-password' placeholder='mật khẩu mới'/>
-                <i className={eye2 === false ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"} onClick={eyeIcon2}></i>
+    if (localStorage.getItem('id') === '2' || localStorage.getItem('id') === '3') {
+        return (
+            <>
+                <h2>Bạn đang sử dụng tài khoản mạng xã hội</h2>
+                <Link to={'/home'}>Trở về trang chủ để đăng nhập</Link>
+            </>
+        )
+    } else {
 
-            </div>
-            <div id='button-change-password'>
-                <button onClick={save}>Đổi mật khẩu</button>
-            </div>
+        return (
+            <div id='change-password-block'>
+                <h2>Thay đổi mật khẩu</h2>
+                <div className='input-password-box'>
+                    <input type={eye1 === false ? "password" : "text"} id='password' placeholder='mật khẩu cũ'/>
+                    <i className={eye1 === false ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"} onClick={eyeIcon1}></i>
+                </div>
+                <div className='input-password-box'>
+                    <input type={eye2 === false ? "password" : "text"} id='re-password' placeholder='mật khẩu mới'/>
+                    <i className={eye2 === false ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"} onClick={eyeIcon2}></i>
 
-            <Toaster/>
-        </div>
-    )
+                </div>
+                <div id='button-change-password'>
+                    <button onClick={save}>Đổi mật khẩu</button>
+                </div>
+
+                <Toaster/>
+            </div>
+        )
+    }
 
 
     function save() {
@@ -80,7 +91,7 @@ export default function ChangePassword() {
         }
 
         axios.put(`http://localhost:8080/user/changePassword`, account
-        ,{headers: {"Authorization": `Bearer ${token}`}}
+            , {headers: {"Authorization": `Bearer ${token}`}}
         ).then((resp) => {
             console.log(resp)
             setPw(resp.data.password)

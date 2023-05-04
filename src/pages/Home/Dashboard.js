@@ -1,5 +1,4 @@
 import {Link} from "react-router-dom";
-import SimpleSlider from "./demo";
 export default function Dashboard() {
 
     if (localStorage.getItem('id') === '' || localStorage.getItem('id') === null) {

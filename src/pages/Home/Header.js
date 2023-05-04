@@ -6,11 +6,14 @@ export default function Header(props){
  const[active,setActive] = useState(true)
  const [user, setUser] = useState({})
 
+ const avatar = localStorage.getItem('avatar')
+
  const [activeCategory,setActiveCategory] = useState("fa-dumbbell")
 
  const wrapperRef = useRef(null);
 
  const [idAcc, setIdAcc] = useState(localStorage.getItem('id'))
+
 
  useEffect(() => {
   axios.get(`http://localhost:8080/user/${idAcc}`).then((response) => {
@@ -188,10 +191,15 @@ export default function Header(props){
        <h1>Trang chủ</h1>
       </div>
       <div id="avatar">
-       <img src={user.avatar} alt=""/>
+       {user.avatar === undefined || user.avatar=== null?(
+            <img src={avatar} alt=""/>
+       ):  <img src={user.avatar} alt=""/>}
+
       </div>
      </div>
 
  )
+
+
 }
 

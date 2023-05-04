@@ -9,6 +9,7 @@ import {useNavigate} from "react-router-dom";
 import $ from 'jquery';
 import Swal from "sweetalert2";
 import LoginWithGoogle from "../Login/LoginWithGoogle";
+import LoginWithFacebook from "../Login/LoginWithFacebook";
 
 export default function LoginForm({setShown}) {
     const navigate = useNavigate();
@@ -53,6 +54,7 @@ export default function LoginForm({setShown}) {
 
     function createPwStrict(event) {
         let pw = event.target.value;
+        console.log(pw)
         setPwValue(pw)
         let pwStrict1 = {
             length: (/.{8,}/).test(pw),
@@ -166,9 +168,18 @@ export default function LoginForm({setShown}) {
                                 <ErrorMessage name={"email1"}></ErrorMessage>
                                 <Field type="password" id="password1" name="password1" placeholder="Password"/>
                                 <ErrorMessage name={"password1"}></ErrorMessage>
-                                <LoginWithGoogle></LoginWithGoogle>
-                                <a href="#" onClick={backPassword}>Forgot your password?</a>
                                 <button type={"submit"}>Sign In</button>
+                                <div>
+                                    <LoginWithGoogle ></LoginWithGoogle>
+                                </div>
+
+
+                                <div>
+                                    <LoginWithFacebook></LoginWithFacebook>
+                                </div>
+
+                                <a href="#" onClick={backPassword}>Forgot your password?</a>
+
                             </Form>
                         </Formik>
                     </div>
@@ -199,6 +210,30 @@ export default function LoginForm({setShown}) {
         </>
     )
 
+    function loadRegisterRequest() {
+        let timerInterval
+        Swal.fire({
+            title: 'Please wait a moment!',
+            html: 'Request will complete in <b></b> milliseconds.',
+            timer: 8000,
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading()
+                const b = Swal.getHtmlContainer().querySelector('b')
+                timerInterval = setInterval(() => {
+                    b.textContent = Swal.getTimerLeft()
+                }, 200)
+            },
+            willClose: () => {
+                clearInterval(timerInterval)
+            }
+        }).then((result) => {
+            /* Read more about handling dismissals below */
+            if (result.dismiss === Swal.DismissReason.timer) {
+                console.log('I was closed by the timer')
+            }
+        })
+    }
 
     function save(values) {
 
@@ -222,14 +257,23 @@ export default function LoginForm({setShown}) {
 
         console.log(account)
 
+        loadRegisterRequest();
+
         axios.post('http://localhost:8080/user/register', account).then((resp) => {
             console.log(resp)
-            if(resp.data){
+
+            if (resp.data) {
+
                 Swal.fire({
+                    timerProgressBar: true,
                     icon: 'success',
                     title: 'Register success!Email checkout please!',
+                    timer: 1000,
+
                 })
-            }else {
+                setShown(false)
+
+            } else {
                 Swal.fire({
                     icon: 'error',
                     text: 'Account was existed!',
@@ -267,7 +311,13 @@ export default function LoginForm({setShown}) {
             localStorage.setItem('token', resp.data.token)
             localStorage.setItem('username', resp.data.username)
             localStorage.setItem('avatar', resp.data.avatar)
-            Swal.fire('LoginWithGoogle success!', '', 'success')
+            Swal.fire({
+                icon: 'success',
+                title: 'Login success!',
+                showConfirmButton: false,
+                timer: 1300
+            })
+
             navigate('/dashboard')
         }).catch(err => Swal.fire({
             icon: 'error',
@@ -288,14 +338,14 @@ export default function LoginForm({setShown}) {
             showLoaderOnConfirm: true,
             preConfirm: (email) => {
                 console.log(email)
-
                 return axios.get(`http://localhost:8080/user/back-password/${email}`)
                     .then(response => {
                         console.log(response)
-                        if(response.data){
+                        if (response.data) {
                             Swal.fire(
                                 `please check: '${email}' to get password!`
-                            )}else {
+                            )
+                        } else {
                             Swal.showValidationMessage(
                                 `Email: '${email}' does not exist!`
                             )

@@ -58,7 +58,14 @@ export default function Profile() {
                 <Link to={'/home'}>Trở về trang chủ để đăng nhập</Link>
             </>
         )
-    } else {
+    }else if(localStorage.getItem('id')=== '2'|| localStorage.getItem('id')==='3'){
+        return (
+            <>
+                <h2>Bạn đang sử dụng tài khoản mạng xã hội</h2>
+                <Link to={'/home'}>Trở về trang chủ để đăng nhập</Link>
+            </>
+        )
+    }else {
         return (
             <>
                 <Formik initialValues={{
@@ -240,7 +247,7 @@ export default function Profile() {
                 console.log(resp)
                 notify();
                 setUser(resp.data);
-                // refreshPage()
+                refreshPage()
             }).catch((err) => {
             console.log(err)
         })

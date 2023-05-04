@@ -67,11 +67,13 @@ export default function Plan() {
                                     {item.id>8? (<>
 
                                         <Link className={'button-save-profile'} to={"/updateCategory/"+ item.id}>
-                                            <i className="fa-regular fa-pen-to-square" > </i></Link>
+                                            <i className="fa-regular fa-pen-to-square" ></i></Link>
                                         <i className="fa-solid fa-trash-can" onClick={() => deleteCategory(item.id)}></i>
+
                                     </>): ''}
 
                                 </td>
+
                             </tr>
                         )
                     })}
@@ -96,11 +98,12 @@ export default function Plan() {
                 axios.delete(`http://localhost:8080/user${idAcc}/categories/${id}`
                     , {headers: {"Authorization": `Bearer ${token}`}}).then((resp) =>{
                     console.log(resp)
-                    Swal.fire(
-                        'Deleted!',
-                        'Your file has been deleted.',
-                        'success'
-                    )
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        showConfirmButton: false,
+                        timer: 1000
+                    })
                     axios.get(`http://localhost:8080/user${idAcc}/categories`).then((resp) => {
                         console.log(resp)
                         setCategories(resp.data)
