@@ -1,6 +1,6 @@
 import {Link, redirect, Route, Routes} from "react-router-dom";
 import Home from "../pages/Home/Home";
-import Login from "../pages/Login/Login";
+import LoginWithGoogle from "../pages/Login/LoginWithGoogle";
 import ConfirmAccount from "../pages/Login/ConfirmAccount";
 
 export default function Navbar() {
@@ -13,7 +13,7 @@ export default function Navbar() {
             <Route path={'/setting'} element={<Home content="Setting"/>}></Route>
             <Route path={'/profile'} element={<Home content="Profile"/>}></Route>
             <Route path={'/changePassword'} element={<Home content="ChangePassword"/>}></Route>
-            <Route path={'/logout'} element={<Login/>}></Route>
+            <Route path={'/logout'} element={<LoginWithGoogle/>}></Route>
             <Route path={'confirm-email/:id'} element={<ConfirmAccount/>}></Route>
         </>
     );

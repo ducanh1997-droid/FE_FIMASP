@@ -3,7 +3,7 @@ import axios from "axios";
 import {ArcElement, Chart, DoughnutController, Legend, PieController, Tooltip} from "chart.js";
 import {Doughnut, Pie} from "react-chartjs-2";
 Chart.register(DoughnutController, ArcElement,PieController,Legend,Tooltip)
-export default function PieCategoryChart({elementDate}){
+export default function PieCategoryChart({elementDate,props}){
     const [informExArray,setInformExArray]=useState([])
     const [informInArray,setInformInArray]=useState([])
     let idUser=localStorage.getItem("id")
@@ -19,7 +19,7 @@ export default function PieCategoryChart({elementDate}){
 }else {
         setInformExArray([])
         setInformInArray([])
-    }},[elementDate])
+    }},[elementDate,props])
     let exLabels=[],exData=[],sumExCategory=0;
     let inLabels=[],inData=[],sumInCategory=0
     for (let informExArrayElement of informExArray) {

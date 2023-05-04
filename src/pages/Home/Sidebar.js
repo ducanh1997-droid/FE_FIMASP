@@ -57,10 +57,7 @@ export default function Sidebar({active,setActive}){
     }
 
     function logout() {
-        localStorage.removeItem('id')
-        localStorage.removeItem('token')
-        localStorage.removeItem('username')
-        localStorage.removeItem('avatar')
+        localStorage.clear();
         navigate('/home')
     }
 }

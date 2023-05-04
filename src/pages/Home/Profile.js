@@ -6,14 +6,19 @@ import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
 import storage from "../../FirebaseConfig";
 import toast, {Toaster} from "react-hot-toast";
 import {Link} from "react-router-dom";
+import Swal from "sweetalert2";
 
 
 export default function Profile({setImageHeader}) {
     const [user, setUser] = useState({});
     const [image, setImage] = useState("");
-
+    const [progressPercent, setProgressPercent] = useState(0);
     const [check, setCheck] = useState(false);
     const refInput = useRef(null);
+
+    function refreshPage() {
+        window.location.reload();
+    }
 
     const token = localStorage.getItem('token');
     const notify = () => {
@@ -53,6 +58,13 @@ export default function Profile({setImageHeader}) {
         return (
             <>
                 <h2>Bạn không có quyền truy cập link này</h2>
+                <Link to={'/home'}>Trở về trang chủ để đăng nhập</Link>
+            </>
+        )
+    }else if(localStorage.getItem('id')=== '2'|| localStorage.getItem('id')==='3'){
+        return (
+            <>
+                <h2>Bạn đang sử dụng tài khoản mạng xã hội</h2>
                 <Link to={'/home'}>Trở về trang chủ để đăng nhập</Link>
             </>
         )
@@ -174,18 +186,24 @@ export default function Profile({setImageHeader}) {
                                 <div className='attach-title'>
                                     <h2>Chọn ảnh avatar</h2>
                                 </div>
-                                <div><div className="attach-img8">
-                                    {
-                                        !image && <img src={user.avatar} alt=""/>
-                                    }
-                                    {
-                                        image && <img src={image} alt=""/>
-                                    }
-                                    {/*<img src={user.avatar} alt=""/>*/}
-                                </div>
+                                <div>
+                                    <div className="attach-img8">
+                                        {
+                                            !image && <img src={user.avatar} alt=""/>
+                                        }
+                                        {
+                                            image && <img src={image} alt=""/>
+                                        }
+                                        {/*<img src={user.avatar} alt=""/>*/}
+                                    </div>
 
                                     <div className="attach-icon">
                                         <i className="fa-solid fa-paperclip"></i>
+                                    </div>
+                                    <div className='outer-bar'>
+                                        <div className='inner-bar'
+                                             style={{width: `${progressPercent}%`}}>Upload...{progressPercent}%
+                                        </div>
                                     </div>
                                     <div className='attach-choose-file'>
                                         <h4>Chọn ảnh</h4>
@@ -229,9 +247,13 @@ export default function Profile({setImageHeader}) {
             , {headers: {"Authorization": `Bearer ${token}`}})
             .then((resp) => {
                 console.log(resp)
-                notify();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Cập nhật hồ sơ thành công!',
+                    showConfirmButton: false,
+                    timer: 1000
+                })
                 setUser(resp.data);
-                localStorage.setItem('avatar', user.avatar)
 
             }).catch((err) => {
             console.log(err)
@@ -249,15 +271,16 @@ export default function Profile({setImageHeader}) {
                 (snapshot) => {
                     const progress =
                         Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-
+                    setProgressPercent(progress);
                 },
                 (error) => {
                     console.log(error);
                 },
-                () => {getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                    setImage(downloadURL)
-                    setCheck(false)
-                });
+                () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                        setImage(downloadURL)
+                        setCheck(false)
+                    });
                 }
             );
         }

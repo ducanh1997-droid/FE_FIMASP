@@ -1,8 +1,12 @@
 import {useEffect, useRef, useState} from "react";
+import axios from "axios";
 
 export default function Header({imageHeader}){
 
  const[active,setActive] = useState(true)
+ const [user, setUser] = useState({})
+
+ const avatar = localStorage.getItem('avatar')
 
  const [activeCategory,setActiveCategory] = useState("fa-dumbbell")
 
@@ -15,6 +19,21 @@ export default function Header({imageHeader}){
     */
 
   }, );
+ const [idAcc, setIdAcc] = useState(localStorage.getItem('id'))
+
+
+ useEffect(() => {
+  axios.get(`http://localhost:8080/user/${idAcc}`).then((response) => {
+   setUser(response.data);
+
+  })
+ }, [idAcc])
+
+ useEffect(() => {
+  /**
+   * Alert if clicked on outside of element
+   */
+ }, [wrapperRef]);
 
  function openIncome(){
   setActive(true);
@@ -167,10 +186,15 @@ export default function Header({imageHeader}){
        <h1>Trang chủ</h1>
       </div>
       <div id="avatar">
-       <img src={imageHeader} alt=""/>
+       {user.avatar === undefined || user.avatar=== null?(
+            <img src={avatar} alt=""/>
+       ):  <img src={imageHeader} alt=""/>}
+
       </div>
      </div>
 
  )
+
+
 }
 

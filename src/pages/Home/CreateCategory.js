@@ -2,6 +2,7 @@ import React,{useEffect, useRef, useState} from "react";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from 'yup'
 import axios from "axios";
+import Swal from "sweetalert2";
 import toast, {Toaster} from "react-hot-toast";
 import "./../../assets/css/popupTransaction.css";
 export default React.memo(function CreateCategory(props){
@@ -157,6 +158,18 @@ export default React.memo(function CreateCategory(props){
         axios.post(`http://localhost:8080/user${idUser}/categories`,values,{headers: {"Authorization": `Bearer ${token}`}}).then(()=>{
             props.createSuccess()
             props.close()
+            Swal.fire({
+                icon: 'success',
+                title: 'Create success!',
+                showConfirmButton: false,
+                timer: 1000
+            })
+        }).catch(err =>{
+            console.log(err)
+            Swal.fire({
+                icon: 'error',
+                title: 'Update failed!',
+            })
         })
     }
 })

@@ -6,6 +6,7 @@ import axios from "axios";
 import toast, {Toaster} from "react-hot-toast";
 import "../../assets/css/transaction.css";
 import arrow  from "./../../assets/img/448-arrow.png"
+import Swal from "sweetalert2";
 export default function Category(props) {
     const [category,setCategory]  = useState(undefined);
     const [categories,setCategories] = useState([]);
@@ -33,11 +34,21 @@ export default function Category(props) {
     }
     useEffect(() =>{
         if (props.createSuccess) {
-            notify();
+            Swal.fire({
+                icon: 'success',
+                title: 'Tạo danh mục thành công!',
+                showConfirmButton: false,
+                timer: 1000
+            })
             props.closeCreate();
         }
         if (props.updateSuccess) {
-            notifyUpdate();
+            Swal.fire({
+                icon: 'success',
+                title: 'Cập nhật danh mục thành công!',
+                showConfirmButton: false,
+                timer: 1000
+            })
             props.closeUpdate();
         }
         let current =currentPage- 1

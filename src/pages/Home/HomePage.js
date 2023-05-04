@@ -1,8 +1,10 @@
 import './Homepage.css'
 import {useState} from "react";
 import LoginForm from "./LoginForm";
+import {Link} from "react-router-dom";
 export default function HomePage(){
     const [shown,setShown]=useState(false);
+
     function showForm(){
         setShown(true)
     }
@@ -20,6 +22,7 @@ export default function HomePage(){
                     <div className={"header_signIn"}>
                         <a onClick={showForm} id={"btn-signIn"} >Đăng Nhập</a>
                         <a id={"btn-free"} href={"#"}>Dùng thử miễn phí</a>
+
                     </div>
                 </div>
             </header>

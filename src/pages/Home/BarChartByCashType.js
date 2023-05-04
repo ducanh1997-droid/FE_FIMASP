@@ -6,7 +6,7 @@ import PieCategoryChart from "./pieCategoryChart";
 import HorizontalBarChart from "./HorizontalBarChart";
 
 Chart.register(BarElement,BarController,Tooltip,CategoryScale,LinearScale,Legend,Title)
-export default function  BarChartCashType(){
+export default function  BarChartCashType(props){
     const [informArray,setInformArray]=useState([])
     const [endDate,setEndDate]=useState((new Date(Date.now()+7*60*60*1000)).toISOString().slice(0,10))
     const [dateRange,setDateRange]=useState(7)
@@ -21,7 +21,7 @@ export default function  BarChartCashType(){
         axios.get(`http://localhost:8080/user${idUser}/cashes/cashSumByType/${startDate}/${endDate}`).then((req)=>{
             setInformArray(req.data)
         })
-    },[endDate,startDate])
+    },[endDate,startDate,props])
     if(dateRange===7){
         for (let i = 0; i <=6 ; i++) {
             let msc1 =msc+7*60*60*1000-i*24*60*60*1000
@@ -151,9 +151,9 @@ export default function  BarChartCashType(){
          </div>
         <div style={{width:"57%",height: "500px",display:"inline-block",border:"1px solid white",backgroundColor:"rgb(231,240,253)",position: "relative",left:"0px"}}>
             <Bar data={data} options={option}></Bar>
-            <HorizontalBarChart elementDate={elementDate}></HorizontalBarChart>
+            <HorizontalBarChart props={props} elementDate={elementDate}></HorizontalBarChart>
         </div>
-        <PieCategoryChart elementDate={elementDate}></PieCategoryChart>
+        <PieCategoryChart props={props} elementDate={elementDate}></PieCategoryChart>
 
         {/*<LineChart></LineChart>*/}
         </>

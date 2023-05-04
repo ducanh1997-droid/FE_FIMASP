@@ -7,8 +7,10 @@ import OtherTooltip from "./OtherTooltip";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import $ from 'jquery';
-import Swal from "sweetalert2";
 
+import Swal from "sweetalert2";
+import LoginWithGoogle from "../Login/LoginWithGoogle";
+import LoginWithFacebook from "../Login/LoginWithFacebook";
 
 export default function LoginForm({setShown}) {
     const navigate = useNavigate();
@@ -168,6 +170,17 @@ export default function LoginForm({setShown}) {
                                 <ErrorMessage name={"password1"}></ErrorMessage>
                                 <a href="#" onClick={backPassword}>Forgot your password?</a>
                                 <button type={"submit"}>Sign In</button>
+                                <div>
+                                    <LoginWithGoogle ></LoginWithGoogle>
+                                </div>
+
+
+                                <div>
+                                    <LoginWithFacebook></LoginWithFacebook>
+                                </div>
+
+                                <a href="#" onClick={backPassword}>Forgot your password?</a>
+
                             </Form>
                         </Formik>
                     </div>
@@ -198,13 +211,40 @@ export default function LoginForm({setShown}) {
         </>
     )
 
+    function loadRegisterRequest() {
+        let timerInterval
+        Swal.fire({
+            title: 'Please wait a moment!',
+            html: 'Request will complete in <b></b> milliseconds.',
+            timer: 8000,
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading()
+                const b = Swal.getHtmlContainer().querySelector('b')
+                timerInterval = setInterval(() => {
+                    b.textContent = Swal.getTimerLeft()
+                }, 200)
+            },
+            willClose: () => {
+                clearInterval(timerInterval)
+            }
+        }).then((result) => {
+            /* Read more about handling dismissals below */
+            if (result.dismiss === Swal.DismissReason.timer) {
+                console.log('I was closed by the timer')
+            }
+        })
+    }
 
     function save(values) {
 
         let pw = $("#password").val();
         let pw1 = $("#passwordConfirm").val();
         if (pw !== pw1) {
-            window.alert("Password does not match!")
+            Swal.fire({
+                icon: 'error',
+                text: 'Password does not match!',
+            })
             return
         }
 
@@ -218,12 +258,34 @@ export default function LoginForm({setShown}) {
 
         console.log(account)
 
-        axios.post('http://localhost:8080/user/register', account).then(() => {
-            window.alert("Register success!")
-            window.alert("Email checkout please!")
+        loadRegisterRequest();
+
+        axios.post('http://localhost:8080/user/register', account).then((resp) => {
+            console.log(resp)
+
+            if (resp.data) {
+
+                Swal.fire({
+                    timerProgressBar: true,
+                    icon: 'success',
+                    title: 'Register success!Email checkout please!',
+                    timer: 1000,
+
+                })
+                setShown(false)
+
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    text: 'Account was existed!',
+                })
+            }
 
         }).catch(err =>
-            window.alert("Fail")
+            Swal.fire({
+                icon: 'error',
+                text: 'Account does not created!',
+            })
         )
 
     }
@@ -238,7 +300,10 @@ export default function LoginForm({setShown}) {
 
         axios.post(`http://localhost:8080/user/login`, account).then((resp) => {
             if (resp.data === "") {
-                window.alert("Account does not exist!")
+                Swal.fire({
+                    icon: 'error',
+                    text: 'Account does not exist!',
+                })
                 return;
             }
             console.log(resp)
@@ -247,9 +312,55 @@ export default function LoginForm({setShown}) {
             localStorage.setItem('token', resp.data.token)
             localStorage.setItem('username', resp.data.username)
             localStorage.setItem('avatar', resp.data.avatar)
-            window.alert("Login success!")
+            Swal.fire({
+                icon: 'success',
+                title: 'Login success!',
+                showConfirmButton: false,
+                timer: 1300
+            })
+
             navigate('/dashboard')
-        }).catch(err => window.alert("Wrong password!"));
+        }).catch(err => Swal.fire({
+            icon: 'error',
+            text: 'Wrong the password!',
+        }));
+    }
+
+
+    function backPassword() {
+        Swal.fire({
+            title: 'Enter your email',
+            input: 'text',
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Send',
+            showLoaderOnConfirm: true,
+            preConfirm: (email) => {
+                console.log(email)
+                return axios.get(`http://localhost:8080/user/back-password/${email}`)
+                    .then(response => {
+                        console.log(response)
+                        if (response.data) {
+                            Swal.fire(
+                                `please check: '${email}' to get password!`
+                            )
+                        } else {
+                            Swal.showValidationMessage(
+                                `Email: '${email}' does not exist!`
+                            )
+                        }
+
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
+
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then(r => {
+        })
     }
 
     function backPassword() {

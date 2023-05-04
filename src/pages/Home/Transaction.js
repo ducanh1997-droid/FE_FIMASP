@@ -9,6 +9,7 @@ import arrow  from "./../../assets/img/448-arrow.png"
 import BarChartCashType from "./BarChartByCashType";
 import HorizontalBarChart from "./HorizontalBarChart";
 import PieCategoryChart from "./pieCategoryChart";
+import Swal from "sweetalert2";
 export default function Transaction(props) {
     const [cash,setCash]  = useState(undefined);
     const [transactions,setTransactions] = useState([]);
@@ -48,11 +49,21 @@ export default function Transaction(props) {
         })
         setSearchDate(false);
         if (props.createSuccess) {
-            notify();
+            Swal.fire({
+                icon: 'success',
+                title: 'Tạo giao dịch thành công!',
+                showConfirmButton: false,
+                timer: 1000
+            })
             props.closeCreate();
         }
         if (props.updateSuccess) {
-            notifyUpdate();
+            Swal.fire({
+                icon: 'success',
+                title: 'Cập nhật giao dịch thành công!',
+                showConfirmButton: false,
+                timer: 1000
+            })
             props.closeUpdate();
         }
         let current =currentPage- 1
@@ -72,23 +83,37 @@ export default function Transaction(props) {
         axios.delete(`http://localhost:8080/user${idUser}/cashes/${cash.id}`,{headers: {"Authorization": `Bearer ${token}`}}).then((response)=>{
             if(cash.type === "expence"){
                 let oldWallet = updateOldWalletExpense();
+                let current =currentPage- 1
                 axios.put(`http://localhost:8080/user${idUser}/wallets/${cash.wallet?.id}`,oldWallet,{headers: {"Authorization": `Bearer ${token}`}}).then((res)=>{
-                    axios.get(`http://localhost:8080/user${idUser}/cashes`).then((response)=>{
+                    axios.get(`http://localhost:8080/user${idUser}/cashes?page=${current}&size=${numOfPage}`).then((response)=>{
                         setTransactions(response.data.content);
                     })
                     axios.get(`http://localhost:8080/user${idUser}/cashes`).then((response)=>{
                         setTransactionsAll(response.data.content);
                     })
                 })
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Xóa giao dịch thành công!',
+                    showConfirmButton: false,
+                    timer: 1000
+                })
             }else{
                 let oldWalletIncome = updateOldWalletIncome();
+                let current =currentPage- 1
                 axios.put(`http://localhost:8080/user${idUser}/wallets/${cash.wallet?.id}`,oldWalletIncome,{headers: {"Authorization": `Bearer ${token}`}}).then((res)=>{
-                    axios.get(`http://localhost:8080/user${idUser}/cashes`).then((response)=>{
+                    axios.get(`http://localhost:8080/user${idUser}/cashes?page=${current}&size=${numOfPage}`).then((response)=>{
                         setTransactions(response.data.content);
                     })
                     axios.get(`http://localhost:8080/user${idUser}/cashes`).then((response)=>{
                         setTransactionsAll(response.data.content);
                     })
+                })
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Xóa giao dịch thành công!',
+                    showConfirmButton: false,
+                    timer: 1000
                 })
             }
             // axios.get(`http://localhost:8080/user${idUser}/cashes`).then((response)=>{
@@ -111,7 +136,7 @@ export default function Transaction(props) {
 
     function totalIncomeTime(){
         for(let i=0;i<transactionsAll.length;i++){
-            if(transactionsAll[i].type == "income"){
+            if(transactionsAll[i].type == "income" && transactionsAll[i].wallet !==null){
                 totalIncomeFollowTime+=transactionsAll[i].money
             }
         }
@@ -119,7 +144,7 @@ export default function Transaction(props) {
     }
     function totalExpenseTime(){
         for(let i=0;i<transactionsAll.length;i++){
-            if(transactionsAll[i].type == "expence"){
+            if(transactionsAll[i].type == "expence" && transactionsAll[i].wallet !==null){
                 totalExpenseFollowTime+=transactionsAll[i].money
             }
         }
@@ -254,7 +279,7 @@ export default function Transaction(props) {
                         </div>
                     </div>
                 </div>
-                <BarChartCashType/>
+                <BarChartCashType cash={cash}/>
                 <div id='block-search-transaction'>
                          <Formik initialValues={{
                             dateStart:"",
@@ -313,12 +338,13 @@ export default function Transaction(props) {
                         {transactions.map((item)=>{
                             {totalMoneyAll+=item.money}
                                         return(
+                                            item.wallet !== null?
                                             <tr key={item.id} className={'active-row'}>
                                                 <td className={'feature-field'} style={{paddingTop: 5, boxSizing: "border-box",paddingLeft: "25px"}}>
-                                                    <div style={{float: "left"}} className="icon-border-bus-dashboard" id={item.category.icon}>
-                                                        <i className={item.category.icon+' fa-light'}/>
+                                                    <div style={{float: "left"}} className="icon-border-bus-dashboard" id={item.category?.icon}>
+                                                        <i className={item.category?.icon+' fa-light'}/>
                                                     </div>
-                                                    <p style={{display:"inline-block",marginLeft:"10px",marginTop:"5px"}}>{item.category.name}</p>
+                                                    <p style={{display:"inline-block",marginLeft:"10px",marginTop:"5px"}}>{item.category===null? 'Danh mục này đã xóa': item.category.name }</p>
                                                 </td>
                                                 <td className={'feature-field'} style={{color: "#8d8d8d"}}>{item.date.slice(0,10)}</td>
                                                 <td>{item.name}</td>
@@ -329,10 +355,9 @@ export default function Transaction(props) {
                                                     <i className="fa-regular fa-pen-to-square" onClick={()=>item.type=="expence"?(window.scrollTo(0,0),props.openUpdateExpence(item.id,item.category.icon)):(window.scrollTo(0,0),props.openUpdateIncome(item.id,item.category.icon))}></i>
                                                     <i className="fa-solid fa-trash-can" onClick={() => deleteTransaction(item.id)}></i>
                                                 </td>
-                                            </tr>
+                                            </tr>:<></>
                                         )
                                     })}
-
                         </tbody>
                     </table>
                 </div>
@@ -348,10 +373,21 @@ export default function Transaction(props) {
         </>
     )
     function deleteTransaction(id){
-        if(window.confirm("OK")){
+        Swal.fire({
+            title: 'Bạn có muốn xóa giao dịch này không?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Có, tôi muốn xóa!',
+            cancelButtonText:"Hủy"
+        }).then((result) => {
+            if (result.isConfirmed) {
             axios.get(`http://localhost:8080/user${idUser}/cashes/detail/${id}`).then((response) => {
                 setCash(response.data)
             })
-        }
+            }
+        }).catch(err => Swal.fire('Có lỗi xảy ra, bạn không thể xóa danh mục này!'))
     }
+
 }

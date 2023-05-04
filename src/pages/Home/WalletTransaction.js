@@ -187,7 +187,9 @@ return(
                     </thead>
                     <tbody>
                     {transactions.map((item)=>{
+
                         return(
+                            item.wallet !== null?
                             <tr key={item.id} className={'active-row'}>
                                 <td  className={'feature-field'} style={{paddingTop: 5, boxSizing: "border-box",paddingLeft: "17px",minWidth:"150px"}}>
                                     <div style={{float: "left"}} className="icon-border-bus-dashboard" id={item.category.icon}>
@@ -200,9 +202,7 @@ return(
                                 <td className={'feature-field'}>{item.money.toLocaleString('en-US', {style : 'currency', currency : 'VND'})}</td>
                                 <td>{item.wallet.name}</td>
                                 <td>{item.type=="expence"?"Chi phí":"Thu nhập"}</td>
-
-
-                            </tr>
+                            </tr>:<></>
                         )
                     })}
 

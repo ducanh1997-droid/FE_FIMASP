@@ -3,6 +3,7 @@ import * as Yup from "yup"
 import {useState} from "react";
 import axios from "axios";
 import {ref} from "yup";
+import Swal from "sweetalert2";
 import("./CreateWalletForm.css")
 
 export default function CreateWalletForm({setShow,setIsUpdate,wallet,setWalletChoice,setUpdate}){
@@ -37,6 +38,12 @@ export default function CreateWalletForm({setShow,setIsUpdate,wallet,setWalletCh
         axios.post(`http://localhost:8080/user${idUser}/wallets`,wallet).then(()=>{
             setIsUpdate(true)
             setShow(false)
+            Swal.fire({
+                icon: 'success',
+                title: 'Tạo ví thành công!',
+                showConfirmButton: false,
+                timer: 1000
+            })
         })
     }
     function update(values){
@@ -53,6 +60,12 @@ export default function CreateWalletForm({setShow,setIsUpdate,wallet,setWalletCh
                 setIsUpdate(true)
                 setWalletChoice(wallet)
                 setUpdate(false)
+            Swal.fire({
+                icon: 'success',
+                title: 'Cập nhật ví thành công!',
+                showConfirmButton: false,
+                timer: 1000
+            })
             }
         )
     }
