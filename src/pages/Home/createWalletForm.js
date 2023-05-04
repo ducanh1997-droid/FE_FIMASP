@@ -110,25 +110,20 @@ export default function CreateWalletForm({setShow,setIsUpdate,wallet,setWalletCh
                             <td><p>Loại ví</p></td>
                         </tr>
                         <tr>
-                            <td>
-                                <div className="block-wallet" id="block-fa-dumbbell" >
-                                    <div className="icon-wallet" id="fas fa-credit-card" style={{borderRadius:activeIcon==="fas fa-credit-card"?"2px":"100px"}} onClick={setIcon}>
-                                        <i className="fas fa-credit-card"></i>
+                            <td id={'block-create-wallet'}>
+                                <div className="block-wallet">
+                                    <div className="icon-wallet" id="fa-credit-card" style={{borderRadius:activeIcon==="fa-credit-card"?"2px":"100px"}} onClick={setIcon}>
+                                        <i className="fa-light fa-credit-card"></i>
                                     </div>
-                                    <p id="1">Tập thể dục</p>
+                                    <p id="1">Tài khoản</p>
                                 </div>
-                                <div className="block-wallet" id="block-fa-bus" >
-                                    <div className="icon-wallet" id="fa-light fa-bus" style={{borderRadius:activeIcon==="fa-light fa-bus"?"2px":"100px"}} onClick={setIcon}>
-                                        <i className="fa-light fa-bus"></i>
+                                <div className="block-wallet">
+                                    <div className="icon-wallet" id="fa-sack-dollar" style={{borderRadius:activeIcon==="fa-sack-dollar"?"2px":"100px"}} onClick={setIcon}>
+                                        <i className="fa-light fa-sack-dollar"></i>
                                     </div>
-                                    <p id="2">Di chuyển</p>
+                                    <p id="2">Tiền mặt</p>
                                 </div>
-                                <div  className="block-wallet" id="block-fa-mug-saucer">
-                                    <div className="icon-wallet" style={{borderRadius:activeIcon==="fa-light fa-mug-saucer"?"2px":"100px"}} id="fa-light fa-mug-saucer" onClick={setIcon}>
-                                        <i className="fa-light fa-mug-saucer"></i>
-                                    </div>
-                                    <p id="2">Cafe</p>
-                                </div>{errorMsgIcon&&"Cần chọn icon"}
+                               {errorMsgIcon&&"Cần chọn icon"}
                             </td>
                         </tr>
                         <tr>

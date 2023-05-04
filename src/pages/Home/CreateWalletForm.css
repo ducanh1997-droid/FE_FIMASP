@@ -47,21 +47,25 @@
     border: none;
     cursor: pointer;
 }
-.form-create-wallet .icon-wallet{
+.form-create-wallet #block-create-wallet .icon-wallet{
     margin-right: 10px;
     position: relative;
     width: 35px;
     height: 35px;
     border-radius: 100px;
-    background: black!important;
+    background: #c624d2;
     margin-bottom: 2px;
 }
+.form-create-wallet #block-create-wallet #fa-credit-card{
+    background: #45da47;
+}
 .form-create-wallet .block-wallet{
-    display: block;
+    display: inline-block;
     /*text-align: center;*/
-    width: 30%;
-    font-size: 10px;
-    float: left;
+    align-content: center;
+    justify-items: center;
+    width: 70px;
+    text-align: center;
 }
 .form-create-wallet .block-wallet:hover{
     cursor: pointer;

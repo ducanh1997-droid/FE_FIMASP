@@ -7,11 +7,13 @@ import SimpleSlider from "./demo";
 
 import WalletTransaction from "./WalletTransaction";
 import arrow from "../../assets/img/448-arrow.png";
+import {useLocation, useParams} from "react-router-dom";
 
 import ("../../assets/css/transaction.css")
 import("./Wallet.css")
 export default function Wallet(){
     let [nav1,setNav1]=useState(null);
+    const {status}=useParams()
     const [wallets,setWallets]=useState([])
     const [walletChoice,setWalletChoice]=useState(null)
     const [currentIndex,setCurrentIndex]=useState(0)
@@ -23,7 +25,15 @@ export default function Wallet(){
     const [page,setPage]=useState(0)
     const [totalPages,setTotalPages]=useState(0)
     let index=page*5;
+
     useEffect(()=>{
+        if(status==="true"){
+            setShow(true)
+        }
+    },[])
+
+    useEffect(()=>{
+
         axios.get(`http://localhost:8080/user${idUser}/wallets/page${page}`).then((res)=> {
             setWallets(res.data.content)
             setTotalPages(res.data.totalPages)
@@ -81,44 +91,6 @@ export default function Wallet(){
             </div>
 
             <div className={"wallet-container"}>
-            {/*     <h1>Wallet 's list</h1>*/}
-            {/*     <table className={"wallet-list-table"}>*/}
-            {/*    <thead>*/}
-            {/*    <tr>*/}
-            {/*        <td>Index</td>*/}
-            {/*        <td>Name</td>*/}
-            {/*        <td>Total money</td>*/}
-            {/*        <td>Limit money</td>*/}
-            {/*        <td>Description</td>*/}
-            {/*    </tr>*/}
-            {/*    </thead>*/}
-            {/*    <tbody>*/}
-            {/*    {*/}
-            {/*        wallets.map(wallet=>{*/}
-            {/*    return(*/}
-            {/*        <tr key={wallet.id} id={""+index} onClick={(e)=>{*/}
-            {/*            nav1.slickGoTo(e.currentTarget.id-5*page );*/}
-            {/*            setWalletChoice(wallets[+e.currentTarget.id])*/}
-            {/*            setCurrentIndex(e.currentTarget.id-5*page)*/}
-            {/*        }*/}
-            {/*        }>*/}
-            {/*            <td>{++index}</td>*/}
-            {/*            <td>{wallet.name}</td>*/}
-            {/*            <td>{wallet.totalMoney}</td>*/}
-            {/*            <td>{wallet.limitMoney}</td>*/}
-            {/*            <td></td>*/}
-            {/*        </tr>*/}
-            {/*    )*/}
-            {/*    })}*/}
-            {/*    </tbody>*/}
-            {/*    <tfoot></tfoot>*/}
-            {/*</table>*/}
-            {/*    <div className={"pagination-btn-container"}>*/}
-            {/*    <button onClick={()=>{setPage(page-1)}}> {"<"} </button>*/}
-            {/*    {createPageDiv(createPageArray(page+1))}*/}
-            {/*    <button onClick={()=>{setPage(page+1)}}>></button>*/}
-            {/*    </div>*/}
-
             <div id='list-transaction'>
                 <table id='table-list-transaction' style={{minWidth:"769px",fontSize:"15px"}}>
                     <thead>

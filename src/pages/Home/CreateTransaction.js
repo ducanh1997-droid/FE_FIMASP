@@ -102,14 +102,14 @@ export default React.memo(function CreateTransaction(props){
     }
     const Validation = Yup.object().shape({
         name: Yup.string().max(15, "Không quá 20 ký tự"),
-        money: Yup.string().required("Vui lòng nhập chi tiêu!").min(0, "Vui lòng nhập chi tiêu!").matches(/^[0-9]+$/, "Không đúng định dạng số!"),
+        money: Yup.string().required("Vui lòng nhập chi tiêu!").matches(/^[0-9]+$/, "Không đúng định dạng số!"),
         wallet: Yup.object().shape({
             id: Yup.string().required("Vui lòng chọn ví!"),
         })
     })
     const Validation1 = Yup.object().shape({
         name: Yup.string().max(20, "Không quá 20 ký tự"),
-        money: Yup.string().required("Vui lòng nhập thu nhập!").min(0, "Vui lòng nhập thu nhập!").matches(/^[0-9]+$/, "Không đúng định dạng số!"),
+        money: Yup.string().required("Vui lòng nhập thu nhập!").matches(/^[0-9]+$/, "Không đúng định dạng số!"),
         wallet: Yup.object().shape({
             id: Yup.string().required("Vui lòng chọn ví!"),
         })
@@ -119,9 +119,9 @@ export default React.memo(function CreateTransaction(props){
         for(let i=0;i<wallets.length;i++){
             if(id == wallets[i].id){
                 if(wallets[i].limitMoney == 0){
-                    return `Tổng tiền: ${wallets[i].totalMoney} Giới hạn chi tiêu của ví đã hết`
+                    return `Tổng tiền: ${wallets[i].totalMoney.toLocaleString('en-US', {style : 'currency', currency : 'VND'})} Giới hạn chi tiêu của ví đã hết`
                 }else{
-                    return `Tổng tiền: ${wallets[i].totalMoney} Giới hạn chi tiêu: ${wallets[i].limitMoney}`
+                    return `Tổng tiền: ${wallets[i].totalMoney.toLocaleString('en-US', {style : 'currency', currency : 'VND'})} Giới hạn chi tiêu: ${wallets[i].limitMoney.toLocaleString('en-US', {style : 'currency', currency : 'VND'})}`
                 }
             }
         }

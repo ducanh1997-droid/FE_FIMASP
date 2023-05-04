@@ -4,7 +4,7 @@ export default function DashBoardWalletElement({wallet}){
         <div className={"wallet-block"}>
             <div className={"wallet"} style={{backgroundImage: wallet.backgroundColor}}>
                 <p className={"logoName"}>Fimasp</p>
-                <i className={wallet.icon}></i>
+                <i className={"fa-light "+wallet.icon}></i>
                 <div className={"walletDetail"}>
                     <p>Wallet 's name:</p>
                     <p className={"walletName"}>{wallet.name}</p>

@@ -67,8 +67,8 @@ export default React.memo(function UpdateTransactionExpence(props){
         setCategoryGetId(e.currentTarget.classList.item(0))
     }
     const Validation = Yup.object().shape({
-        name: Yup.string().max(15, "Không quá 15 ký tự"),
-        money: Yup.string().required("Vui lòng nhập chi tiêu!").min(0, "Vui lòng nhập chi tiêu!").matches(/^[0-9]+$/, "Không đúng định dạng số!"),
+        name: Yup.string().max(15, "Không quá 20 ký tự"),
+        money: Yup.string().required("Vui lòng nhập chi tiêu!").matches(/^[0-9]+$/, "Không đúng định dạng số!"),
         wallet: Yup.object().shape({
             id: Yup.string().required("Vui lòng chọn ví!"),
         })
@@ -79,6 +79,79 @@ export default React.memo(function UpdateTransactionExpence(props){
         setCategoryGetId(e.currentTarget.classList.item(0))
         setIdCategoryPick(e.currentTarget.classList.item(0))
         setDisplayCategoryPick(true);
+    }
+
+    function GetTotalMoney({id}){
+        for(let i=0;i<wallets.length;i++){
+            if(id == wallets[i].id){
+                if(wallets[i].limitMoney == 0){
+                    return `Tổng tiền: ${wallets[i].totalMoney.toLocaleString('en-US', {style : 'currency', currency : 'VND'})} Giới hạn chi tiêu của ví đã hết`
+                }else{
+                    return `Tổng tiền: ${wallets[i].totalMoney.toLocaleString('en-US', {style : 'currency', currency : 'VND'})} Giới hạn chi tiêu: ${wallets[i].limitMoney.toLocaleString('en-US', {style : 'currency', currency : 'VND'})}`
+                }
+            }
+        }
+    }
+
+    function CheckToTalMoney(id,money){
+        for(let i=0;i<wallets.length;i++){
+            if(id == wallets[i].id){
+                if(wallets[i].limitMoney<money){
+                    return `Vượt quá giới hạn chi tiêu của ví`
+                }
+            }
+        }
+        return false;
+    }
+    function updateWalletExpense(id,moneyExpence){
+        for(let i=0;i<wallets.length;i++){
+            if(id == wallets[i].id){
+                wallets[i].totalMoney -= moneyExpence;
+                wallets[i].limitMoney -= moneyExpence;
+                wallets[i].account = null;
+                wallets[i].account={
+                    id:idUser
+                }
+                return wallets[i];
+            }
+        }
+    }
+    function updateOldWalletExpense(){
+        for(let i=0;i<wallets.length;i++){
+            if(cash.wallet?.id == wallets[i].id){
+                wallets[i].totalMoney += Number(cash.money);
+                wallets[i].limitMoney += Number(cash.money);
+                wallets[i].account = null;
+                wallets[i].account={
+                    id:idUser
+                }
+                return wallets[i];
+            }
+        }
+    }
+    function updateOldWalletIncome(){
+        for(let i=0;i<wallets.length;i++){
+            if(cash.wallet?.id == wallets[i].id){
+                wallets[i].totalMoney -= cash.money;
+                wallets[i].account = null;
+                wallets[i].account={
+                    id:idUser
+                }
+                return wallets[i];
+            }
+        }
+    }
+    function updateWalletIncome(id,moneyIncome){
+        for(let i=0;i<wallets.length;i++){
+            if(id == wallets[i].id){
+                wallets[i].totalMoney += Number(moneyIncome);
+                wallets[i].account = null;
+                wallets[i].account={
+                    id:idUser
+                }
+                return wallets[i];
+            }
+        }
     }
 
     return(
@@ -105,98 +178,16 @@ export default React.memo(function UpdateTransactionExpence(props){
                             },
                         }}
                                 onSubmit={(values) => {
-                                    save(values)}
+                                        if(CheckToTalMoney(values.wallet.id,values.money)==false){
+                                            save(values)
+                                        }
+                                    }
                                 }
                             validationSchema={Validation}
                                 enableReinitialize={true}
                         >
                             {({ errors, touched,values,initialValues }) => (
                                 <Form style={{width:"95%"}}>
-                                    {/*<div className="form">*/}
-                                    {/*    <table style={{width:"100%",marginLeft:"10%"}}>*/}
-                                    {/*        <tbody>*/}
-                                    {/*        <tr>*/}
-                                    {/*            <td>*/}
-                                    {/*                <label>*/}
-                                    {/*                    <Field*/}
-                                    {/*                        type="text"*/}
-                                    {/*                        id="money"*/}
-                                    {/*                        name={"money"}*/}
-                                    {/*                    />*/}
-                                    {/*                    VND &ensp;&ensp;*/}
-                                    {/*                    <span style={{color:"red"}}>*/}
-                                    {/*                    <ErrorMessage name={'money'}  />*/}
-                                    {/*                </span>*/}
-                                    {/*                </label>*/}
-                                    {/*            </td>*/}
-                                    {/*        </tr>*/}
-                                    {/*        <tr>*/}
-                                    {/*            <td>*/}
-                                    {/*                <label>*/}
-                                    {/*                    <Field type="text" id="action" name={'name'}/>*/}
-                                    {/*                    Ghi chú&ensp;&ensp;*/}
-                                    {/*                    <span style={{color:"red"}}>*/}
-                                    {/*                    <ErrorMessage name={'name'}  />*/}
-                                    {/*                </span>*/}
-                                    {/*                </label>*/}
-                                    {/*            </td>*/}
-                                    {/*        </tr>*/}
-                                    {/*        <tr>*/}
-                                    {/*            <td>*/}
-                                    {/*                <label>Tài khoản</label>*/}
-                                    {/*                <div className="select-box">*/}
-                                    {/*                    <Field as="select" name={"wallet.id"} id="select-box1" className="select">*/}
-                                    {/*                        <option value={''}>-- Chọn ví --</option>*/}
-                                    {/*                        {wallets.map((item,id)=>{*/}
-                                    {/*                            return(*/}
-                                    {/*                                <option key={id} value={item.id}>{item.name}</option>*/}
-                                    {/*                            )*/}
-                                    {/*                        })*/}
-                                    {/*                        }*/}
-                                    {/*                    </Field>*/}
-                                    {/*                    &ensp;&ensp;*/}
-                                    {/*                    <span style={{color:"red"}}>*/}
-                                    {/*                    <ErrorMessage name={'wallet.id'}  />*/}
-                                    {/*                </span>*/}
-                                    {/*                </div>*/}
-                                    {/*            </td>*/}
-                                    {/*        </tr>*/}
-                                    {/*        <tr>*/}
-                                    {/*            <td id="category-expense">*/}
-                                    {/*                <label>Danh mục</label><br/><br/>*/}
-                                    {/*                {categories.map((item)=>{*/}
-                                    {/*                    return(*/}
-                                    {/*                        <div  className="block-category" id={"block-"+item.icon} >*/}
-                                    {/*                            {activeCategory===item.icon&&setCategoryGetId(item.id)}*/}
-                                    {/*                            <div className={item.id +' icon-border'} id={item.icon} style={{borderRadius:activeCategory===item.icon?"2px":"100px"}} onClick={categoryActive}>*/}
-                                    {/*                                <i id={item.id} className={"fa-light " + item.icon} ></i>*/}
-                                    {/*                            </div>*/}
-                                    {/*                            <p >{item.name}</p>*/}
-                                    {/*                        </div>*/}
-                                    {/*                    )*/}
-                                    {/*                })}*/}
-                                    {/*                <br/>*/}
-                                    {/*                <br/>*/}
-                                    {/*            </td>*/}
-                                    {/*        </tr>*/}
-                                    {/*        <tr>*/}
-                                    {/*            <td>*/}
-                                    {/*                <label htmlFor="date1">Chọn ngày</label>*/}
-                                    {/*                <Field type="date" id="date1" name={"date"} className="date"/>*/}
-                                    {/*            </td>*/}
-                                    {/*        </tr>*/}
-                                    {/*        <tr>*/}
-                                    {/*            <td>*/}
-                                    {/*                <button type={'submit'} style={Object.keys(errors).length!==0*/}
-                                    {/*                    ?{background:"rgb(141,191,114)",cursor:"not-allowed"}:{background:"rgb(79 161 34)",cursor:"pointer"}} className="edit">OK</button>*/}
-                                    {/*                <button type={'button'} className="cancel" onClick={props.closeUpdateExpence}>*/}
-                                    {/*                    Huỷ*/}
-                                    {/*                </button>*/}
-                                    {/*            </td>*/}
-                                    {/*        </tr>*/}
-                                    {/*        </tbody>*/}
-                                    {/*    </table>*/}
-                                    {/*</div>*/}
                                     <div className='container-popup-transaction'>
                                         <div className='row-form'>
 
@@ -207,10 +198,20 @@ export default React.memo(function UpdateTransactionExpence(props){
                                                         type="text"
                                                         name={"money"}
                                                     />
+                                                    <span style={{color:"red", fontSize:"15px",margin:0,position:"absolute",bottom:"-25px"}}>
+                                                        <ErrorMessage name={'money'}  />
+                                                    </span>
+                                                    <span style={{color:"red", fontSize:"15px",margin:0,position:"absolute",bottom:"-25px"}}>
+                                                        {/*<CheckToTalMoney id={values.wallet.id} money={values.money}/>*/}
+                                                        {CheckToTalMoney(values.wallet.id,values.money)}
+                                                    </span>
                                                 </div>
                                                 <div className='inputBox'>
                                                     <span>Ghi chú :</span>
                                                     <Field type="text" name={'name'}/>
+                                                    <span style={{color:"red", fontSize:"15px",margin:0,position:"absolute",bottom:"-25px"}}>
+                                                        <ErrorMessage name={'name'}  />
+                                                    </span>
                                                 </div>
                                                 <div className='inputBox'>
                                                     <span>Chọn ví :</span>
@@ -223,6 +224,13 @@ export default React.memo(function UpdateTransactionExpence(props){
                                                         })
                                                         }
                                                     </Field>
+                                                    <span style={{color:"blue", fontSize:"15px",margin:0,position:"absolute",bottom:"-30px",width:"350px"}}><GetTotalMoney id={values.wallet.id}/></span>
+                                                    {/*<span style={{color:"red", fontSize:"15px",margin:0,position:"absolute",bottom:"-25px"}}>*/}
+                                                    {/*    Tổng tiền: {values.wallet.id}*/}
+                                                    {/*</span>*/}
+                                                    <span style={{color:"red", fontSize:"15px",margin:0,position:"absolute",bottom:"-25px"}}>
+                                                        <ErrorMessage name={'wallet.id'}  />
+                                                    </span>
                                                 </div>
                                             </div>
                                             <div ref={categoryRef} className='popup-detail-category' style={popupCategory?{display:"block"}:{display:"none"}}>
@@ -282,7 +290,7 @@ export default React.memo(function UpdateTransactionExpence(props){
                                             </div>
                                         </div>
                                         <div style={{display:"inline-flex",width:"100%",marginTop:"20px"}}>
-                                            <input value="Lưu" style={Object.keys(errors).length!==0
+                                            <input value="Lưu" style={(Object.keys(errors).length!==0 || CheckToTalMoney(values.wallet.id,values.money)!=false)
                                                 ?{background:"6BBD8EFF",cursor:"not-allowed"}:{background:"#3ab06c",cursor:"pointer"}} type="submit" className={'btn-submit-transaction'}/>
                                             <input value="Hủy" type="button" className={'btn-reject-transaction'} onClick={props.closeUpdateExpence}/>
                                         </div>
@@ -298,6 +306,23 @@ export default React.memo(function UpdateTransactionExpence(props){
         values.category.id = categorygetId;
         console.log(values);
         axios.put(`http://localhost:8080/user${idUser}/cashes/${props.idCashUpdate}`,values,{headers: {"Authorization": `Bearer ${token}`}}).then(()=>{
+            if(values.type === "expence"){
+                let wallet = updateWalletExpense(values.wallet.id,values.money);
+                let oldWallet = updateOldWalletExpense();
+                console.log(wallet);
+                axios.put(`http://localhost:8080/user${idUser}/wallets/${values.wallet.id}`,wallet,{headers: {"Authorization": `Bearer ${token}`}}).then((res)=>{
+                })
+                axios.put(`http://localhost:8080/user${idUser}/wallets/${values.wallet.id}`,oldWallet,{headers: {"Authorization": `Bearer ${token}`}}).then((res)=>{
+                })
+            }else{
+                let walletIncome = updateWalletIncome(values.wallet.id,values.money);
+                let oldWalletIncome = updateOldWalletIncome();
+                console.log(walletIncome);
+                axios.put(`http://localhost:8080/user${idUser}/wallets/${values.wallet.id}`,walletIncome,{headers: {"Authorization": `Bearer ${token}`}}).then((res)=>{
+                })
+                axios.put(`http://localhost:8080/user${idUser}/wallets/${values.wallet.id}`,oldWalletIncome,{headers: {"Authorization": `Bearer ${token}`}}).then((res)=>{
+                })
+            }
             props.updateSuccess()
             props.closeUpdateExpence()
         })

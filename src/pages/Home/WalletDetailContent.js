@@ -72,60 +72,35 @@ export default function WalletDetailContent({wallet,setIsUpdate,setWalletChoice,
                 <tbody>
                 <tr>
                     <td><p>Tên ví:</p></td>
-                    <td>{!editActive?<p>{wallet.name}</p>:<Field name={"name"}></Field>}</td>
+                    <td><p>{wallet.name}</p></td>
                 </tr>
                 <tr>
                     <td><p>Số tiền trong ví:</p></td>
-                    <td>{!editActive?<p>{wallet.totalMoney.toLocaleString('en-US', {style : 'currency', currency : 'VND'})}</p>:<Field name={"totalMoney"}></Field>}</td>
+                    <td><p>{wallet.totalMoney.toLocaleString('en-US', {style : 'currency', currency : 'VND'})}</p></td>
                 </tr>
                 <tr>
-                    <td><p>Danh mục:</p></td>
-                    <td>{!editActive?<i className={wallet.icon}></i>:<>
-                        <div className="block-wallet" id="block-fa-dumbbell" >
-                        <div className="icon-wallet" id="fas fa-credit-card" style={{borderRadius:activeIcon==="fas fa-credit-card"?"2px":"100px"}} onClick={setIcon}>
-                            <i className="fas fa-credit-card"></i>
+                    <td><p>Loại ví:</p></td>
+                    <td>
+                        <div className="block-wallet">
+                            <div className="icon-wallet" id={wallet.icon}>
+                                <i className={"fa-light "+wallet.icon}></i>
+                            </div>
+                            <p id="2">{wallet.icon=="fa-sack-dollar"?"Tiền mặt":"Tài khoản"}</p>
                         </div>
-                        <p id="1">Tập thể dục</p>
-                    </div>
-                        <div className="block-wallet" id="block-fa-bus" >
-                        <div className="icon-wallet" id="fa-light fa-bus" style={{borderRadius:activeIcon==="fa-light fa-bus"?"2px":"100px"}} onClick={setIcon}>
-                        <i className="fa-light fa-bus"></i>
-                        </div>
-                        <p id="2">Di chuyển</p>
-                        </div>
-                        <div  className="block-wallet" id="block-fa-mug-saucer">
-                        <div className="icon-wallet" style={{borderRadius:activeIcon==="fa-light fa-mug-saucer"?"2px":"100px"}} id="fa-light fa-mug-saucer" onClick={setIcon}>
-                        <i className="fa-light fa-mug-saucer"></i>
-                        </div>
-                        <p id="2">Cafe</p>
-                        </div></>
-                    }
                     </td>
                 </tr>
                 <tr>
                     <td><p>Hình nền thẻ:</p></td>
-                    <td>{!editActive?<div className={"color-sample"} style={{backgroundImage: wallet.backgroundColor}}></div>:(
-                        <>
-                        <div className={"color-sample"} style={{backgroundImage: "linear-gradient(to right bottom, green, black, blue)",opacity:activeColor==="linear-gradient(to right bottom, green, black, blue)"?"1":"0.3"}} onClick={setColor}></div>
-                        <div className={"color-sample"} style={{backgroundImage: "linear-gradient(to right, red, yellow)",opacity:activeColor==="linear-gradient(to right, red, yellow)"?"1":"0.3"}} onClick={setColor}></div>
-                        <div className={"color-sample"} style={{backgroundImage: "linear-gradient(to right, blue, purple)",opacity:activeColor==='linear-gradient(to right, blue, purple)'?"1":"0.3"}} onClick={setColor}></div>
-                        </>
-                        )}
+                    <td><div className={"color-sample"} style={{backgroundImage: wallet.backgroundColor}}></div>
                     </td>
                 </tr>
                 <tr>
                     <td><p>Giới hạn chi tiêu:</p></td>
-                    <td>{!editActive?<p>{wallet.limitMoney.toLocaleString('en-US', {style : 'currency', currency : 'VND'})}</p>:<Field name={"limitMoney"}></Field>}</td>
+                    <td><p>{wallet.limitMoney.toLocaleString('en-US', {style : 'currency', currency : 'VND'})}</p></td>
                 </tr>
                 <tr>
                     <td colSpan={2}>
                         {editActive &&<button type={"submit"}>Confirm</button>}
-                        {/*<button type={!editActive?"button":"reset"}*/}
-                        {/*        onClick={()=>{*/}
-                        {/*            setEditActive(!editActive)*/}
-                        {/*            setClick(false)*/}
-                        {/*        }}*/}
-                        {/*>{!editActive?"Edit":"Back"}</button>*/}
                     </td>
                 </tr>
                 </tbody>

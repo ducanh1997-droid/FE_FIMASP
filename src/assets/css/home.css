@@ -168,7 +168,7 @@ li{
 
 .fa-dumbbell,.fa-bus,.fa-mug-saucer,.fa-family,.fa-school,.fa-gift,.fa-cart-shopping,.fa-gift-card,
 .fa-question,.fa-hand-holding-dollar,.fa-plus,.fa-sack-dollar,.fa-building-columns,.fa-person,
-.fa-pig,.fa-filter-circle-dollar,.fa-face-smile-relaxed,.fa-graduation-cap,.fa-handshake-angle{
+.fa-pig,.fa-filter-circle-dollar,.fa-face-smile-relaxed,.fa-graduation-cap,.fa-handshake-angle,.fa-credit-card{
     top:7px;
     display: inline-block;
     position: absolute;
@@ -199,6 +199,12 @@ li{
 }
 .fa-question{
     left: 11px;
+}
+.block-wallet .fa-sack-dollar{
+    left: 0px;
+}
+.block-wallet .fa-credit-card{
+    left: 0px;
 }
 .fa-school{
     top: 6px;
@@ -557,8 +563,6 @@ h5.titles-dashboard{
 .block-category p{
     font-size: 12px;
 }
-
-
 .icon-border{
     margin-right: 10px;
     position: relative;
@@ -592,6 +596,9 @@ h5.titles-dashboard{
 }
 #fa-gift-card{
     background: blue;
+}
+#fa-credit-card{
+    background: #45da47;
 }
 #fa-hand-holding-dollar{
     background: #45da75;
@@ -712,7 +719,7 @@ h5.titles-dashboard{
     border: 2px dashed #faf6f3;
     padding: 2px;
     background-clip: content-box;
-    float: left;
+    float: right;
     position: relative;
     cursor: pointer;
 }
@@ -1506,4 +1513,9 @@ a.btn-delete:hover{
     width: 500px;
     position: relative;
     top: 40px;
+}
+.dashboard-wallet{
+display: inline-block;
+position: static !important;
+    width: 60% !important;
 }

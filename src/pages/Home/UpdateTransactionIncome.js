@@ -57,8 +57,8 @@ export default React.memo(function UpdateTransactionIncome(props){
         setCategoryGetId(e.currentTarget.classList.item(0))
     }
     const Validation = Yup.object().shape({
-        name: Yup.string().max(15, "Không quá 15 ký tự"),
-        money: Yup.string().required("Vui lòng nhập chi tiêu!").min(0, "Vui lòng nhập chi tiêu!").matches(/^[0-9]+$/, "Không đúng định dạng số!"),
+        name: Yup.string().max(15, "Không quá 20 ký tự"),
+        money: Yup.string().required("Vui lòng nhập thu nhập!").matches(/^[0-9]+$/, "Không đúng định dạng số!"),
         wallet: Yup.object().shape({
             id: Yup.string().required("Vui lòng chọn ví!"),
         })
@@ -69,6 +69,55 @@ export default React.memo(function UpdateTransactionIncome(props){
         setCategoryGetId(e.currentTarget.classList.item(0))
         setIdCategoryPick(e.currentTarget.classList.item(0))
         setDisplayCategoryPick(true);
+    }
+    function GetTotalMoney({id}){
+        for(let i=0;i<wallets.length;i++){
+            if(id == wallets[i].id){
+                if(wallets[i].limitMoney == 0){
+                    return `Tổng tiền: ${wallets[i].totalMoney.toLocaleString('en-US', {style : 'currency', currency : 'VND'})} Giới hạn chi tiêu của ví đã hết`
+                }else{
+                    return `Tổng tiền: ${wallets[i].totalMoney.toLocaleString('en-US', {style : 'currency', currency : 'VND'})} Giới hạn chi tiêu: ${wallets[i].limitMoney.toLocaleString('en-US', {style : 'currency', currency : 'VND'})}`
+                }
+            }
+        }
+    }
+
+    function updateWalletExpense(id,moneyExpence){
+        for(let i=0;i<wallets.length;i++){
+            if(id == wallets[i].id){
+                wallets[i].totalMoney -= moneyExpence;
+                wallets[i].limitMoney -= moneyExpence;
+                wallets[i].account = null;
+                wallets[i].account={
+                    id:idUser
+                }
+                return wallets[i];
+            }
+        }
+    }
+    function updateWalletIncome(id,moneyIncome){
+        for(let i=0;i<wallets.length;i++){
+            if(id == wallets[i].id){
+                wallets[i].totalMoney += Number(moneyIncome);
+                wallets[i].account = null;
+                wallets[i].account={
+                    id:idUser
+                }
+                return wallets[i];
+            }
+        }
+    }
+    function updateOldWalletIncome(){
+        for(let i=0;i<wallets.length;i++){
+            if(cash.wallet?.id == wallets[i].id){
+                wallets[i].totalMoney -= cash.money;
+                wallets[i].account = null;
+                wallets[i].account={
+                    id:idUser
+                }
+                return wallets[i];
+            }
+        }
     }
     return(
         <>
@@ -111,10 +160,16 @@ export default React.memo(function UpdateTransactionIncome(props){
                                                         type="text"
                                                         name={"money"}
                                                     />
+                                                    <span style={{color:"red", fontSize:"15px",margin:0,position:"absolute",bottom:"-25px"}}>
+                                                        <ErrorMessage name={'money'}  />
+                                                    </span>
                                                 </div>
                                                 <div className='inputBox'>
                                                     <span>Ghi chú :</span>
                                                     <Field type="text" name={'name'}/>
+                                                    <span style={{color:"red", fontSize:"15px",margin:0,position:"absolute",bottom:"-25px"}}>
+                                                        <ErrorMessage name={'name'}  />
+                                                    </span>
                                                 </div>
                                                 <div className='inputBox'>
                                                     <span>Chọn ví :</span>
@@ -127,6 +182,13 @@ export default React.memo(function UpdateTransactionIncome(props){
                                                         })
                                                         }
                                                     </Field>
+                                                    <span style={{color:"blue", fontSize:"15px",margin:0,position:"absolute",bottom:"-30px",width:"350px"}}><GetTotalMoney id={values.wallet.id}/></span>
+                                                    {/*<span style={{color:"red", fontSize:"15px",margin:0,position:"absolute",bottom:"-25px"}}>*/}
+                                                    {/*    Tổng tiền: {values.wallet.id}*/}
+                                                    {/*</span>*/}
+                                                    <span style={{color:"red", fontSize:"15px",margin:0,position:"absolute",bottom:"-25px"}}>
+                                                        <ErrorMessage name={'wallet.id'}  />
+                                                    </span>
                                                 </div>
                                             </div>
                                             <div ref={categoryRef} className='popup-detail-category' style={popupCategory?{display:"block"}:{display:"none"}}>
@@ -201,6 +263,15 @@ export default React.memo(function UpdateTransactionIncome(props){
         values.id = props.idCashUpdate;
         values.category.id = categorygetId;
         axios.put(`http://localhost:8080/user${idUser}/cashes/${props.idCashUpdate}`,values,{headers: {"Authorization": `Bearer ${token}`}}).then(()=>{
+            let oldWalletIncome = updateOldWalletIncome();
+                let wallet = updateWalletIncome(values.wallet.id,values.money);
+                console.log(wallet);
+                axios.put(`http://localhost:8080/user${idUser}/wallets/${values.wallet.id}`,wallet,{headers: {"Authorization": `Bearer ${token}`}}).then((res)=>{
+
+                })
+                axios.put(`http://localhost:8080/user${idUser}/wallets/${values.wallet.id}`,oldWalletIncome,{headers: {"Authorization": `Bearer ${token}`}}).then((res)=>{
+                })
+
             props.updateSuccess()
             props.closeUpdateIncome()
         })

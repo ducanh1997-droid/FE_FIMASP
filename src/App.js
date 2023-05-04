@@ -12,8 +12,9 @@ function App() {
             <Route path={'/'} element={<Navigate to={"/home"}></Navigate>}></Route>
             <Route path={'/dashboard'} element={<Home content="Dashboard"/>}></Route>
             <Route path={'/transaction'} element={<Home content="Transaction"/>}></Route>
-            <Route path={'/plan'} element={<Home content="Plan"/>}></Route>
-            <Route path={'/wallet'} element={<Home content="Wallet"/>}></Route>
+            <Route path={'/category'} element={<Home content="Category"/>}></Route>
+            <Route path={'/analytic'} element={<Home content="Analytic"/>}></Route>
+            <Route path={'/wallet/:status?'} element={<Home content="Wallet"/>}></Route>
             <Route path={'/setting'} element={<Home content="Setting"/>}></Route>
             <Route path={'/profile'} element={<Home content="Profile"/>}></Route>
             <Route path={'/changePassword'} element={<Home content="ChangePassword"/>}></Route>

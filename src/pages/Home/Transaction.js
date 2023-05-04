@@ -6,7 +6,11 @@ import axios from "axios";
 import toast, {Toaster} from "react-hot-toast";
 import "../../assets/css/transaction.css";
 import arrow  from "./../../assets/img/448-arrow.png"
+import BarChartCashType from "./BarChartByCashType";
+import HorizontalBarChart from "./HorizontalBarChart";
+import PieCategoryChart from "./pieCategoryChart";
 export default function Transaction(props) {
+    const [cash,setCash]  = useState(undefined);
     const [transactions,setTransactions] = useState([]);
     const [transactionsAll,setTransactionsAll] = useState([]);
     const [wallets,setWallets] = useState([]);
@@ -62,6 +66,41 @@ export default function Transaction(props) {
             setCurrentPage(response.data.number+1);
         })
     },[props.close,props.createSuccess,props.updateSuccess])
+
+    useEffect(()=>{
+        if(cash!==undefined){
+        axios.delete(`http://localhost:8080/user${idUser}/cashes/${cash.id}`,{headers: {"Authorization": `Bearer ${token}`}}).then((response)=>{
+            if(cash.type === "expence"){
+                let oldWallet = updateOldWalletExpense();
+                axios.put(`http://localhost:8080/user${idUser}/wallets/${cash.wallet?.id}`,oldWallet,{headers: {"Authorization": `Bearer ${token}`}}).then((res)=>{
+                    axios.get(`http://localhost:8080/user${idUser}/cashes`).then((response)=>{
+                        setTransactions(response.data.content);
+                    })
+                    axios.get(`http://localhost:8080/user${idUser}/cashes`).then((response)=>{
+                        setTransactionsAll(response.data.content);
+                    })
+                })
+            }else{
+                let oldWalletIncome = updateOldWalletIncome();
+                axios.put(`http://localhost:8080/user${idUser}/wallets/${cash.wallet?.id}`,oldWalletIncome,{headers: {"Authorization": `Bearer ${token}`}}).then((res)=>{
+                    axios.get(`http://localhost:8080/user${idUser}/cashes`).then((response)=>{
+                        setTransactions(response.data.content);
+                    })
+                    axios.get(`http://localhost:8080/user${idUser}/cashes`).then((response)=>{
+                        setTransactionsAll(response.data.content);
+                    })
+                })
+            }
+            // axios.get(`http://localhost:8080/user${idUser}/cashes`).then((response)=>{
+            //     setTransactions(response.data.content);
+            // })
+            // axios.get(`http://localhost:8080/user${idUser}/cashes`).then((response)=>{
+            //     setTransactionsAll(response.data.content);
+            // })
+
+        })
+        }
+    },[cash])
 
     function totalMoney(){
         for(let i=0;i<wallets.length;i++){
@@ -143,6 +182,31 @@ export default function Transaction(props) {
             }
         }
     }
+    function updateOldWalletExpense(){
+        for(let i=0;i<wallets.length;i++){
+            if(cash.wallet?.id == wallets[i].id){
+                wallets[i].totalMoney += Number(cash.money);
+                wallets[i].limitMoney += Number(cash.money);
+                wallets[i].account = null;
+                wallets[i].account={
+                    id:idUser
+                }
+                return wallets[i];
+            }
+        }
+    }
+    function updateOldWalletIncome(){
+        for(let i=0;i<wallets.length;i++){
+            if(cash.wallet?.id == wallets[i].id){
+                wallets[i].totalMoney -= cash.money;
+                wallets[i].account = null;
+                wallets[i].account={
+                    id:idUser
+                }
+                return wallets[i];
+            }
+        }
+    }
     return(
         <>
             <div id="content-transaction" style={{filter:props.dialog || props.dialogUpdateIncome || props.dialogUpdateExpence?"blur(10px)":"blur(0px)"}}>
@@ -190,6 +254,7 @@ export default function Transaction(props) {
                         </div>
                     </div>
                 </div>
+                <BarChartCashType/>
                 <div id='block-search-transaction'>
                          <Formik initialValues={{
                             dateStart:"",
@@ -248,7 +313,6 @@ export default function Transaction(props) {
                         {transactions.map((item)=>{
                             {totalMoneyAll+=item.money}
                                         return(
-
                                             <tr key={item.id} className={'active-row'}>
                                                 <td className={'feature-field'} style={{paddingTop: 5, boxSizing: "border-box",paddingLeft: "25px"}}>
                                                     <div style={{float: "left"}} className="icon-border-bus-dashboard" id={item.category.icon}>
@@ -262,10 +326,9 @@ export default function Transaction(props) {
                                                 <td>{item.wallet&&item.wallet.name||"Thuộc ví đã bị xóa"}</td>
                                                 <td>{item.type=="expence"?"Chi phí":"Thu nhập"}</td>
                                                 <td style={{position:"relative"}}>
-                                                    <i className="fa-regular fa-pen-to-square" onClick={()=>item.type=="expence"?props.openUpdateExpence(item.id,item.category.icon):props.openUpdateIncome(item.id,item.category.icon)}></i>
+                                                    <i className="fa-regular fa-pen-to-square" onClick={()=>item.type=="expence"?(window.scrollTo(0,0),props.openUpdateExpence(item.id,item.category.icon)):(window.scrollTo(0,0),props.openUpdateIncome(item.id,item.category.icon))}></i>
                                                     <i className="fa-solid fa-trash-can" onClick={() => deleteTransaction(item.id)}></i>
                                                 </td>
-
                                             </tr>
                                         )
                                     })}
@@ -286,13 +349,8 @@ export default function Transaction(props) {
     )
     function deleteTransaction(id){
         if(window.confirm("OK")){
-            axios.delete(`http://localhost:8080/user${idUser}/cashes/${id}`,{headers: {"Authorization": `Bearer ${token}`}}).then((response)=>{
-                axios.get(`http://localhost:8080/user${idUser}/cashes`).then((response)=>{
-                    setTransactions(response.data.content);
-                })
-                axios.get(`http://localhost:8080/user${idUser}/cashes`).then((response)=>{
-                    setTransactionsAll(response.data.content);
-                })
+            axios.get(`http://localhost:8080/user${idUser}/cashes/detail/${id}`).then((response) => {
+                setCash(response.data)
             })
         }
     }
