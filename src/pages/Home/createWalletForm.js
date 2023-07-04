@@ -116,7 +116,10 @@ export default function CreateWalletForm({setShow,setIsUpdate,wallet,setWalletCh
                         <tr>
                             <td>
                                 <Field name={"totalMoney"}></Field>
-                            <ErrorMessage name={"totalMoney"}></ErrorMessage>
+                                <div style={{fontSize:"15px",color:"red"}}>
+                                    <ErrorMessage name={"totalMoney"}></ErrorMessage>
+                                </div>
+
                             </td>
                         </tr>
                         <tr>
@@ -156,7 +159,9 @@ export default function CreateWalletForm({setShow,setIsUpdate,wallet,setWalletCh
                         <tr>
                             <td>
                                 <Field  style={{marginBottom: "10px"}}name={"limitMoney"}></Field>
-                                <ErrorMessage name={"limitMoney"}></ErrorMessage>
+                                <div style={{fontSize:"15px",color:"red"}}>
+                                    <ErrorMessage name={"limitMoney"}></ErrorMessage>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -175,7 +180,7 @@ export default function CreateWalletForm({setShow,setIsUpdate,wallet,setWalletCh
                         {/*<p>Sample wallet</p>*/}
                         <div className={"wallet"} style={{backgroundImage: activeColor}}>
                             <p className={"logoName"}>Fimasp</p>
-                            <i className={activeIcon}></i>
+                            <i className={"fa-light "+activeIcon}></i>
                             <div className={"walletDetail"}>
                                 <p>Wallet 's name</p>
                                 <p className={"walletName"}>{values?.name}</p>

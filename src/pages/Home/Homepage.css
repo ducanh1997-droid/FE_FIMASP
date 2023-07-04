@@ -1,12 +1,12 @@
 header{
     top: 0px;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.17);
-    font-family: SansSerif;
     font-weight: bolder;
     position: fixed;
     width: 100%;
     z-index: 1003;
     background-color: #ffffff;
+    font-family: 'Tilt Neon', cursive;
 }
 header a,header button{
     display: inline-block;

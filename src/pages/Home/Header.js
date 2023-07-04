@@ -1,10 +1,13 @@
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
-
+import "./../../assets/css/header.css"
 export default function Header({imageHeader}){
 
  const[active,setActive] = useState(true)
  const [user, setUser] = useState({})
+ const [notifications,setNotifications] = useState([])
+
+ const [displayNotification,setDisplayNotification] = useState(false)
 
  const avatar = localStorage.getItem('avatar')
 
@@ -17,17 +20,20 @@ export default function Header({imageHeader}){
    /**
     * Alert if clicked on outside of element
     */
-
-  }, );
+   axios.get(`http://localhost:8080/user${idAcc}/notifications`).then((response)=>{
+    setNotifications(response.data);
+   })
+  },[notifications]);
  const [idAcc, setIdAcc] = useState(localStorage.getItem('id'))
 
 
  useEffect(() => {
   axios.get(`http://localhost:8080/user/${idAcc}`).then((response) => {
    setUser(response.data);
-
   })
- }, [idAcc])
+
+
+ }, [])
 
  useEffect(() => {
   /**
@@ -43,6 +49,12 @@ export default function Header({imageHeader}){
   setActive(false);
  }
 
+  function openNotification(){
+   setDisplayNotification(true);
+  }
+ function closeNotification(){
+  setDisplayNotification(false);
+ }
  function category(e){
   setActiveCategory(e.currentTarget.id);
  }
@@ -184,6 +196,54 @@ export default function Header({imageHeader}){
       </div>
       <div id="page">
        <h1>Trang chủ</h1>
+      </div>
+
+      <div id="Notification-block" onClick={displayNotification?closeNotification:openNotification}>
+       <div id="Notification" style={displayNotification?{display:"block"}:{display:"none"}}>
+          <div id="Header-notification">
+               Notifications
+          </div>
+          <div id="Body-notification">
+           {notifications.map((item)=>{
+            return(
+                <div id="Notification-detail">
+                 <div id="Notification-image-block" className={item.type === "notification"?"Notification-warning":""}>
+                  <i className="fa-solid fa-house"></i>
+                 </div>
+                 <div id="Notification-content">
+                  <h4>{item.title}</h4>
+                  <p>{item.date}</p>
+                 </div>
+                </div>
+            )
+           })
+           }
+             <div id="Notification-detail">
+                <div id="Notification-image-block">
+                    <i className="fa-solid fa-house"></i>
+                </div>
+                <div id="Notification-content">
+                   <h4>Remider:Treatment Time!</h4>
+                   <p>29 July 2020 - 2:26 PM</p>
+                </div>
+             </div>
+           <div id="Notification-detail">
+            <div id="Notification-image-block" className="Notification-warning">
+             <i className="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div id="Notification-content">
+             <h4>Warning:Treatment Time!</h4>
+             <p>29 July 2020 - 2:26 PM</p>
+            </div>
+           </div>
+          </div>
+
+       </div>
+        <i className="fa-light fa-bell">
+          <div id="count-notification">
+             <p>2</p>
+          </div>
+        </i>
       </div>
       <div id="avatar">
        {user.avatar === undefined || user.avatar=== null?(

@@ -25,29 +25,29 @@ export default function WalletTransaction({wallet,setCurrentIndex}){
     useEffect(()=>{
         setSearchDate(false);
         let current =currentPage- 1
-        // if(wallet!==undefined) {
-        //     axios.get(`http://localhost:8080/user${idUser}/cashes/${wallet?.id}/page${page}`).then((res) => {
-        //         setTransaction(res.data.content)
-        //         setTotalPages(res.data.totalPages)
-        //         setPage(0)
-        //     })
-        // }
-        axios.get(`http://localhost:8080/user${idUser}/cashes?page=${current}&size=${numOfPage}`).then((response)=>{
-            setTransaction(response.data.content);
-            setTotalPage(response.data.totalPages);
-            setTotalElement(response.data.totalElements);
-            setCurrentPage(response.data.number+1);
-        })
+        if(wallet!==undefined) {
+            axios.get(`http://localhost:8080/user${idUser}/cashes/${wallet?.id}/page${page}`).then((res) => {
+                setTransaction(res.data.content)
+                setTotalPages(res.data.totalPages)
+                setPage(0)
+            })
+        }
+        // axios.get(`http://localhost:8080/user${idUser}/cashes/${wallet?.id}/page${page}`).then((response)=>{
+        //     setTransaction(response.data.content);
+        //     setTotalPage(response.data.totalPages);
+        //     setTotalElement(response.data.totalElements);
+        //     setCurrentPage(response.data.number+1);
+        // })
     },[page,wallet])
-    function findAllTransaction(currentPage){
-        currentPage-=1;
-        axios.get(`http://localhost:8080/user${idUser}/cashes?page=${currentPage}&size=${numOfPage}`).then((response)=>{
-            setTransaction(response.data.content);
-            setTotalPage(response.data.totalPages);
-            setTotalElement(response.data.totalElements);
-            setCurrentPage(response.data.number+1);
-        })
-    }
+    // function findAllTransaction(currentPage){
+    //     currentPage-=1;
+    //     axios.get(`http://localhost:8080/user${idUser}/cashes/${wallet?.id}/page${page}`).then((response)=>{
+    //         setTransaction(response.data.content);
+    //         setTotalPage(response.data.totalPages);
+    //         setTotalElement(response.data.totalElements);
+    //         setCurrentPage(response.data.number+1);
+    //     })
+    // }
     function createPageArray(value){
        let array=[]
         if(totalPages>=6) {
@@ -81,20 +81,20 @@ export default function WalletTransaction({wallet,setCurrentIndex}){
     }
 
     function search(values,currentPage) {
-        setValuesSearch(values);
-        currentPage-=1;
-        if(values.dateEnd==="" || values.dateStart===""){
-            setSearchDate(false)
-            findAllTransaction(currentPage)
-        }else{
-            axios.get(`http://localhost:8080/user${idUser}/cashes/${values.dateStart}/${values.dateEnd}?page=${currentPage}&size=${numOfPage}`).then((response)=>{
-                setSearchDate(true);
-                setTransaction(response.data.content);
-                setTotalPage(response.data.totalPages);
-                setTotalElement(response.data.totalElements);
-                setCurrentPage(response.data.number+1);
-            })
-        }
+        // setValuesSearch(values);
+        // currentPage-=1;
+        // if(values.dateEnd==="" || values.dateStart===""){
+        //     setSearchDate(false)
+        //     findAllTransaction(currentPage)
+        // }else{
+        //     axios.get(`http://localhost:8080/user${idUser}/cashes/${values.dateStart}/${values.dateEnd}?page=${currentPage}&size=${numOfPage}`).then((response)=>{
+        //         setSearchDate(true);
+        //         setTransaction(response.data.content);
+        //         setTotalPage(response.data.totalPages);
+        //         setTotalElement(response.data.totalElements);
+        //         setCurrentPage(response.data.number+1);
+        //     })
+        // }
     }
     const Validation = Yup.object().shape({
         dateStart: Yup.date(),
@@ -103,25 +103,25 @@ export default function WalletTransaction({wallet,setCurrentIndex}){
             "Ngày kết thúc phải lớn hơn ngày bắt đầu"
         )
     })
-    function prevPage() {
-        let prevPage =1
-        if(currentPage>prevPage){
-            if(searchDate){
-                search(valuesSearch,currentPage-prevPage)
-            }else{
-                findAllTransaction(currentPage-prevPage);
-            }
-        }
-    }
-    function nextPage() {
-        if(currentPage<Math.ceil(totalElement/numOfPage)){
-            if(searchDate){
-                search(valuesSearch,currentPage+1)
-            }else{
-                findAllTransaction(currentPage+1);
-            }
-        }
-    }
+    // function prevPage() {
+    //     let prevPage =1
+    //     if(currentPage>prevPage){
+    //         if(searchDate){
+    //             search(valuesSearch,currentPage-prevPage)
+    //         }else{
+    //             findAllTransaction(currentPage-prevPage);
+    //         }
+    //     }
+    // }
+    // function nextPage() {
+    //     if(currentPage<Math.ceil(totalElement/numOfPage)){
+    //         if(searchDate){
+    //             search(valuesSearch,currentPage+1)
+    //         }else{
+    //             findAllTransaction(currentPage+1);
+    //         }
+    //     }
+    // }
 return(
     <>
         <div className={"wallet-transaction-list"}>
@@ -209,18 +209,18 @@ return(
                     </tbody>
                 </table>
             </div>
-            {/*<div id='pagination'>*/}
-            {/*    <button className='btn-pre-next1' style={{cursor:page===0?"not-allowed":"pointer",fontSize:"15px"}}  onClick={page===0?null:()=>{setPage(page-1)}} ><img style={{width:"12px"}} src={arrow} alt=""/>Trước</button>*/}
-            {/*        {createPageDiv(createPageArray(page+1))}*/}
-            {/*    <button className='btn-pre-next2' style={{cursor:page===totalPages-1?"not-allowed":"pointer",fontSize:"15px"}} onClick={page===totalPages-1?null:()=>{setPage(page+1)}}>Sau <img style={{width:"12px"}} src={arrow} alt=""/></button>*/}
-            {/*</div>*/}
             <div id='pagination'>
-                <button className='btn-pre-next1' style={{cursor:page===0?"not-allowed":"pointer",fontSize:"12px"}} onClick={prevPage}><img style={{width:"10px"}} src={arrow} alt=""/>Trước</button>
-                <ul>
-                    <li className='link-pagination active active-link' style={{width:"25px",height:"25px",paddingTop:"0px",lineHeight:"22px",fontSize:"15px"}} >{currentPage}</li>
-                </ul>
-                <button className='btn-pre-next2' style={{cursor:page===totalPages-1?"not-allowed":"pointer",fontSize:"12px"}} onClick={nextPage}>Sau <img  style={{width:"10px"}} src={arrow} alt=""/></button>
+                <button className='btn-pre-next1' style={{cursor:page===0?"not-allowed":"pointer",fontSize:"15px"}}  onClick={page===0?null:()=>{setPage(page-1)}} ><img style={{width:"12px"}} src={arrow} alt=""/>Trước</button>
+                    {createPageDiv(createPageArray(page+1))}
+                <button className='btn-pre-next2' style={{cursor:page===totalPages-1?"not-allowed":"pointer",fontSize:"15px"}} onClick={page===totalPages-1?null:()=>{setPage(page+1)}}>Sau <img style={{width:"12px"}} src={arrow} alt=""/></button>
             </div>
+            {/*<div id='pagination'>*/}
+            {/*    <button className='btn-pre-next1' style={{cursor:page===0?"not-allowed":"pointer",fontSize:"12px"}} onClick={prevPage}><img style={{width:"10px"}} src={arrow} alt=""/>Trước</button>*/}
+            {/*    <ul>*/}
+            {/*        <li className='link-pagination active active-link' style={{width:"25px",height:"25px",paddingTop:"0px",lineHeight:"22px",fontSize:"15px"}} >{currentPage}</li>*/}
+            {/*    </ul>*/}
+            {/*    <button className='btn-pre-next2' style={{cursor:page===totalPages-1?"not-allowed":"pointer",fontSize:"12px"}} onClick={nextPage}>Sau <img  style={{width:"10px"}} src={arrow} alt=""/></button>*/}
+            {/*</div>*/}
         </div>
     </>
 )

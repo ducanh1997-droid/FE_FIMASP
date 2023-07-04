@@ -54,6 +54,8 @@ export default React.memo(function CreateCategory(props){
     }
     const Validation = Yup.object().shape({
         name: Yup.string().max(15, "Không quá 20 ký tự"),
+        typeCategory: Yup.string().required("Vui lòng chọn ví!"),
+
     })
     return(
         <>
@@ -97,6 +99,7 @@ export default React.memo(function CreateCategory(props){
                                                 <div className='inputBox'>
                                                     <span>Chọn loại danh mục </span>
                                                     <Field as="select" name={"typeCategory"} value={values.typeCategory} id="select-box1"  className="select">
+                                                        <option value="">--Chọn loại ví--</option>
                                                         <option value='expense'>Chi phí</option>
                                                         <option value='income'>Thu nhập</option>
                                                     </Field>
@@ -106,12 +109,36 @@ export default React.memo(function CreateCategory(props){
                                                 </div>
                                             </div>
                                             <div ref={categoryRef} className='popup-detail-category' style={popupCategory?{display:"block"}:{display:"none"}}>
-                                                        <div  className="block-category" id={"block-fa-family"} >
-                                                            {/*{activeCategory==="fa-family"&&setCategoryGetId(item.id)}*/}
-                                                            <div className={'fa-family icon-border'} id={'fa-family'} style={{borderRadius:activeCategory==="fa-family"?"2px":"100px"}} onClick={categoryActivePick}>
-                                                                <i className={"fa-light fa-family"} ></i>
-                                                            </div>
-                                                        </div>
+                                                <div  className="block-category" id={"block-fa-family"} >
+                                                    {/*{activeCategory==="fa-family"&&setCategoryGetId(item.id)}*/}
+                                                    <div className={'fa-family icon-border'} id={'fa-family'} style={{borderRadius:activeCategory==="fa-family"?"2px":"100px"}} onClick={categoryActivePick}>
+                                                        <i className={"fa-light fa-family"} ></i>
+                                                    </div>
+                                                </div>
+                                                <div  className="block-category" id={"block-"+"fa-pig"} >
+                                                    {/*{activeCategory==="fa-gift-card"&&setCategoryGetId(item.id)}*/}
+                                                    <div className={'fa-pig icon-border'} id={'fa-pig'} style={{borderRadius:activeCategory==="fa-pig"?"2px":"100px"}} onClick={categoryActivePick}>
+                                                        <i className={"fa-light fa-pig" } ></i>
+                                                    </div>
+                                                </div>
+                                                <div  className="block-category" id={"block-"+"fa-filter-circle-dollar"} >
+                                                    {/*{activeCategory==="fa-gift-card"&&setCategoryGetId(item.id)}*/}
+                                                    <div className={'fa-filter-circle-dollar icon-border'} id={'fa-filter-circle-dollar'} style={{borderRadius:activeCategory==="fa-filter-circle-dollar"?"2px":"100px"}} onClick={categoryActivePick}>
+                                                        <i className={"fa-light fa-filter-circle-dollar" } ></i>
+                                                    </div>
+                                                </div>
+                                                <div  className="block-category" id={"block-"+"fa-graduation-cap"} >
+                                                    {/*{activeCategory==="fa-gift-card"&&setCategoryGetId(item.id)}*/}
+                                                    <div className={'fa-graduation-cap icon-border'} id={'fa-graduation-cap'} style={{borderRadius:activeCategory==="fa-graduation-cap"?"2px":"100px"}} onClick={categoryActivePick}>
+                                                        <i className={"fa-light fa-graduation-cap" } ></i>
+                                                    </div>
+                                                </div>
+                                                <div  className="block-category" id={"block-"+"fa-handshake-angle"} >
+                                                    {/*{activeCategory==="fa-gift-card"&&setCategoryGetId(item.id)}*/}
+                                                    <div className={'fa-handshake-angle icon-border'} id={'fa-handshake-angle'} style={{borderRadius:activeCategory==="fa-handshake-angle"?"2px":"100px"}} onClick={categoryActivePick}>
+                                                        <i className={"fa-light fa-handshake-angle" } ></i>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div className='col-form'>
                                                 <div className='inputBox'>
@@ -130,6 +157,19 @@ export default React.memo(function CreateCategory(props){
                                                                     <i className={"fa-light fa-gift-card" } ></i>
                                                                 </div>
                                                             </div>
+                                                            <div  className="block-category" id={"block-"+"fa-hand-holding-dollar"} >
+                                                                {/*{activeCategory==="fa-gift-card"&&setCategoryGetId(item.id)}*/}
+                                                                <div className={'icon-border'} id={'fa-hand-holding-dollar'} style={{borderRadius:activeCategory==="fa-hand-holding-dollar"?"2px":"100px"}} onClick={categoryActive}>
+                                                                    <i className={"fa-light fa-hand-holding-dollar" } ></i>
+                                                                </div>
+                                                            </div>
+                                                            <div  className="block-category" id={"block-"+"fa-cart-shopping"} >
+                                                                {/*{activeCategory==="fa-gift-card"&&setCategoryGetId(item.id)}*/}
+                                                                <div className={'icon-border'} id={'fa-cart-shopping'} style={{borderRadius:activeCategory==="fa-cart-shopping"?"2px":"100px"}} onClick={categoryActive}>
+                                                                    <i className={"fa-light fa-cart-shopping" } ></i>
+                                                                </div>
+                                                            </div>
+
                                                     <div className='block-category' id='block-fa-plus' onClick={openDetailCategory}>
                                                         <div className={'icon-border'} id='fa-plus' style={{width:"32px",height:"30px"}}>
                                                             <i className="fa-light fa-plus"></i>
